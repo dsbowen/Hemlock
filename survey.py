@@ -24,7 +24,7 @@ consent_label = '''
 <p><b>Questions</b> Please contact the experimenters if you have concerns or questions: dsbowen@wharton.upenn.edu. You may also contact the office of the University of Pennsylvania’s Committee for the Protection of Human Subjects, at 215.573.2540 or via email at irb@pobox.upenn.edu.</p>
 '''
 
-# @route('/survey')
+@route('/survey')
 def start():
     return Branch(
         Page(
@@ -37,7 +37,7 @@ def start():
         navigate=forecast
     )
 
-@route('/survey')
+# @route('/survey')
 def forecast(origin=None):
     completion_code = key(6)
     prediction_q = Range(
