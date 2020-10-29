@@ -4,6 +4,7 @@
 body, html {
     height: 100%;
     width: 100%;
+    background-color: #F5F5F5;
 }
 body {
     padding-top: 40px;
@@ -14,11 +15,14 @@ form.form-margins {
     margin: 20px 0px;
 }
 
+div.question {
+    border-radius: 7px;
+}
+
 /* Question div formatting */
 div.error {
     border-style: solid;
     border-width: thin;
-    border-radius: 5px;
     background-color: #f2dede;
     border-color: #ebcccc;
 }
@@ -38,16 +42,4 @@ input:checked + label {
 }
 input[type="checkbox"]:checked:hover + label {
     background-color: #BEBEBE;
-}
-
-/* Video formatting */
-/* 16:9 aspect ratio */
-.video-wrapper {
-    padding-bottom: 56.25%;
-    position: relative;
-}
-.video {
-    position: absolute;
-    width: 100%;
-    height: 100%;
 }

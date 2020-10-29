@@ -5,19 +5,23 @@ most useful when fleshed out. See section on question polymorphs.
 """
 
 from ..app import db
-from .bases import Data, HTMLMixin
-from .choice import Choice, Option
+from ..tools import key
+from .bases import Data
 
 from flask import render_template, request
 from sqlalchemy.ext.orderinglist import ordering_list
 from sqlalchemy.orm import validates
-from sqlalchemy_mutable import MutableListType, MutableModelBase, MutableType
+from sqlalchemy_mutable import (
+    HTMLAttrsType, MutableType, MutableJSONType, MutableListType, 
+    MutableListJSONType
+)
 
+import html
 import os
 from copy import copy
 
 
-class Question(HTMLMixin, Data, MutableModelBase):
+class Question(Data):
     """
     Base object for questions. Questions are displayed on their page in index 
     order.
@@ -89,83 +93,59 @@ class Question(HTMLMixin, Data, MutableModelBase):
 
     _page_id = db.Column(db.Integer, db.ForeignKey('page.id'))
 
-    compile = db.relationship(
-        'Compile',
-        backref='question',
-        order_by='Compile.index',
-        collection_class=ordering_list('index')
-    )
+    # HTML attributes
+    key = db.Column(db.String(10))
+    template = db.Column(db.String)
+    css = db.Column(MutableListJSONType, default=[])
+    js = db.Column(MutableListJSONType, default=[])
+    form_group_class = db.Column(MutableListJSONType, default=[])
+    form_group_attrs = db.Column(HTMLAttrsType, default={})
+    error = db.Column(db.Text)
+    error_attrs = db.Column(HTMLAttrsType, default={})
+    label = db.Column(db.Text)
+    prepend = db.Column(db.String)
+    append = db.Column(db.String)
+    input_attrs = db.Column(HTMLAttrsType)
 
-    validate = db.relationship(
-        'Validate', 
-        backref='question', 
-        order_by='Validate.index',
-        collection_class=ordering_list('index')
-    )
-    
-    submit = db.relationship(
-        'Submit',
-        backref='question',
-        order_by='Submit.index',
-        collection_class=ordering_list('index')
-    )
+    # Function attributes
+    compile = db.Column(MutableListType, default=[])
+    debug = db.Column(MutableListType, default=[])
+    validate = db.Column(MutableListType, default=[])
+    submit = db.Column(MutableListType, default=[])
 
-    _debug_functions = db.relationship(
-        'Debug',
-        backref='question',
-        order_by='Debug.index',
-        collection_class=ordering_list('index')
-    )
-
-    @property
-    def debug(self):
-        return self._debug_functions
-
-    @debug.setter
-    def debug(self, val):
-        if os.environ.get('DEBUG_FUNCTIONS') != 'False':
-            self._debug_functions = val
-
-    # Column attributes
-    default = db.Column(MutableType)
-    response = db.Column(MutableType)
+    # Additional attributes
+    default = db.Column(MutableJSONType)
+    response = db.Column(MutableJSONType)
     has_responded = db.Column(db.Boolean, default=False)
 
-    def __init__(self, label='', template=None, **kwargs):
-        kwargs['label'] = label
-        super().__init__(template, **kwargs)
+    def __init__(
+            self, label=None, extra_css=[], extra_js=[], 
+            form_group_class=['card', 'form-group', 'question'],
+            form_group_attrs={}, 
+            error_attrs={'style': {'color': 'rgb(114,28,36)'}}, 
+            **kwargs
+        ):
+        def add_extra(attr, extra):
+            # add extra css or javascript
+            if extra:
+                assert isinstance(extra, (str, list))
+                if isinstance(extra, str):
+                    attr.append(extra)
+                else:
+                    attr += extra
 
-    # BeautifulSoup shortcuts
-    @property
-    def error(self):
-        return self.body.text('.error-txt')
-
-    @error.setter
-    def error(self, val):
-        """
-        Add the 'error' class to the form-group tag and set the error text
-        """
-        form_grp_cls = self.body.select_one('div.form-group')['class']
-        if not val:
-            try:
-                form_grp_cls.remove('error')
-            except:
-                pass
-        elif 'error' not in form_grp_cls:
-            form_grp_cls.append('error')
-        self.body.set_element('span.error-txt', val)
-
-    @property
-    def form_group(self):
-        return self.body.select_one('div.form-group')
-
-    @property
-    def label(self):
-        return self.body.text('.label-txt')
-
-    @label.setter
-    def label(self, val):
-        self.body.set_element('.label-txt', val)
+        self.key = key(10)
+        self.compile, self.debug, self.validate, self.submit = [], [], [], []
+        self.css, self.js = [], []
+        super().__init__(
+            label=label, 
+            form_group_class=form_group_class,
+            form_group_attrs=form_group_attrs,
+            error_attrs=error_attrs, 
+            **kwargs
+        )
+        add_extra(self.css, extra_css)
+        add_extra(self.js, extra_js)
 
     # methods
     def clear_error(self):
@@ -197,11 +177,17 @@ class Question(HTMLMixin, Data, MutableModelBase):
         return self
 
     def _render(self, body=None):
-        return body or self.body.copy()
+        return render_template(self.template, q=self)
+
+    def _render_js(self):
+        return '\n'.join(self.js)
 
     def _record_response(self):
         self.has_responded = True
-        self.response = request.form.get(self.model_id)
+        self.response = request.form.get(self.key)
+        if isinstance(self.response, str):
+            # convert to safe html
+            self.response = html.escape(self.response)
         return self
         
     def _validate(self):
@@ -212,9 +198,8 @@ class Question(HTMLMixin, Data, MutableModelBase):
         and return False. Otherwise, return True.
         """
         for f in self.validate:
-            error = f(self)
-            if error:
-                self.error = error
+            self.error = f(self)
+            if self.error:
                 return False
         self.error = None
         return True
@@ -268,45 +253,15 @@ class ChoiceQuestion(Question):
     4. list of `(choice label, value, name)` tuples.
     5. list of dictionaries with choice keyword arguments.
     """
-    multiple = db.Column(db.Boolean, default=False)
-    choice_cls = Choice
-    _choices = db.Column(MutableListType)
+    choices = None # must be implemented by choice question
 
-    @property
-    def choices(self):
-        return self._choices
-
-    @choices.setter
-    def choices(self, choices):
-        def convert(choice):
-            if isinstance(choice, self.choice_cls):
-                return choice
-            if isinstance(choice, dict):
-                return self.choice_cls(**choice)
-            if isinstance(choice, (tuple, list)):
-                if len(choice) == 2:
-                    return self.choice_cls(label=choice[0], value=choice[1])
-                if len(choice) == 3:
-                    return self.choice_cls(
-                        label=choice[0], value=choice[1], name=choice[2]
-                    )
-            return self.choice_cls(label=str(choice))
-        
-        self._choices = [convert(choice) for choice in choices]
-
-    def __init__(self, label='', choices=[], template=None, **kwargs):
+    def __init__(self, label=None, choices=[], template=None, **kwargs):
         self.choices = choices
-        super().__init__(label, template, **kwargs)
+        super().__init__(label=label, template=template, **kwargs)
 
     def _render(self, body=None):
         """Add choice HTML to `body`"""
-        body = body or self.body.copy()
-        choice_wrapper = body.select_one('.choice-wrapper')
-        [
-            choice_wrapper.append(choice._render(self, idx)) 
-            for idx, choice in enumerate(self.choices)
-        ]
-        return body
+        return render_template(self.template, q=self)
 
     def _record_response(self):
         """Record response
@@ -314,8 +269,8 @@ class ChoiceQuestion(Question):
         The response is a single choice or a list of choices (if multiple 
         choices are allowed).
         """
-        self._has_responded = True
-        idx = request.form.getlist(self.model_id)
+        self.has_responded = True
+        idx = request.form.getlist(self.key)
         self.response = [self.choices[int(i)].value for i in idx]
         if not self.multiple:
             self.response = self.response[0] if self.response else None

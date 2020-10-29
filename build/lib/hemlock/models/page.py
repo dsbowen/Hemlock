@@ -28,31 +28,27 @@ originating from this page.
 """
 
 from ..app import db, settings
-from ..tools import Img
-from .bases import BranchingBase, HTMLMixin
+from ..tools import img
+from .bases import BranchingBase
 from .embedded import Timer
-from .worker import _set_worker
+from .worker import Worker
 from .functions import Compile, Validate, Submit, Debug
 
-from bs4 import BeautifulSoup, Tag
-from flask import Markup, current_app, render_template, request
-from sqlalchemy import inspect
+from bs4 import BeautifulSoup
+from flask import current_app, render_template, request
 from sqlalchemy.ext.orderinglist import ordering_list
-from sqlalchemy_mutable import MutableType
-from sqlalchemy_mutablesoup import MutableSoupType
+from sqlalchemy.orm import validates
+from sqlalchemy_mutable import (
+    HTMLAttrsType, MutableType, MutableListType, MutableListJSONType
+)
 
 import os
-import re
 import webbrowser
-from random import shuffle, random
+from random import random, shuffle
 from tempfile import NamedTemporaryFile
 from time import sleep
 
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
-
-BANNER = Img(src='/hemlock/static/img/hemlock_banner.png', align='center')
-BANNER.img['style'] = 'max-width:200px;'
-BANNER.img['alt'] = 'Hemlock banner'
 
 @Compile.register
 def compile_questions(page):
@@ -144,21 +140,50 @@ def navigate(driver, page, p_forward=.8, p_back=.1, sleep_time=3):
         navigate(driver, page, p_forward, p_back, sleep_time)
     driver.refresh()
 
-settings['Page'] = {
-    'css': open(os.path.join(DIR_PATH, 'page-css.html'), 'r').read(),
-    'js': open(os.path.join(DIR_PATH, 'page-js.html'), 'r').read(),
-    'back': False,
-    'forward': True,
-    'banner': BANNER.render(),
-    'terminal': False,
-    'compile': compile_questions,
-    'validate': validate_questions,
-    'submit': submit_questions,
-    'debug': [debug_questions, navigate],
-}
+settings['Page'] = dict(
+    timer=None,
+    template='hemlock/page.html',
+    css=open(os.path.join(DIR_PATH, 'page-css.html'), 'r').read() \
+        .splitlines(),
+    js=open(os.path.join(DIR_PATH, 'page-js.html'), 'r').read() \
+        .splitlines(),
+    error_attrs={
+        'class': ['alert', 'alert-danger', 'w-100', 'error'],
+        'style': {'text-align': 'center'}
+    },
+    back=False,
+    back_btn_attrs={
+        'id': 'back-btn',
+        'class': ['btn', 'btn-primary'],
+        'name': 'direction',
+        'type': 'submit',
+        'style': {'float': 'left'},
+        'value': 'back'
+    },
+    forward=True,
+    forward_btn_attrs={
+        'id': 'forward-btn',
+        'class': ['btn', 'btn-primary'],
+        'name': 'direction',
+        'type': 'submit',
+        'style': {'float': 'right'},
+        'value': 'forward'
+    },
+    banner=img(
+        '/hemlock/static/img/hemlock_banner.png',
+        img_align='center', 
+        img_attrs={'style': 'max-width:200px;', 'alt': 'Hemlock banner'}
+    ),
+    compile=[compile_questions],
+    validate=[validate_questions],
+    submit=[submit_questions],
+    debug=[debug_questions, navigate],
+    cache_compile=False,
+    terminal=False,
+)
 
 
-class Page(HTMLMixin, BranchingBase, db.Model):
+class Page(BranchingBase, db.Model):
     """
     Pages are queued in a branch. A page contains a list of questions which it
     displays to the participant in index order.
@@ -324,16 +349,12 @@ class Page(HTMLMixin, BranchingBase, db.Model):
     
     _back_to_id = db.Column(db.Integer, db.ForeignKey('page.id'))
     back_to = db.relationship(
-        'Page',
-        foreign_keys=_back_to_id,
-        remote_side=[id]
+        'Page', foreign_keys=_back_to_id, remote_side=[id]
     )
         
     _forward_to_id = db.Column(db.Integer, db.ForeignKey('page.id'))
     forward_to = db.relationship(
-        'Page',
-        foreign_keys=_forward_to_id,
-        remote_side=[id]
+        'Page', foreign_keys=_forward_to_id, remote_side=[id]
     )
     
     embedded = db.relationship(
@@ -344,9 +365,7 @@ class Page(HTMLMixin, BranchingBase, db.Model):
     )
 
     _timer = db.relationship(
-        'Timer', 
-        uselist=False,
-        foreign_keys='Timer._timed_page_id'
+        'Timer', uselist=False, foreign_keys='Timer._timed_page_id'
     )
 
     @property
@@ -358,7 +377,7 @@ class Page(HTMLMixin, BranchingBase, db.Model):
         if isinstance(val, Timer):
             self._timer = val
             return
-        if not hasattr(self, '_timer') or self._timer is None:
+        if self._timer is None:
             self._timer = Timer()
         if isinstance(val, str) or val is None:
             self._timer.var = val
@@ -380,180 +399,84 @@ class Page(HTMLMixin, BranchingBase, db.Model):
     def data_elements(self):
         timer = [self.timer] if self.timer else []
         return self.embedded + timer + self.questions
-    
-    compile = db.relationship(
-        'Compile',
-        backref='page',
-        order_by='Compile.index',
-        collection_class=ordering_list('index')
-    )
-    _compile_worker = db.relationship(
+
+    compile_worker = db.relationship(
         'Worker', uselist=False, foreign_keys='Worker._compile_id'
     )
-
-    @property
-    def compile_worker(self):
-        return self._compile_worker
-
-    @compile_worker.setter
-    def compile_worker(self, val):
-        _set_worker(self, val, self._compile, '_compile_worker')
-
-    validate = db.relationship(
-        'Validate',
-        backref='page',
-        order_by='Validate.index',
-        collection_class=ordering_list('index')
-    )
-    _validate_worker = db.relationship(
+    validate_worker = db.relationship(
         'Worker', uselist=False, foreign_keys='Worker._validate_id'
     )
-
-    @property
-    def validate_worker(self):
-        return self._validate_worker
-
-    @validate_worker.setter
-    def validate_worker(self, val):
-        _set_worker(self, val, self._validate, '_validate_worker')
-
-    submit = db.relationship(
-        'Submit',
-        backref='page',
-        order_by='Submit.index',
-        collection_class=ordering_list('index')
-    )
-    _submit_worker = db.relationship(
+    submit_worker = db.relationship(
         'Worker', uselist=False, foreign_keys='Worker._submit_id'
     )
-
-    @property
-    def submit_worker(self):
-        return self._submit_worker
-
-    @submit_worker.setter
-    def submit_worker(self, val):
-        _set_worker(self, val, self._submit, '_submit_worker')
-
-    navigate = db.relationship(
-        'Navigate', 
-        backref='page', 
-        uselist=False
-    )
-    _navigate_worker = db.relationship(
+    navigate_worker = db.relationship(
         'Worker', uselist=False, foreign_keys='Worker._navigate_page_id'
     )
 
-    @property
-    def navigate_worker(self):
-        return self._navigate_worker
-
-    @navigate_worker.setter
-    def navigate_worker(self, val):
-        _set_worker(self, val, self._navigate, '_navigate_worker')
-
-    _debug_functions = db.relationship(
-        'Debug',
-        backref='page',
-        order_by='Debug.index',
-        collection_class=ordering_list('index')
+    @validates(
+        'compile_worker',
+        'hello_world_worker', 
+        'validate_worker', 
+        'submit_worker', 
+        'navigate_worker'
     )
+    def set_worker(self, key, worker):
+        if not worker:
+            return
+        return worker if isinstance(worker, Worker) else Worker()
 
-    @property
-    def debug(self):
-        return self._debug_functions
+    # HTML attibutes
+    template = db.Column(db.String)
+    css = db.Column(MutableListJSONType)
+    js = db.Column(MutableListJSONType)
+    navbar = db.Column(db.Text)
+    error = db.Column(db.Text)
+    error_attrs = db.Column(HTMLAttrsType)
+    forward = db.Column(db.String)
+    forward_btn_attrs = db.Column(HTMLAttrsType)
+    back = db.Column(db.String)
+    back_btn_attrs = db.Column(HTMLAttrsType)
+    banner = db.Column(db.Text)
 
-    @debug.setter
-    def debug(self, val):
-        if os.environ.get('DEBUG_FUNCTIONS') != 'False':
-            self._debug_functions = val
-    
-    # Column attributes
+    @validates('forward', 'back')
+    def validate_direction(self, key, val):
+        if not val:
+            return None
+        if val is True:
+            return '&gt;&gt;' if key == 'forward' else '&lt;&lt;'
+        return val
+
+    # Function columns
+    compile = db.Column(MutableListType)
+    debug = db.Column(MutableListType)
+    validate = db.Column(MutableListType)
+    submit = db.Column(MutableListType)
+
+    # Additional attributes
     cache_compile = db.Column(db.Boolean)
     direction_from = db.Column(db.String(8))
     direction_to = db.Column(db.String(8))
     g = db.Column(MutableType)
     index = db.Column(db.Integer)
-    navbar = db.Column(MutableSoupType)
+    name = db.Column(db.String)
     terminal = db.Column(db.Boolean)
     viewed = db.Column(db.Boolean, default=False)
 
-    def __init__(
-            self, *questions, template='hemlock/page-body.html', **kwargs
-        ):
+    def __init__(self, *questions, extra_css=[], extra_js=[], **kwargs):
+        def add_extra(attr, extra):
+            # add extra css or javascript
+            if extra:
+                assert isinstance(extra, (str, list))
+                if isinstance(extra, str):
+                    attr.append(extra)
+                else:
+                    attr += extra
+
         self.questions = list(questions)
-        kwargs['timer'] = kwargs['timer'] if 'timer' in kwargs else None
-        super().__init__(template, **kwargs)
+        super().__init__(**kwargs)
+        add_extra(self.css, extra_css)
+        add_extra(self.js, extra_js)
 
-    # BeautifulSoup shortcuts
-    @property
-    def error(self):
-        return self.body.text('div.error-msg')
-
-    @error.setter
-    def error(self, val):
-        self.body.set_element(
-            'span.error-msg', val,
-            target_selector='div.error-msg', 
-            gen_target=self._gen_error
-        )
-
-    def _gen_error(self):
-        """Generate error tag"""
-        err = Tag(name='div')
-        err['class'] = 'error-msg alert alert-danger w=100'
-        err['style'] = 'text-align: center;'
-        return err
-
-    @property
-    def back(self):
-        return self.body.text('#back-btn')
-
-    @back.setter
-    def back(self, val):
-        val = '<<' if val is True else val
-        self.body.set_element(
-            'span.back-btn', val,
-            target_selector='#back-btn', 
-            gen_target=self._gen_submit,
-            args=['back']
-        )
-
-    @property
-    def forward(self):
-        return self.body.text('#forward-btn')
-
-    @forward.setter
-    def forward(self, val):
-        val = '>>' if val is True else val
-        self.body.set_element(
-            'span.forward-btn', val,
-            target_selector='#forward-btn', 
-            gen_target=self._gen_submit,
-            args=['forward']
-        )
-
-    def _gen_submit(self, direction):
-        """Generate submit (back or forward) button"""
-        btn = Tag(name='button')
-        btn['id'] = direction+'-btn'
-        btn['name'] = 'direction'
-        btn['type'] = 'submit'
-        btn['class'] = 'btn btn-outline-primary'
-        float_ = 'left' if direction == 'back' else 'right'
-        btn['style'] = 'float: {};'.format(float_)
-        btn['value'] = direction
-        return btn
-
-    @property
-    def banner(self):
-        return self.body.select_one('span.banner')
-    
-    @banner.setter
-    def banner(self, val):
-        self.body.set_element('span.banner', val)
-
-    # methods
     def clear_error(self):
         """
         Clear the error message from this page and all of its questions.
@@ -584,13 +507,46 @@ class Page(HTMLMixin, BranchingBase, db.Model):
         is_first_page : bool
             Indicator that this is the first page in its participant's survey.
         """
-        if self.part is None:
+        if self.branch is None or self.index > 0:
             return False
-        for b in self.part.branch_stack:
-            if b.pages:
-                first_nonempty_branch = b
+        for branch in self.part.branch_stack:
+            if branch.pages:
+                first_nonempty_branch = branch
                 break
-        return self.branch == first_nonempty_branch and self.index == 0
+        return self.branch == first_nonempty_branch
+
+    def last_page(self):
+        """
+        Returns
+        -------
+        is_last_page : bool
+            Indicator that this is the last page in its participant's survey.
+
+        Notes
+        -----
+        This method assumes that if this page or its branch have a navigate
+        function or next branch that this page is not the last (i.e. that the
+        next branch will have pages). Avoid relying on this method if e.g. 
+        this page's navigate function may return an empty branch.
+        """
+        if (
+            self.branch is None 
+            # not last page on the branch
+            or self.index < len(self.branch.pages) - 1
+            or self.navigate is not None
+            or self.next_branch is not None
+            or self.branch.navigate is not None
+            or self.branch.next_branch is not None
+        ):
+            return False
+        for branch in self.part.branch_stack:
+            if self.branch == branch:
+                return True
+            if (
+                branch.current_page is not None 
+                and branch.current_page.last_page()
+            ):
+                return False
 
     def is_valid(self):
         """
@@ -628,58 +584,50 @@ class Page(HTMLMixin, BranchingBase, db.Model):
 
         This method does not run the compile functions.
         """
+        def get_static_paths():
+            # get a list of (static_url_path, static_folder tuples)
+            paths = [(current_app.static_url_path, current_app.static_folder)]
+            paths += [
+                (bp.static_url_path, bp.static_folder)
+                for bp in current_app.blueprints.values()
+            ]
+            return [path for path in paths if path[0]]
+
+        def convert_rel_paths(attr):
+            # convert relative paths to absolute paths
+            elements = html.select('[{0}]:not([{0}=""])'.format(attr))
+            [convert_rel_path(e, attr) for e in elements]
+
+        def convert_rel_path(element, attr):
+            # convert relative path for a single tag (element)
+            url = element.attrs.get(attr)
+            for path, folder in static_paths:
+                if url.startswith(path):
+                    element[attr] = dist + folder + url[len(path):]
+                    break
+
+        def create_tmp_file():
+            # create tempoarary file and write out HTML
+            with NamedTemporaryFile('w', suffix='.html', delete=False) as f:
+                f.write(str(html))
+                uri = 'file://'+('wsl$'+ dist + f.name if dist else f.name)
+                if hasattr(current_app, 'tmpfiles'):
+                    current_app.tmpfiles.append(f.name)
+            return uri
+
         dist = os.environ.get('WSL_DISTRIBUTION')
-        soup = self._render(as_str=False)
-        self._convert_rel_paths(soup, 'href', dist)
-        self._convert_rel_paths(soup, 'src', dist)
-        with NamedTemporaryFile('w', suffix='.html', delete=False) as f:
-            f.write(str(soup))
-            uri = 'file://'+('wsl$/'+ dist + f.name if dist else f.name)
-            if hasattr(current_app, 'tmpfiles'):
-                current_app.tmpfiles.append(f.name)
+        if not dist.startswith('/'):
+            dist = '/'+dist
+        static_paths = get_static_paths()
+        html = BeautifulSoup(self._render(), 'lxml')
+        convert_rel_paths('href')
+        convert_rel_paths('src')
+        uri = create_tmp_file()
         if driver is None:
             webbrowser.open(uri)
         else:
             driver.get(uri)
         return self
-
-    def _convert_rel_paths(self, soup, url_attr, dist=None):
-        """
-        Convert relative url paths to local file paths for preview.
-
-        Parameters
-        ----------
-        soup : bs4.BeautifulSoup
-            Soup whose elements with url attributes will be converted.
-
-        url_attr : str
-            Name of the url attribute (e.g. `'src'` or `'href'`).
-
-        dist : str or None, default=None
-            WSL distribution.
-        """
-        def get_local_path(url, static_folder, static_url_path):
-            return dist + static_folder + url[len(static_url_path):]
-
-        dist = '/'+dist if dist else ''
-        app_static_url_path = current_app.static_url_path
-        app_static_folder = current_app.static_folder
-        hlk = current_app.blueprints['hemlock']
-        hlk_static_url_path = hlk.static_url_path
-        hlk_static_folder = hlk.static_folder
-
-        elements = soup.select('[{}]'.format(url_attr))
-        for e in elements:
-            url = e.attrs.get(url_attr)
-            if url is not None:
-                if url.startswith(app_static_url_path):
-                    e.attrs[url_attr] = get_local_path(
-                        url, app_static_folder, app_static_url_path
-                    )
-                elif url.startswith(hlk_static_url_path):
-                    e.attrs[url_attr] = get_local_path(
-                        url, hlk_static_folder, hlk_static_url_path
-                    )
 
     def view_nav(self, indent=0):
         """
@@ -719,76 +667,14 @@ class Page(HTMLMixin, BranchingBase, db.Model):
         -------
         self
         """
-        if inspect(self).detached:
-            # self will be detached if _compile is called from Redis
-            self = Page.query.get(self.id)
+        # the page uses its compile functions to f itself
         [f(self) for f in self.compile]
         if self.cache_compile:
-            self.compile.clear()
-            self.compile_worker = None
-        if self.timer is not None:
-            self.timer.start()
+            self.compile = self.compile_worker = None
         return self
     
-    def _render(self, as_str=True):
-        """Render page
-        
-        This method performs the following functions:
-        1. Add participant metadata if in test mode
-        2. Remove submit buttons if applicable
-        3. Append question HTML
-
-        Parameters
-        ----------
-        as_str : bool, default=True
-            Return rendered html as `str` as opposed to `bs4.BeautifulSoup`.
-
-        Returns
-        -------
-        rendered : str or bs4.BeautifulSoup
-        """
-        html = render_template('hemlock/page.html', page=self)
-        soup = BeautifulSoup(html, 'html.parser')
-        self._add_part_metadata(soup)
-        self._handle_btns(soup)
-        question_html = soup.select_one('span.question-html')
-        [question_html.append(q._render()) for q in self.questions]
-        return str(soup) if as_str else soup
-    
-    def _add_part_metadata(self, soup):
-        """Add page metadata to soup
-        
-        Metadata is the page's participant's `id` and strongly random `key`. 
-        For security, these must match for a participant to access a page.
-
-        Metadata are only necessary for debugging, where a researcher may 
-        want to have multiple survey windows open simultaneously. In this 
-        case, page metadata are used to associate participants with their 
-        pages, rather than Flask-Login's `current_user`.
-
-        To use this functionality, access the URL as {ULR}/?Test=1.
-        """
-        if self.part is not None and self.part.meta.get('Test') == '1':
-            meta_html = render_template('hemlock/page-meta.html', page=self)
-            meta_soup = BeautifulSoup(meta_html, 'html.parser')
-            form = soup.select_one('form')
-            if form is not None:
-                form.insert(0, meta_soup)
-    
-    def _handle_btns(self, soup):
-        """Handle submit buttons
-
-        Back button should not be present on the first page of the survey.
-        Forward button should not be present on the terminal page.
-        """
-        if not self.back or self.first_page():
-            back_btn = soup.select_one('span.back-btn')
-            if back_btn is not None:
-                back_btn.clear()
-        if not self.forward or self.terminal:
-            forward_btn = soup.select_one('span.forward-btn')
-            if forward_btn is not None:
-                forward_btn.clear()
+    def _render(self):
+        return render_template(self.template, page=self)
 
     def _record_response(self):
         """Record participant response
@@ -797,8 +683,6 @@ class Page(HTMLMixin, BranchingBase, db.Model):
         participant requested for navigation (forward or back). Finally, 
         record the participant's response to each question.
         """
-        if self.timer is not None:
-            self.timer.pause()
         self.direction_from = request.form.get('direction')
         [q._record_response() for q in self.questions]
         return self
@@ -810,21 +694,16 @@ class Page(HTMLMixin, BranchingBase, db.Model):
         message (i.e. error is not None), indicate the response was invalid 
         and return False. Otherwise, return True.
         """
-        if inspect(self).detached:
-            self = Page.query.get(self.id)
-        self.error = None
+        self.clear_error()
         for f in self.validate:
-            error = f(self)
-            if error:
-                self.error = error
+            self.error = f(self)
+            if self.error:
                 break
         is_valid = self.is_valid()
         self.direction_from = 'forward' if is_valid else 'invalid'
         return is_valid
     
     def _submit(self):
-        if inspect(self).detached:
-            self = Page.query.get(self.id)
         [q._record_data() for q in self.questions]
         [f(self) for f in self.submit]
         return self

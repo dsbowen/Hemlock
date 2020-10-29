@@ -14,6 +14,7 @@ from flask_socketio import SocketIO
 from flask_sqlalchemy import SQLAlchemy
 from flask_talisman import Talisman
 from flask_worker import Manager
+from sqlalchemy_mutable import MutableManager
 
 import os
 
@@ -37,6 +38,7 @@ login_manager.login_message = None
 # scheduler = APScheduler()
 socketio = SocketIO(async_mode='eventlet')
 manager = Manager(db=db, socketio=socketio)
+MutableManager.db = db
 talisman = Talisman()
 
 def push_app_context():
@@ -62,12 +64,14 @@ def push_app_context():
     ```
     """
     from ..models.private import DataStore
+    
     app = create_app()
     app.app_context().push()
     app.test_request_context().push()
     db.create_all()
     if not DataStore.query.first():
-        DataStore()
+        db.session.add(DataStore())
+        db.session.commit()
     return app
 
 def create_app(settings=settings):

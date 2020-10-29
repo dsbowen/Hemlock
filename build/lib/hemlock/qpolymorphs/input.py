@@ -1,9 +1,9 @@
 """# Input"""
 
+from .bases import InputBase
 from ..app import db, settings
 from ..functions.debug import send_datetime, send_keys
-from ..models import Debug, InputBase, Question
-from .input_group import InputGroup
+from ..models import Question
 
 from selenium_tools import get_datetime
 
@@ -15,7 +15,6 @@ html_datetime_types = (
     'week',
 )
 
-@Debug.register
 def random_input(driver, question):
     """
     Default debug function for input questions. This function sends a random 
@@ -33,10 +32,12 @@ def random_input(driver, question):
     else:
         send_keys(driver, question)
 
-settings['Input'] = {'type': 'text', 'debug': random_input}
+settings['Input'] = {
+    'class': ['form-control'], 'type': 'text', 'debug': random_input
+}
 
 
-class Input(InputGroup, InputBase, Question):
+class Input(InputBase, Question):
     """
     Inputs take text input by default, or other types of html inputs.
 
@@ -54,18 +55,6 @@ class Input(InputGroup, InputBase, Question):
 
     Attributes
     ----------
-    attrs : dict
-        Input tag attributes.
-        
-    type : str, default='text'
-        Type of html input. See <https://www.w3schools.com/html/html_form_input_types.asp>.
-
-    placeholder : str or None, default=None
-        Html placeholder.
-
-    step : float, str, or None, default=None
-        Step attribute for number inputs. By default, the step for number 
-        inputs is 1. Set to `'any'` for any step.
     
     Examples
     --------
@@ -80,20 +69,8 @@ class Input(InputGroup, InputBase, Question):
     id = db.Column(db.Integer, db.ForeignKey('question.id'), primary_key=True)
     __mapper_args__ = {'polymorphic_identity': 'input'}
 
-    def __init__(self, label='', template='hemlock/input.html', **kwargs):
-        super().__init__(label, template, **kwargs)
-
-    def _render(self, body=None):
-        """Set the default value before rendering"""
-        body = body or self.body.copy()
-        inpt = body.select_one('#'+self.model_id)
-        if inpt is not None:
-            value = self.response if self.has_responded else self.default
-            if value is None:
-                inpt.attrs.pop('value', None)
-            else:
-                inpt['value'] = value
-        return super()._render(body)
+    def __init__(self, label=None, template='hemlock/input.html', **kwargs):
+        super().__init__(label=label, template=template, **kwargs)
 
     def _record_data(self):
         if self.type in html_datetime_types:
