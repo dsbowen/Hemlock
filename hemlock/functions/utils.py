@@ -81,11 +81,11 @@ def random_datetime(inpt, min=datetime(1900, 1, 1), max=datetime(2100, 1, 1)):
 
 def random_num(inpt, min=-1000, max=1000, step=.001, p_int=.5):
     start = inpt.get_attribute('min')
-    start = min if start == '' else float(start)
+    start = min if not start else float(start)
     stop = inpt.get_attribute('max')
-    stop = max if stop == '' else float(stop)
+    stop = max if not stop else float(stop)
     step_ = inpt.get_attribute('step')
-    step_ = step if step_ in ('', 'any') else float(step_)
+    step_ = step if not step_ or step_ == 'any' else float(step_)
     x = start + random() * (stop - start)
     x = round(x / step) * step_
     inpt.send_keys(str(int(x) if random() < p_int else x))
@@ -94,6 +94,8 @@ def random_str(inpt, maxlength=100, p_whitespace=.2):
     chars = ascii_letters + digits
     chars = list(chars) + [' '] * int(p_whitespace*len(chars))
     # response length follows exponential distribution
-    magnitude = math.log(inpt.get_attribute('maxlength') or maxlength)
+    maxlength_ = inpt.get_attribute('maxlength')
+    maxlength_ = maxlength if not maxlength_ else float(maxlength_)
+    magnitude = int(math.log(maxlength_))
     length = int(random() * 10**randint(1,magnitude))
     inpt.send_keys(''.join([choice(chars) for i in range(length)]))
