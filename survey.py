@@ -1,8 +1,13 @@
-from hemlock import Branch, Page, Embedded, Binary, Check, Input, Label, Range, Textarea, Compile as C, Validate as V, route
+from hemlock import (
+    Branch, Page, Embedded, Binary, Check, Input, Label, Range, Textarea, 
+    Compile as C, Validate as V, route, settings
+)
 from hemlock.tools import key
 from hemlock_demographics import demographics
 from hemlock_berlin import berlin
 from hemlock_crt import crt
+
+settings['collect_IP'] = False
 
 consent_label = '''
 <p>Hello! We are researchers at the University of Pennsylvania studying how people make predictions. In this study, you will be using an experimental platform to answer some questions.</p>
