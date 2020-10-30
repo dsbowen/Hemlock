@@ -170,9 +170,7 @@ class Assigner(Randomizer):
         assignment = super().next()
         assignment = {key: val for key, val in zip(self.keys, assignment)}
         try:
-            current_user.embedded += [
-                Embedded(key, val, -1) for key, val in assignment.items()
-            ]
+            current_user.meta.update(assignment)
         except:
             print('Unable to update participant metadata.')
         return assignment

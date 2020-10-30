@@ -2,7 +2,7 @@ from hemlock import (
     Branch, Page, Embedded, Binary, Check, Input, Label, Range, Textarea, 
     Compile as C, Validate as V, route, settings
 )
-from hemlock.tools import key
+from hemlock.tools import consent_page, completion_page
 from hemlock_demographics import demographics
 from hemlock_berlin import berlin
 from hemlock_crt import crt
@@ -29,12 +29,12 @@ consent_label = '''
 <p><b>Questions</b> Please contact the experimenters if you have concerns or questions: dsbowen@wharton.upenn.edu. You may also contact the office of the University of Pennsylvania’s Committee for the Protection of Human Subjects, at 215.573.2540 or via email at irb@pobox.upenn.edu.</p>
 '''
 
-@route('/survey')
+# @route('/survey')
 def start():
     return Branch(
-        Page(
-            Label(consent_label),
-            Input('To consent, please enter your MTurk ID.', required=True)
+        consent_page(
+            consent_label,
+            '<p>To consent, please enter your MTurk ID.</p>'
         ),
         demographics('age_bins', 'gender', 'race', page=True, require=True),
         berlin(require=True),
@@ -42,9 +42,8 @@ def start():
         navigate=forecast
     )
 
-# @route('/survey')
+@route('/survey')
 def forecast(origin=None):
-    completion_code = key(6)
     prediction_q = Range(
         'Fill in the blank: There is a _____ in 100 chance that Joe Biden will win the presidential election.',
         prepend='There is a ', append=' in 100 chance', var='Forecast'
@@ -85,11 +84,7 @@ def forecast(origin=None):
             ),
             timer='EvalTime'
         ),
-        Page(
-            Label('Thank you for completing the study. Your completion code is <b>{}</b>.'.format(completion_code)),
-            embedded=[Embedded('CompletionCode', completion_code)],
-            terminal=True
-        )
+        completion_page()
     )
 
 @C.register

@@ -46,7 +46,7 @@
 ##hemlock.app.**push_app_context**
 
 <p class="func-header">
-    <i>def</i> hemlock.app.<b>push_app_context</b>(<i></i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/app/__init__.py#L42">[source]</a>
+    <i>def</i> hemlock.app.<b>push_app_context</b>(<i></i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/app/__init__.py#L44">[source]</a>
 </p>
 
 Push an app context for debugging in shell or notebook.
@@ -82,7 +82,7 @@ Out:
 ##hemlock.app.**create_app**
 
 <p class="func-header">
-    <i>def</i> hemlock.app.<b>create_app</b>(<i>settings=settings</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/app/__init__.py#L73">[source]</a>
+    <i>def</i> hemlock.app.<b>create_app</b>(<i>settings=settings</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/app/__init__.py#L77">[source]</a>
 </p>
 
 Create a Hemlock application.

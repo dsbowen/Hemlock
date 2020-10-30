@@ -11,7 +11,6 @@ from sqlalchemy_mutable import (
     HTMLAttrsType, MutableType, MutableJSONType, MutableListType, 
     MutableListJSONType, MutableModelBase
 )
-from sqlalchemy_mutablesoup import MutableSoupType
 from sqlalchemy_orderingitem import OrderingItem
 
 import os

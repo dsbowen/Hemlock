@@ -44,7 +44,7 @@ By default, the last debug function of a page navigates. To remove this, run
 ##hemlock.functions.debug.**forward**
 
 <p class="func-header">
-    <i>def</i> hemlock.functions.debug.<b>forward</b>(<i>driver, page, max_wait=30, wait_interval=3</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L54">[source]</a>
+    <i>def</i> hemlock.functions.debug.<b>forward</b>(<i>driver, page, max_wait=30, wait_interval=3</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L57">[source]</a>
 </p>
 
 Click the forward button.
@@ -84,7 +84,7 @@ p.preview(driver)._debug(driver)
 ##hemlock.functions.debug.**back**
 
 <p class="func-header">
-    <i>def</i> hemlock.functions.debug.<b>back</b>(<i>driver, page, max_wait=30, wait_interval=1</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L85">[source]</a>
+    <i>def</i> hemlock.functions.debug.<b>back</b>(<i>driver, page, max_wait=30, wait_interval=1</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L88">[source]</a>
 </p>
 
 Click the back button.
@@ -124,7 +124,7 @@ p.preview(driver)._debug(driver)
 ##hemlock.functions.debug.**send_keys**
 
 <p class="func-header">
-    <i>def</i> hemlock.functions.debug.<b>send_keys</b>(<i>driver, question, *keys, p_num=0.5</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L118">[source]</a>
+    <i>def</i> hemlock.functions.debug.<b>send_keys</b>(<i>driver, question, *keys, p_num=0.5</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L121">[source]</a>
 </p>
 
 Send the specified keys to the `<textarea>` or `<input>`.
@@ -173,126 +173,10 @@ p = Page(Input(debug=D.send_keys('hello world')))
 p.preview(driver)._debug(driver)
 ```
 
-##hemlock.functions.debug.**random_str**
-
-<p class="func-header">
-    <i>def</i> hemlock.functions.debug.<b>random_str</b>(<i>driver, question, magnitude=2, p_whitespace=0.2</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L168">[source]</a>
-</p>
-
-Send a random string to the textarea.
-
-<table class="docutils field-list field-table" frame="void" rules="none">
-    <col class="field-name" />
-    <col class="field-body" />
-    <tbody valign="top">
-        <tr class="field">
-    <th class="field-name"><b>Parameters:</b></td>
-    <td class="field-body" width="100%"><b>driver : <i>selenium.webdriver.chrome.webdriver.WebDriver</i></b>
-<p class="attr">
-    
-</p>
-<b>question : <i>hemlock.Question</i></b>
-<p class="attr">
-    
-</p>
-<b>magnitude : <i>int, default=2</i></b>
-<p class="attr">
-    Maximum magnitude of the length of the string. e.g. the default magnitude of 2 means that the maximum length is 10^2=100 characters.
-</p>
-<b>p_whitespace : <i>float, default=.2</i></b>
-<p class="attr">
-    Frequency with which whitespace characters appear in the string.
-</p></td>
-</tr>
-    </tbody>
-</table>
-
-####Notes
-
-This debug function is skipped if the question is not displayed.
-
-####Examples
-
-```python
-from hemlock import Debug as D, Input, Page, push_app_context
-from hemlock.tools import chromedriver
-
-app = push_app_context()
-
-driver = chromedriver()
-
-p = Page(Input(debug=D.random_str()))
-p.preview(driver)._debug(driver)
-```
-
-##hemlock.functions.debug.**random_number**
-
-<p class="func-header">
-    <i>def</i> hemlock.functions.debug.<b>random_number</b>(<i>driver, question, *args, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L210">[source]</a>
-</p>
-
-Send a random number to the textarea or input.
-
-<table class="docutils field-list field-table" frame="void" rules="none">
-    <col class="field-name" />
-    <col class="field-body" />
-    <tbody valign="top">
-        <tr class="field">
-    <th class="field-name"><b>Parameters:</b></td>
-    <td class="field-body" width="100%"><b>driver : <i>selenium.webdriver.chrome.webdriver.WebDriver</i></b>
-<p class="attr">
-    
-</p>
-<b>question : <i>hemlock.Question</i></b>
-<p class="attr">
-    
-</p>
-<b>magn_lb : <i>int, default=0</i></b>
-<p class="attr">
-    Lower bound for the magnitude of the number.
-</p>
-<b>mag_ub : <i>int, default=10</i></b>
-<p class="attr">
-    Upper bound for the magnitude of the number.
-</p>
-<b>max_decimals : <i>int, default=5</i></b>
-<p class="attr">
-    Maximum number of decimals to which the number can be rounded.
-</p>
-<b>p_int : <i>float, default=.5</i></b>
-<p class="attr">
-    Probability that the number is an integer.
-</p>
-<b>p_neg : <i>float, default=.1</i></b>
-<p class="attr">
-    Probability that the number is negative.
-</p></td>
-</tr>
-    </tbody>
-</table>
-
-####Notes
-
-This debug function is skipped if the question is not displayed.
-
-####Examples
-
-```python
-from hemlock import Debug as D, Input, Page, push_app_context
-from hemlock.tools import chromedriver
-
-app = push_app_context()
-
-driver = chromedriver()
-
-p = Page(Input(debug=D.random_number()))
-p.preview(driver)._debug(driver)
-```
-
 ##hemlock.functions.debug.**send_datetime**
 
 <p class="func-header">
-    <i>def</i> hemlock.functions.debug.<b>send_datetime</b>(<i>driver, question, datetime_=None</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L257">[source]</a>
+    <i>def</i> hemlock.functions.debug.<b>send_datetime</b>(<i>driver, question, datetime_=None</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L182">[source]</a>
 </p>
 
 Send a `datetime.datetime` object to an input. Inputs should be of type
@@ -343,7 +227,7 @@ p.preview(driver)._debug(driver)
 ##hemlock.functions.debug.**drag_range**
 
 <p class="func-header">
-    <i>def</i> hemlock.functions.debug.<b>drag_range</b>(<i>driver, range_, target=None, tol=0, max_iter=10</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L301">[source]</a>
+    <i>def</i> hemlock.functions.debug.<b>drag_range</b>(<i>driver, range_, target=None, tol=0, max_iter=10</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L225">[source]</a>
 </p>
 
 Drag a range slider to specified target value.
@@ -399,7 +283,7 @@ p.preview(driver)._debug(driver)
 ##hemlock.functions.debug.**click_choices**
 
 <p class="func-header">
-    <i>def</i> hemlock.functions.debug.<b>click_choices</b>(<i>driver, question, *values, if_selected=None</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L354">[source]</a>
+    <i>def</i> hemlock.functions.debug.<b>click_choices</b>(<i>driver, question, *values, if_selected=None, max_clicks=5</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L279">[source]</a>
 </p>
 
 Click on choices or options.
@@ -455,7 +339,7 @@ p.preview(driver)._debug(driver)
 ##hemlock.functions.debug.**clear_choices**
 
 <p class="func-header">
-    <i>def</i> hemlock.functions.debug.<b>clear_choices</b>(<i>driver, question</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L408">[source]</a>
+    <i>def</i> hemlock.functions.debug.<b>clear_choices</b>(<i>driver, question</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L333">[source]</a>
 </p>
 
 Clear selected choices.

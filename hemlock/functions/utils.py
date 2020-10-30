@@ -59,7 +59,7 @@ def correct_choices(q, *values):
     selected no choices, indicate whether there were any correct values
     available to select.
     """
-    if not q.response:
+    if q.response is None or q.response == []:
         return not bool(values)
     data = (
         [c.value for c in q.response] if isinstance(q.response, list) 
