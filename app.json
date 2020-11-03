@@ -29,5 +29,10 @@
             "value": "https://my-hemlock-app.herokuapp.com"
         }
     },
-    "success": "/login"
+    "success_url": "/login",
+    "buildpacks": [
+        {"url": "heroku/python"},
+        // {"url": "https://github.com/heroku/heroku-buildpack-chromedriver"},
+        // {"url": "https://github.com/heroku/heroku-buildpack-google-chrome"}
+    ]
 }
