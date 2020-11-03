@@ -29,6 +29,6 @@
             "value": "https://my-hemlock-app.herokuapp.com"
         }
     },
-    "success": "/login",
+    "success": "/login"
     
 }
