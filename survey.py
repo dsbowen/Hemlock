@@ -16,3 +16,9 @@ def start():
             Label('Goodbye world')
         )
     )
+
+# "buildpacks": [
+#         {"url": "heroku/python"},
+#         // {"url": "https://github.com/heroku/heroku-buildpack-chromedriver"},
+#         // {"url": "https://github.com/heroku/heroku-buildpack-google-chrome"}
+#     ]
