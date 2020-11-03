@@ -63,7 +63,7 @@ def init_app():
     Additionally, set a scheduler job to log the status periodically.
     """
     print('before app first request')
-    session.clear()
+    # session.clear()
     db.create_all()
     if not DataStore.query.first():
         db.session.add(DataStore())

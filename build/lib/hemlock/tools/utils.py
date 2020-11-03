@@ -85,6 +85,12 @@ def get_data(dataframe='data'):
     from ..models.private import DataStore
     return dict(getattr(DataStore.query.first(), dataframe))
 
+def html_list(*items, ordered=True):
+    template = '<ol>\n{}\n</ol>' if ordered else '<ul>\n{}\n</ul>'
+    return template.format(
+        '\n'.join(['<li>{}</li>'.format(item) for item in items])
+    )
+
 def show_on_event(
         target, condition, value, init_hidden=True, *args,  **kwargs
     ):

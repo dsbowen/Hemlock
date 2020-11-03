@@ -322,7 +322,7 @@ def click_choices(driver, question, *values, if_selected=None, max_clicks=5):
     def choose_values():
         order = list(range(len(question.choices)))
         shuffle(order)
-        n_values = max(randint(0, len(question.choices)), max_clicks)
+        n_values = min(randint(0, len(question.choices)), max_clicks)
         return [question.choices[i].value for i in order[:n_values]]
 
     values = values if values else choose_values()

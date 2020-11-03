@@ -181,15 +181,16 @@ class Router(RouterMixin, db.Model):
         navigate appropriately. Otherwise, reset the navigator in preparation 
         for forward navigation.
         """
-        if self.page.direction_from == 'back':
-            self.navigator.back(self.page.back_to)
+        page = self.page
+        if page.direction_from == 'back':
+            self.navigator.back(page.back_to)
         if (
-            self.page.direction_from in ('back', 'invalid')
-            or self.page.last_page()
+            page.direction_from in ('back', 'invalid')
+            or page.last_page()
         ):
             return self.redirect()
         self.navigator.reset()
-        return self.forward(self.page.forward_to)
+        return self.forward(page.forward_to)
     
     @set_route
     def forward(self, forward_to):

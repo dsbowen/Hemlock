@@ -116,7 +116,7 @@ def match(question, pattern):
     """
     try:
         question.data = int(re.fullmatch(
-            pattern, (question.data or '')) is not None
+            str(pattern), (question.data or '')) is not None
         )
     except:
         question.data = 0

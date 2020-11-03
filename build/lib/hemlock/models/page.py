@@ -462,7 +462,10 @@ class Page(BranchingBase, db.Model):
     terminal = db.Column(db.Boolean)
     viewed = db.Column(db.Boolean, default=False)
 
-    def __init__(self, *questions, extra_css=[], extra_js=[], **kwargs):
+    def __init__(
+            self, *questions, extra_css=[], extra_js=[], delay_forward=None, 
+            **kwargs
+        ):
         def add_extra(attr, extra):
             # add extra css or javascript
             if extra:
@@ -476,6 +479,13 @@ class Page(BranchingBase, db.Model):
         super().__init__(**kwargs)
         add_extra(self.css, extra_css)
         add_extra(self.js, extra_js)
+        if delay_forward:
+            if self.forward_btn_attrs.get('style') is None:
+                self.forward_btn_attrs['style'] = {}
+            self.forward_btn_attrs['style']['display'] = 'none'
+            self.js.append(
+                render_template('hemlock/delay_forward.html', delay=delay_forward)
+            )
 
     def clear_error(self):
         """
@@ -615,7 +625,7 @@ class Page(BranchingBase, db.Model):
                     current_app.tmpfiles.append(f.name)
             return uri
 
-        dist = os.environ.get('WSL_DISTRIBUTION')
+        dist = os.environ.get('WSL_DISTRIBUTION', '')
         if not dist.startswith('/'):
             dist = '/'+dist
         static_paths = get_static_paths()
