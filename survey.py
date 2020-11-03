@@ -10,12 +10,19 @@ settings['collect_IP'] = False
 def start():
     return Branch(
         Page(
-            Label('Hello World')
+            Label('Hello World', submit=delay)
         ),
         Page(
-            Label('Goodbye world')
+            Label('middle')
+        ),
+        Page(
+            Label('Goodbye world', compile=delay)
         )
     )
+
+def delay(label):
+    import time
+    time.sleep(5)
 
 # "buildpacks": [
 #         {"url": "heroku/python"},
