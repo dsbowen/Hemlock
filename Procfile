@@ -1,1 +1,1 @@
-web: waitress-serve --url-scheme=https app.app
+web: waitress-serve --url-scheme=https app:app
