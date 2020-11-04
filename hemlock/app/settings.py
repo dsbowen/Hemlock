@@ -153,10 +153,10 @@ settings = {
             'DATABASE_URL', 'sqlite:///'+os.path.join(os.getcwd(), 'data.db')
         ),
         'SQLALCHEMY_TRACK_MODIFICATIONS': False,
-        # 'SQLALCHEMY_ENGINE_OPTIONS': dict(
-        #     pool_size=1,
-        #     pool_recycle=10
-        # ),
+        'SQLALCHEMY_ENGINE_OPTIONS': dict(
+            pool_size=1,
+            pool_recycle=10
+        ),
         'REDIS_URL': os.environ.get('REDIS_URL'),
     },
     'DownloadBtnManager': {},
