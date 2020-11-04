@@ -120,8 +120,6 @@ class Router(RouterMixin, db.Model):
         print('self page is', self.page)
         if self.in_progress:
             print('in progress')
-            db.session.remove()
-            db.engine.dispose()
             return 'hello world'
         self.in_progress = True
         db.session.commit()
@@ -136,8 +134,7 @@ class Router(RouterMixin, db.Model):
         self.in_progress = False
         print('got result, changed in progress to', self.in_progress)
         db.session.commit()
-        db.session.remove()
-        db.engine.dispose()
+        db.dispose()
         return result
 
     """Request track"""
