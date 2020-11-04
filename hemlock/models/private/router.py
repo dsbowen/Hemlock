@@ -132,6 +132,7 @@ class Router(RouterMixin, db.Model):
         result = super().__call__(*args, **kwargs)
         self.in_progress = False
         print('got result, changed in progress to', self.in_progress)
+        db.session.commit()
         return result
 
     """Request track"""
