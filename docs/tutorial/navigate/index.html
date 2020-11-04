@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Navigate - Hemlock</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  <link href="../../css/extra.css" rel="stylesheet" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Navigate";
+    var mkdocs_page_input_path = "tutorial/navigate.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Hemlock</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../contact/">Contact</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../checklist/">Checklist</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Tutorial</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../intro/">Introduction</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../first_project/">Your first project</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../run_local/">Running hemlock locally</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../qpolymorphs/">Question polymorphs</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../data/">Data</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../validate/">Validate</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../submit/">Submit</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../compile/">Compile</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Navigate</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#why-navigate-functions">Why navigate functions?</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#basic-syntax">Basic syntax</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#code-explanation">Code explanation</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#branching-off-pages">Branching off pages</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#navigating-back">Navigating back</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#navigation-in-our-app">Navigation in our app</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a>
+    </li>
+    </ul>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../page_logic/">Page logic</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../comp_check/">Comprehension check</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../random_ass/">Random assignment</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../proposer_branch/">Proposer branch</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../responder_branch/">Responder branch</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../debug/">Debugging</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../deploy/">Deployment</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../extra/">Bells and whistles</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Setup</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../setup/win/">Windows</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../setup/wsl/">Windows Subsystem for Linux</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../setup/mac/">Mac</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../setup/linux/">Linux</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Application</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../app/">Setting and initialization</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../debug/">Debugging</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Functions</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../compile_functions/">Compile</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../debug_functions/">Debug</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../submit_functions/">Submit</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../validate_functions/">Validate</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Models</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../bases/">Bases</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../branch/">Branch</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../choice/">Choice</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../embedded/">Embedded data and timers</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../functions/">Function models</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../page/">Page</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../participant/">Participant</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../question/">Question</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../worker/">Worker</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Question polymorphs</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../check/">Check</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../dashboard/">Dashboard</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../download/">Download</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../file/">File upload</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../input/">Input</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../input_group/">Input group</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../label/">Label</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../range/">Range</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../select/">Select</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../textarea/">Textarea</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Tools</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../comprehension/">Comprehension check</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../lang/">Language</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../navbar/">Navbar</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../random/">Randomization</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../statics/">Statics</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../utils/">Utilities</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../security/">Security</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../changelog/">Changelog</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../acknowledgements/">Acknowledgements</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Hemlock</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Tutorial &raquo;</li>
+        
+      
+    
+    <li>Navigate</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/dsbowen/hemlock/edit/master/docs_md/tutorial/navigate.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="navigate">Navigate</h1>
+<p>In the previous part of the tutorial, you implemented a confirmation page using compile functions.</p>
+<p>By the end of this part of the tutorial, you'll be able to set up navigation between branches.</p>
+<p>Click here to see what your <a href="https://github.com/dsbowen/hemlock-tutorial/blob/v0.6/blackboard.ipynb" target="_blank"><code>blackboard.ipynb</code></a> and <a href="https://github.com/dsbowen/hemlock-tutorial/blob/v0.6/survey.py" target="_blank"><code>survey.py</code></a> files should look like at the end of this part of the tutorial.</p>
+<h2 id="why-navigate-functions">Why navigate functions?</h2>
+<p>Navigate functions move participants through different branches of the survey. For example, participants in the control group might follow one branch, while participants in the treatment group follow another.</p>
+<p>In our case, we'll use a navigate function to bring participants from the demographics branch of our survey to an 'utlimatum game' branch. In this branch, participants will play an ultimatum game with each other.</p>
+<h2 id="basic-syntax">Basic syntax</h2>
+<p>Open your jupter notebook and run the following:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Branch</span><span class="p">,</span> <span class="n">Navigate</span> <span class="k">as</span> <span class="n">N</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Participant</span>
+
+<span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span>
+        <span class="n">Page</span><span class="p">(),</span> 
+        <span class="n">Page</span><span class="p">(),</span> 
+        <span class="n">navigate</span><span class="o">=</span><span class="n">N</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+    <span class="p">)</span>
+
+<span class="nd">@N</span><span class="o">.</span><span class="n">register</span>
+<span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="n">start_branch</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span><span class="n">Page</span><span class="p">(</span><span class="n">terminal</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+<span class="n">part</span> <span class="o">=</span> <span class="n">Participant</span><span class="o">.</span><span class="n">gen_test_participant</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+<span class="n">part</span><span class="o">.</span><span class="n">view_nav</span><span class="p">()</span>
+</code></pre></div>
+
+<p>Out:</p>
+<div class="highlight"><pre><span></span><code> &lt;Branch 1&gt;
+ &lt;Page 1&gt; C 
+ &lt;Page 2&gt;  
+
+ C = current page 
+ T = terminal page
+</code></pre></div>
+
+<p>You can add navigate functions to a branch or page by setting its <code>navigate</code> attribute or passing a <code>navigate</code> argument to its constructor. Navigate functions bring participants to a new branch when they have completed the branch or page to which the navigate function belongs.</p>
+<h3 id="code-explanation">Code explanation</h3>
+<p>Unlike validate, submit, and compile functions, there are no prebuilt navigate functions. We register a custom navigate function with the <code>@N.register</code> decorator. The navigate function takes the start branch (the branch returned by <code>start</code>) as its first argument. In general, navigate functions take an 'origin' branch or page as their first argument. Navigate functions return a <code>Branch</code> object.</p>
+<p><code>part.view_nav()</code> prints the participant's 'branch stack'. Right now the participant is on the branch created by <code>start</code>. Let's make our test participant navigate forward and view the navigation again:</p>
+<div class="highlight"><pre><span></span><code><span class="n">part</span><span class="o">.</span><span class="n">forward</span><span class="p">()</span><span class="o">.</span><span class="n">view_nav</span><span class="p">()</span>
+</code></pre></div>
+
+<p>Out:</p>
+<div class="highlight"><pre><span></span><code> &lt;Branch 1&gt;
+ &lt;Page 1&gt;  
+ &lt;Page 2&gt; C 
+
+ C = current page 
+ T = terminal page
+</code></pre></div>
+
+<p>And again:</p>
+<div class="highlight"><pre><span></span><code><span class="n">part</span><span class="o">.</span><span class="n">forward</span><span class="p">()</span><span class="o">.</span><span class="n">view_nav</span><span class="p">()</span>
+</code></pre></div>
+
+<p>Out:</p>
+<div class="highlight"><pre><span></span><code> &lt;Branch 1&gt;
+ &lt;Page 1&gt;  
+ &lt;Page 2&gt;  
+     &lt;Branch 2&gt;
+     &lt;Page 3&gt; C T
+</code></pre></div>
+
+<p>What happened? Our participant reached the end of the <code>start</code> branch (branch 1) and navigated to the <code>end</code> branch (branch 2). It's currently on page 3, which is the last (terminal) page of the survey.</p>
+<p><strong>Note.</strong> You won't call <code>view_nav</code> or <code>forward</code> in the survey; hemlock takes care of the navigation automtically for you. These are just useful for debugging in jupyter.</p>
+<h2 id="branching-off-pages">Branching off pages</h2>
+<p>Branching off of branches allows us to navigate to a new branch at the end of our current branch. But occasionally, we'll want to navigate to a new branch from the middle of our current branch. To do this, we'll branch off of a page.</p>
+<p>This time, instead of attaching the navigate function to the branch, we'll attach it to the first page of the branch:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span><span class="n">Page</span><span class="p">(</span><span class="n">navigate</span><span class="o">=</span><span class="n">N</span><span class="o">.</span><span class="n">middle</span><span class="p">()),</span> <span class="n">Page</span><span class="p">(</span><span class="n">terminal</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+<span class="nd">@N</span><span class="o">.</span><span class="n">register</span>
+<span class="k">def</span> <span class="nf">middle</span><span class="p">(</span><span class="n">start_branch</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span><span class="n">Page</span><span class="p">())</span>
+
+<span class="n">part</span> <span class="o">=</span> <span class="n">Participant</span><span class="o">.</span><span class="n">gen_test_participant</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+</code></pre></div>
+
+<p>As before, run <code>part.view_nav()</code> and <code>part.forward()</code> a few times. This is what you'll see:</p>
+<div class="highlight"><pre><span></span><code> &lt;Branch 1&gt;
+ &lt;Page 1&gt; C 
+ &lt;Page 2&gt; T
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code> &lt;Branch 1&gt;
+ &lt;Page 1&gt; 
+     &lt;Branch 2&gt;
+     &lt;Page 3&gt; C 
+ &lt;Page 2&gt; T
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code> &lt;Branch 1&gt;
+ &lt;Page 1&gt; 
+     &lt;Branch 2&gt;
+     &lt;Page 3&gt; 
+ &lt;Page 2&gt; C T
+</code></pre></div>
+
+<p>What happened? We started on the first page of the <code>start</code> branch (branch 1, page 1). Then, we branched off of page 1 to the <code>middle</code> branch (branch 2, page 3). At the end of the <code>middle</code> branch, we picked up where we left off on the <code>start</code> branch (branch 1, page 2).</p>
+<h2 id="navigating-back">Navigating back</h2>
+<p>You'll often want to allow participants to navigate to a previous page. To do this, simply set a page's <code>back</code> attribute to <code>True</code>, or pass <code>back=True</code> to a page's constructor. </p>
+<p>You can also navigate backward in the notebook. Run this line a few times:</p>
+<div class="highlight"><pre><span></span><code><span class="n">part</span><span class="o">.</span><span class="n">back</span><span class="p">()</span><span class="o">.</span><span class="n">view_nav</span><span class="p">()</span>
+</code></pre></div>
+
+<p>Out:</p>
+<div class="highlight"><pre><span></span><code> &lt;Branch 1&gt;
+ &lt;Page 1&gt; 
+     &lt;Branch 2&gt;
+     &lt;Page 3&gt; C 
+ &lt;Page 2&gt; T
+
+ C = current page 
+ T = terminal page
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code> &lt;Branch 1&gt;
+ &lt;Page 1&gt; C 
+ &lt;Page 2&gt; T
+
+ C = current page 
+ T = terminal page
+</code></pre></div>
+
+<h2 id="navigation-in-our-app">Navigation in our app</h2>
+<p>Now that we've seen how to add navigate functions in our notebook, let's add it to our app.</p>
+<p>In <code>survey.py</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Branch</span><span class="p">,</span> <span class="n">Check</span><span class="p">,</span> <span class="n">Compile</span> <span class="k">as</span> <span class="n">C</span><span class="p">,</span> <span class="n">Embedded</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Navigate</span> <span class="k">as</span> <span class="n">N</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Range</span><span class="p">,</span> <span class="n">Select</span><span class="p">,</span> <span class="n">Submit</span> <span class="k">as</span> <span class="n">S</span><span class="p">,</span> <span class="n">Validate</span> <span class="k">as</span> <span class="n">V</span><span class="p">,</span> <span class="n">route</span>
+
+<span class="o">...</span>
+
+<span class="nd">@route</span><span class="p">(</span><span class="s1">&#39;/survey&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
+    <span class="o">...</span>
+    <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span>
+        <span class="n">demographics_page</span><span class="p">,</span>
+        <span class="n">Page</span><span class="p">(</span>
+            <span class="n">Label</span><span class="p">(</span><span class="nb">compile</span><span class="o">=</span><span class="n">C</span><span class="o">.</span><span class="n">confirm</span><span class="p">(</span><span class="n">demographics_page</span><span class="p">)),</span>
+            <span class="n">back</span><span class="o">=</span><span class="kc">True</span> <span class="c1"># DELETE terminal=True</span>
+        <span class="p">),</span>
+        <span class="n">navigate</span><span class="o">=</span><span class="n">N</span><span class="o">.</span><span class="n">ultimatum_game</span><span class="p">()</span>
+    <span class="p">)</span>
+
+<span class="o">...</span>
+
+<span class="nd">@N</span><span class="o">.</span><span class="n">register</span>
+<span class="k">def</span> <span class="nf">ultimatum_game</span><span class="p">(</span><span class="n">start_branch</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span>
+        <span class="n">Page</span><span class="p">(</span>
+            <span class="n">Label</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;You are about to play an ultimatum game...&lt;/p&gt;&#39;</span><span class="p">),</span>
+            <span class="n">terminal</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+</code></pre></div>
+
+<p>Run the app again and navigate past the demographics page. You'll find yourself on our new ultimatum game branch.</p>
+<h2 id="summary">Summary</h2>
+<p>In this part of the tutorial, you learned how to navigate between branches. </p>
+<p>In the next part of the tutorial, we'll tie together some of the things you've learned about page logic.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../page_logic/" class="btn btn-neutral float-right" title="Page logic">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../compile/" class="btn btn-neutral" title="Compile"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/dsbowen/hemlock/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../compile/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../page_logic/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

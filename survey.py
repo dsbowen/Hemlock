@@ -6,6 +6,12 @@ from hemlock.tools import consent_page, completion_page
 
 settings['collect_IP'] = False
 
+# "buildpacks": [
+#         {"url": "heroku/python"},
+#         {"url": "https://github.com/heroku/heroku-buildpack-chromedriver"},
+#         {"url": "https://github.com/heroku/heroku-buildpack-google-chrome"}
+#     ]
+
 @route('/survey')
 def start():
     return Branch(
@@ -13,19 +19,16 @@ def start():
             Label('Hello World', submit=delay)
         ),
         Page(
-            Label('middle')
+            Label('middle'),
         ),
         Page(
-            Label('Goodbye world', compile=delay)
+            Label('Goodbye world', compile=delay),
+            back=True
         )
     )
 
 def delay(label):
     import time
-    time.sleep(5)
-
-# "buildpacks": [
-#         {"url": "heroku/python"},
-#         {"url": "https://github.com/heroku/heroku-buildpack-chromedriver"},
-#         {"url": "https://github.com/heroku/heroku-buildpack-google-chrome"}
-#     ]
+    for i in range(5):
+        print(i)
+        time.sleep(1)

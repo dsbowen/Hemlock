@@ -52,9 +52,11 @@ class RouterMixin(RouterMixinBase):
         """
         if worker is not None:
             if worker.job_finished:
+                self.job_in_progress = False
                 worker.reset()
                 return next_route(*args, **kwargs)
             else:
+                self.job_in_progress = True
                 return worker.enqueue_method(obj, method_name)
         getattr(obj, method_name)()
         return next_route(*args, **kwargs)
@@ -78,6 +80,13 @@ class Router(RouterMixin, db.Model):
     page : hemlock.Page
         The participant's current page.
 
+    in_progress : bool
+        Indicates that a route is being processed. Helps avoid queueing 
+        extra routing functions.
+
+    job_in_progress : bool
+        Indicates that a worker's job is being processed.
+
     view_function : str
         Name of the function which generated the root branch. It is also the 
         name of the view function associated with this router. On redirect, 
@@ -88,8 +97,9 @@ class Router(RouterMixin, db.Model):
     """
     id = db.Column(db.Integer, primary_key=True)
     part_id = db.Column(db.Integer, db.ForeignKey('participant.id'))
-    view_function = db.Column(db.String)
     in_progress = db.Column(db.Boolean, default=False)
+    job_in_progress = db.Column(db.Boolean, default=False)
+    view_function = db.Column(db.String)
     navigator = db.relationship('Navigator', backref='router', uselist=False)
 
     @property
@@ -116,32 +126,49 @@ class Router(RouterMixin, db.Model):
         page : str (html)
             HTML of the participant's next page, or a loading page.
         """
-        print('begin call, in progress', self.in_progress)
-        print('self page is', self.page)
-        if self.in_progress:
-            print('in progress')
-            return 'hello world'
+        from ..page import Page
+        from ...qpolymorphs import Label
+
+        if self.in_progress and not self.job_in_progress:
+            return Page(
+                Label(
+                    '''
+                    The next page should be ready momentarily. Try refreshing 
+                    the page in a few seconds.
+                    '''
+                ),
+                forward=False
+            )._render()
+
+        # commit the in_progress flag so future requests will know to return
+        # the waiting page
         self.in_progress = True
         db.session.commit()
-        print('changed in progress to', self.in_progress)
+
         if self.part.time_expired:
             self.page.error = current_app.time_expired_text
             return self.page._render()
+
         if request.method == 'POST' and self.func.name == 'compile':
             # participant has just submitted the page
             self.func = self.record_response
-        result = super().__call__(*args, **kwargs)
+
+        result = self.func(self, *args, **kwargs)
         self.in_progress = False
-        print('got result, changed in progress to', self.in_progress)
         db.session.commit()
         return result
 
     """Request track"""
     @set_route
     def compile(self):
-        return self.run_worker(
-            self.page, '_compile', self.page.compile_worker, self.render
-        )
+        if self.page.run_compile or self.job_in_progress:
+            result = self.run_worker(
+                self.page, '_compile', self.page.compile_worker, self.render
+            )
+            # do not rerun compile functions until page is submitted
+            self.page.run_compile = False
+            return result
+        return self.render()
     
     def render(self):
         if self.page.terminal and not self.part.completed:
@@ -163,6 +190,7 @@ class Router(RouterMixin, db.Model):
         self.part.end_time = datetime.utcnow()
         self.part.completed, self.part.updated = False, True
         self.page._record_response()
+        self.page.run_compile = True
         if self.page.direction_from == 'back':
             self.navigator.back(self.page.back_to)
             return self.redirect()
@@ -231,7 +259,7 @@ class Router(RouterMixin, db.Model):
             Page to which to navigate.
         """
         if self.navigator.in_progress:
-            loading_page = self.navigator()
+            loading_page = self.navigator.func()
         else:
             loading_page = self.navigator.forward(forward_to)
         if loading_page is None and forward_to is not None:
