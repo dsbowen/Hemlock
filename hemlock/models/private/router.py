@@ -119,6 +119,7 @@ class Router(RouterMixin, db.Model):
             print('routing in progress')
             return self.page._render()
         session['routing_in_progress'] = True
+        print('changed routing in progress to', session.get('routing_in_progress'))
         if self.part.time_expired:
             self.page.error = current_app.time_expired_text
             return self.page._render()
@@ -127,6 +128,7 @@ class Router(RouterMixin, db.Model):
             self.func = self.record_response
         result = super().__call__(*args, **kwargs)
         session['routing_in_progress'] = False
+        print('got result, changed routing in progress to', session.get('routing_in_progress'))
         return result
 
     """Request track"""
