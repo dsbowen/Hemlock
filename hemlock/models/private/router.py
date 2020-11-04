@@ -120,8 +120,9 @@ class Router(RouterMixin, db.Model):
         print('self page is', self.page)
         if self.in_progress:
             print('in progress')
-            self.page.error = 'In progress'
-            return self.page._render()
+            return 'hello world'
+            # db.session.remove()
+            # db.engine.dispose()
         self.in_progress = True
         db.session.commit()
         print('changed in progress to', self.in_progress)
