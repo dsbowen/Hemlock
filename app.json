@@ -28,5 +28,6 @@
             "description": "Replace 'my-hemlock-app' with the application name.",
             "value": "https://my-hemlock-app.herokuapp.com"
         }
-    }
+    },
+    "success_url": "/login"
 }
