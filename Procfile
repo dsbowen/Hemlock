@@ -1,1 +1,1 @@
-web: gunicorn -k eventlet -w 1 app:app
+web: waitress-serve --url-scheme=https app.app
