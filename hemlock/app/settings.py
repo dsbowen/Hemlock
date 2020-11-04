@@ -128,44 +128,47 @@ SCREENOUT_TXT = """
 
 SOCKET_JS_SRC = 'https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js'
 
+SQLALCHEMY_DATABASE_URI = os.environ.get(
+    'DATABASE_URL', 'sqlite:///'+os.path.join(os.getcwd(), 'data.db')
+)
+
 TIME_EXPIRED_TXT = 'You have exceeded your time limit for this survey'
 
-settings = {
-    'clean_data': None,
-    'collect_IP': True,
-    'duplicate_keys': [],
-    'restart_option': True,
-    'restart_text': RESTART_TXT,
-    'screenout_csv': 'screenout.csv',
-    'screenout_keys': [],
-    'screenout_text': SCREENOUT_TXT,
-    'socket_js_src': SOCKET_JS_SRC,
-    'static_folder': 'static',
-    'template_folder': os.path.join(os.getcwd(), 'templates'),
-    'time_expired_text': TIME_EXPIRED_TXT,
-    'time_limit': None,
-    'validate': True,
-    'Config': {
-        'PASSWORD': PASSWORD,
-        'PASSWORD_HASH': PASSWORD_HASH,
-        'SECRET_KEY': os.environ.get('SECRET_KEY', 'secret-key'),
-        'SQLALCHEMY_DATABASE_URI': os.environ.get(
-            'DATABASE_URL', 'sqlite:///'+os.path.join(os.getcwd(), 'data.db')
+settings = dict(
+    clean_data=None,
+    collect_IP=True,
+    duplicate_keys=[],
+    restart_option=True,
+    restart_text=RESTART_TXT,
+    screenout_csv='screenout.csv',
+    screenout_keys=[],
+    screenout_text=SCREENOUT_TXT,
+    socket_js_src=SOCKET_JS_SRC,
+    static_folder='static',
+    template_folder=os.path.join(os.getcwd(), 'templates'),
+    time_expired_text=TIME_EXPIRED_TXT,
+    time_limit=None,
+    validate=True,
+    Config=dict(
+        PASSWORD=PASSWORD,
+        PASSWORD_HASH=PASSWORD_HASH,
+        SECRET_KEY=os.environ.get('SECRET_KEY', 'secret-key'),
+        SQLALCHEMY_DATABASE_URI=SQLALCHEMY_DATABASE_URI,
+        SQLALCHEMY_TRACK_MODIFICATIONS=False,
+        SQLALCHEMY_ENGINE_OPTIONS=(
+            {} if SQLALCHEMY_DATABASE_URI.startswith('sqlite')
+            else dict(
+                pool_size=1,
+                pool_recycle=10,
+                max_overflow=0
+            )
         ),
-        'SQLALCHEMY_TRACK_MODIFICATIONS': False,
-        'SQLALCHEMY_ENGINE_OPTIONS': dict(
-            pool_size=1,
-            pool_recycle=10,
-            max_overflow=0
-        ),
-        'REDIS_URL': os.environ.get('REDIS_URL'),
-    },
-    'DownloadBtnManager': {},
-    'Manager': {
-        'loading_img_src': '/hemlock/static/img/worker_loading.gif'
-    },
-    'Talisman': {
-        'content_security_policy': {
+        REDIS_URL=os.environ.get('REDIS_URL'),
+    ),
+    DownloadBtnManager={},
+    Manager=dict(loading_img_src='/hemlock/static/img/worker_loading.gif'),
+    Talisman=dict(
+        content_security_policy={
             'default-src': ['\'self\'', '\'unsafe-inline\'', 'data:'],
             'frame-src': [
                 '\'self\'', 
@@ -197,5 +200,5 @@ settings = {
                 'https://stackpath.bootstrapcdn.com'
             ],
         },
-    }
-}
+    )
+)
