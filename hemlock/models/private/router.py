@@ -134,7 +134,6 @@ class Router(RouterMixin, db.Model):
         self.in_progress = False
         print('got result, changed in progress to', self.in_progress)
         db.session.commit()
-        db.dispose()
         return result
 
     """Request track"""

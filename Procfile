@@ -1,1 +1,1 @@
-web: waitress-serve --port=$PORT --url-scheme=https app:app
+web: gunicorn -k eventlet -w 1 app:app
