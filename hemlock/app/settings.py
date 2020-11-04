@@ -155,7 +155,8 @@ settings = {
         'SQLALCHEMY_TRACK_MODIFICATIONS': False,
         'SQLALCHEMY_ENGINE_OPTIONS': dict(
             pool_size=1,
-            pool_recycle=10
+            pool_recycle=10,
+            max_overflow=0
         ),
         'REDIS_URL': os.environ.get('REDIS_URL'),
     },
