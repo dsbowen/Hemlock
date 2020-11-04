@@ -115,6 +115,7 @@ class Router(RouterMixin, db.Model):
         page : str (html)
             HTML of the participant's next page, or a loading page.
         """
+        print('begin call, routing in progress', session.get('routing_in_progress'))
         if session.get('routing_in_progress'):
             print('routing in progress')
             return self.page._render()
