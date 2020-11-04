@@ -16,7 +16,7 @@ backward and forward navigation.
 from ...app import db
 from .viewing_page import ViewingPage
 
-from flask import current_app, request, redirect, url_for
+from flask import current_app, request, redirect, session, url_for
 from flask_worker import RouterMixin as RouterMixinBase, set_route
 
 from datetime import datetime
@@ -115,13 +115,19 @@ class Router(RouterMixin, db.Model):
         page : str (html)
             HTML of the participant's next page, or a loading page.
         """
+        if session.get('routing_in_progress'):
+            print('routing in progress')
+            return self.page._render()
+        session['routing_in_progress'] = True
         if self.part.time_expired:
             self.page.error = current_app.time_expired_text
             return self.page._render()
         if request.method == 'POST' and self.func.name == 'compile':
             # participant has just submitted the page
             self.func = self.record_response
-        return super().__call__(*args, **kwargs)
+        result = super().__call__(*args, **kwargs)
+        session['routing_in_progress'] = False
+        return result
 
     """Request track"""
     @set_route
