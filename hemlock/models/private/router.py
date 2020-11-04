@@ -89,6 +89,7 @@ class Router(RouterMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     part_id = db.Column(db.Integer, db.ForeignKey('participant.id'))
     view_function = db.Column(db.String)
+    in_progress = db.Column(db.Boolean, default=False)
     navigator = db.relationship('Navigator', backref='router', uselist=False)
 
     @property
@@ -115,12 +116,13 @@ class Router(RouterMixin, db.Model):
         page : str (html)
             HTML of the participant's next page, or a loading page.
         """
-        print('begin call, routing in progress', session.get('routing_in_progress'))
-        if session.get('routing_in_progress'):
-            print('routing in progress')
+        print('begin call, in progress', self.in_progress)
+        if self.in_progress:
+            print('in progress')
             return self.page._render()
-        session['routing_in_progress'] = True
-        print('changed routing in progress to', session.get('routing_in_progress'))
+        self.in_progress = True
+        db.session.commit()
+        print('changed in progress to', self.in_progress)
         if self.part.time_expired:
             self.page.error = current_app.time_expired_text
             return self.page._render()
@@ -128,8 +130,8 @@ class Router(RouterMixin, db.Model):
             # participant has just submitted the page
             self.func = self.record_response
         result = super().__call__(*args, **kwargs)
-        session['routing_in_progress'] = False
-        print('got result, changed routing in progress to', session.get('routing_in_progress'))
+        self.in_progress = False
+        print('got result, changed in progress to', self.in_progress)
         return result
 
     """Request track"""
