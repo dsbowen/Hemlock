@@ -119,6 +119,7 @@ class Router(RouterMixin, db.Model):
         print('begin call, in progress', self.in_progress)
         if self.in_progress:
             print('in progress')
+            self.page.error = 'In progress'
             return self.page._render()
         self.in_progress = True
         db.session.commit()
