@@ -6,12 +6,6 @@ from hemlock.tools import consent_page, completion_page
 
 settings['collect_IP'] = False
 
-# "buildpacks": [
-#         {"url": "heroku/python"},
-#         {"url": "https://github.com/heroku/heroku-buildpack-chromedriver"},
-#         {"url": "https://github.com/heroku/heroku-buildpack-google-chrome"}
-#     ]
-
 @route('/survey')
 def start():
     return Branch(

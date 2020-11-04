@@ -454,6 +454,7 @@ class Page(BranchingBase, db.Model):
 
     # Additional attributes
     cache_compile = db.Column(db.Boolean)
+    run_compile = db.Column(db.Boolean, default=True)
     direction_from = db.Column(db.String(8))
     direction_to = db.Column(db.String(8))
     g = db.Column(MutableType)
@@ -681,6 +682,7 @@ class Page(BranchingBase, db.Model):
         [f(self) for f in self.compile]
         if self.cache_compile:
             self.compile = self.compile_worker = None
+        self.run_compile = False
         return self
     
     def _render(self):

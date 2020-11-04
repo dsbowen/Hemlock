@@ -1,7 +1,7 @@
 {
     "addons": ["heroku-postgresql:hobby-dev"],
     "formation": {
-        "web": {"quantity": 2, "size": "standard-1x"}
+        "web": {"quantity": 1, "size": "free"}
     },
     "env": {
         "APP_IMPORT": {
@@ -29,5 +29,10 @@
             "value": "https://my-hemlock-app.herokuapp.com"
         }
     },
-    "success_url": "/login"
+    "success_url": "/login",
+    "buildpacks": [
+        {"url": "heroku/python"},
+        {"url": "https://github.com/heroku/heroku-buildpack-chromedriver"},
+        {"url": "https://github.com/heroku/heroku-buildpack-google-chrome"}
+    ]
 }
