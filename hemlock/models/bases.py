@@ -11,12 +11,11 @@ from sqlalchemy_mutable import (
     HTMLAttrsType, MutableType, MutableJSONType, MutableListType, 
     MutableListJSONType, MutableModelBase
 )
-from sqlalchemy_orderingitem import OrderingItem
 
 import os
 
 
-class Base(OrderingItem, ModelIdBase):
+class Base(ModelIdBase):
     """
     Base for all Hemlock models.
 

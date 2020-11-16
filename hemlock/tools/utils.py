@@ -7,6 +7,8 @@ from selenium.webdriver.chrome.options import Options
 
 import os
 
+DIR = os.path.dirname(os.path.realpath(__file__))
+
 def chromedriver(headless=False):
     """
     Parameters
@@ -90,6 +92,68 @@ def html_list(*items, ordered=True):
     return template.format(
         '\n'.join(['<li>{}</li>'.format(item) for item in items])
     )
+
+def html_table(table, extra_classes=[]):
+    """
+    Parameters
+    ----------
+    table : dict
+        Maps column names to a list of entries.
+
+    Returns
+    -------
+    table : str
+        Table in HTML format.
+
+    Examples
+    --------
+    ```python
+    from hemlock.tools import html_table
+
+    html_table({
+        'Column 0': ['hello', 'world'],
+        'Column 1': ['goodbye', 'moon']
+    })
+    ```
+
+    Out:
+
+    ```
+    <table class="table">
+    \    <thead>
+    \        <tr>
+    \            <th scope="col">Column 0</th>
+    \            <th scope="col">Column 1</th>
+    \        </tr>
+    \    </thead>
+    \    <tbody>
+    \        <tr>
+    \            <td>hello</td>
+    \            <td>goodbye</td></tr>
+    \        <tr>
+    \            <td>world</td>
+    \            <td>moon</td></tr>
+    \    </tbody>
+    \</table>
+    ```
+    """
+    def table_row(row):
+        return tr_template.format(
+            '\n'.join(
+                [td_template.format(items[row]) for items in items_list]
+            )
+        )
+
+    template = open(os.path.join(DIR, 'table.html')).read()
+    tr_template = '<tr>{}</tr>'
+    th_template = '<th scope="col">{}</th>'
+    td_template = '<td>{}</td>'
+    head = '\n'.join([th_template.format(col) for col in table.keys()])
+    # assume all items lists are the same length
+    items_list = list(table.values())
+    body = '\n'.join([table_row(i) for i in range(len(items_list[0]))])
+    classes = ' '.join(['table'] + extra_classes)
+    return template.format(classes, head, body)
 
 def show_on_event(
         target, condition, value, init_hidden=True, *args,  **kwargs

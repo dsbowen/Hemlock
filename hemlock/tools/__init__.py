@@ -9,4 +9,4 @@ from .statics import (
     format_attrs, external_css, internal_css, external_js, internal_js, 
     src_from_bucket, url_from_bucket, img, iframe, youtube
 )
-from .utils import chromedriver, get_data, html_list, show_on_event, url_for
+from .utils import chromedriver, get_data, html_list, html_table, show_on_event, url_for

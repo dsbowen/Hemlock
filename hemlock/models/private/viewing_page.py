@@ -4,13 +4,12 @@ from ...app import db
 
 from bs4 import BeautifulSoup
 from flask import request
-from sqlalchemy_orderingitem import OrderingItem
 
 import os
 from tempfile import NamedTemporaryFile
 
 
-class ViewingPage(OrderingItem, db.Model):
+class ViewingPage(db.Model):
     """
     Stores HTML snapshot of each page for each participant. These can be 
     accessed in the researcher dashboard.
