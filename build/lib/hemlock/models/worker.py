@@ -126,3 +126,4 @@ class Worker(WorkerMixin, Base, db.Model):
     _submit_id = db.Column(db.Integer, db.ForeignKey('page.id'))
     _navigate_page_id = db.Column(db.Integer, db.ForeignKey('page.id'))
     _navigate_branch_id = db.Column(db.Integer, db.ForeignKey('branch.id'))
+    _router_id = db.Column(db.Integer, db.ForeignKey('router.id'))

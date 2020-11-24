@@ -116,11 +116,6 @@ import os
 PASSWORD = os.environ.get('PASSWORD', '')
 PASSWORD_HASH = generate_password_hash(PASSWORD)
 
-RESTART_TXT = """
-<p>Click << to resume your in progress survey. Click >> to restart the survey.</p>
-<p>If you choose to restart the survey, your responses will not be saved.</p>
-"""
-
 SCREENOUT_TXT = """
 <p>Our records indicate that you have already participated in this or similar surveys.</p>
 <p>Thank you for your continuing interest in our research.</p>
@@ -134,12 +129,43 @@ SQLALCHEMY_DATABASE_URI = os.environ.get(
 
 TIME_EXPIRED_TXT = 'You have exceeded your time limit for this survey'
 
+def gen_loading_page():
+    from ..models import Page
+    from ..qpolymorphs import Label
+
+    return Page(
+        Label(
+            '''
+            The next page will be ready momentarily. Try refreshing the page
+            in a few seconds
+            '''
+        ),
+        forward=False
+    )._render()
+
+def gen_restart_page():
+    from ..models import Page
+    from ..qpolymorphs import Label
+
+    return Page(
+        Label(
+            """
+            <p>Click << to resume your in progress survey. Click >> to restart 
+            the survey.</p>
+            <p>If you choose to restart the survey, your responses will not be 
+            saved.</p>
+            """
+        ),
+        back=True
+    )._render()
+
 settings = dict(
     clean_data=None,
     collect_IP=True,
     duplicate_keys=[],
+    loading_page=gen_loading_page,
     restart_option=True,
-    restart_text=RESTART_TXT,
+    restart_page=gen_restart_page,
     screenout_csv='screenout.csv',
     screenout_keys=[],
     screenout_text=SCREENOUT_TXT,

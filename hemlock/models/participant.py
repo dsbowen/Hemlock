@@ -105,7 +105,6 @@ class Participant(UserMixin, Base, db.Model):
     """
     id = db.Column(db.Integer, primary_key=True)
     _key = db.Column(db.String(90))
-    _data_store_id = db.Column(db.Integer, db.ForeignKey('data_store.id'))
 
     _router = db.relationship(
         'Router', 

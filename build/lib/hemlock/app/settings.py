@@ -134,10 +134,25 @@ SQLALCHEMY_DATABASE_URI = os.environ.get(
 
 TIME_EXPIRED_TXT = 'You have exceeded your time limit for this survey'
 
+def gen_loading_page():
+    from ..models import Page
+    from ..qpolymorphs import Label
+
+    return Page(
+        Label(
+            '''
+            The next page will be ready momentarily. Try refreshing the page
+            in a few seconds
+            '''
+        ),
+        forward=False
+    )._render()
+
 settings = dict(
     clean_data=None,
     collect_IP=True,
     duplicate_keys=[],
+    loading_page=gen_loading_page,
     restart_option=True,
     restart_text=RESTART_TXT,
     screenout_csv='screenout.csv',

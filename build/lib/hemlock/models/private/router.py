@@ -17,49 +17,9 @@ from ...app import db
 from .viewing_page import ViewingPage
 
 from flask import current_app, request, redirect, session, url_for
-from flask_worker import RouterMixin as RouterMixinBase, set_route
+from flask_worker import RouterMixin, set_route
 
 from datetime import datetime
-
-
-class RouterMixin(RouterMixinBase):
-    def run_worker(self, obj, method_name, worker, next_route, *args, **kwargs):
-        """
-        Run a worker if applicable.
-
-        Parameters
-        ----------
-        obj : Page or Branch
-            Object whose method should be run.
-
-        method_name : str
-            Name of the object's method to run. e.g. '_compile'
-
-        worker : hemlock.WorkerMixin or None
-            Worker which executes the method, if applicable.
-
-        next_route : router method
-            The next route to navigate to after executing the method.
-
-        \*args, \*\*kwargs :
-            Arguments and keyword arguments for `next_route`.
-
-        Returns
-        -------
-        page : str (html)
-            Page for the client. This will be a loading page, if the worker is 
-            running, or the next page of the survey.        
-        """
-        if worker is not None:
-            if worker.job_finished:
-                self.job_in_progress = False
-                worker.reset()
-                return next_route(*args, **kwargs)
-            else:
-                self.job_in_progress = True
-                return worker.enqueue_method(obj, method_name)
-        getattr(obj, method_name)()
-        return next_route(*args, **kwargs)
 
 
 class Router(RouterMixin, db.Model):
@@ -98,8 +58,9 @@ class Router(RouterMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     part_id = db.Column(db.Integer, db.ForeignKey('participant.id'))
     in_progress = db.Column(db.Boolean, default=False)
-    job_in_progress = db.Column(db.Boolean, default=False)
     view_function = db.Column(db.String)
+    worker_page = db.Column(db.Text)
+    worker = db.relationship('Worker', uselist=False)
     navigator = db.relationship('Navigator', backref='router', uselist=False)
 
     @property
@@ -126,49 +87,47 @@ class Router(RouterMixin, db.Model):
         page : str (html)
             HTML of the participant's next page, or a loading page.
         """
-        from ..page import Page
-        from ...qpolymorphs import Label
+        def render_current_page():
+            if self.page.timer and self.page.timer.state != 'running':
+                self.page.timer.start()
+                db.session.commit()
+            return self.page._render()
 
-        if self.in_progress and not self.job_in_progress:
-            return Page(
-                Label(
-                    '''
-                    The next page should be ready momentarily. Try refreshing 
-                    the page in a few seconds.
-                    '''
-                ),
-                forward=False
-            )._render()
-
-        # commit the in_progress flag so future requests will know to return
-        # the waiting page
-        self.in_progress = True
-        db.session.commit()
+        def process_request():
+            # commit the in_progress flag so future requests will know to 
+            # return the loading page
+            self.in_progress = True
+            db.session.commit()
+            if request.method == 'POST' and self.func.name == 'compile':
+                # participant has just submitted the page
+                self.func = self.record_response
+            result = self.func(self, *args, **kwargs)
+            self.in_progress = False
+            db.session.commit()
+            return result
 
         if self.part.time_expired:
             self.page.error = current_app.time_expired_text
             return self.page._render()
-
-        if request.method == 'POST' and self.func.name == 'compile':
-            # participant has just submitted the page
-            self.func = self.record_response
-
-        result = self.func(self, *args, **kwargs)
-        self.in_progress = False
-        db.session.commit()
-        return result
+        if self.worker:
+            return (
+                process_request() if self.worker.job_finished 
+                else self.worker_page
+            )
+        if self.in_progress:
+            # send loading page while the next page loads
+            return current_app.settings.get('loading_page')
+        if request.method == 'GET' and not self.page.run_compile:
+            # page refresh or participant went back to this page
+            return render_current_page()
+        return process_request()
 
     """Request track"""
     @set_route
     def compile(self):
-        if self.page.run_compile or self.job_in_progress:
-            result = self.run_worker(
-                self.page, '_compile', self.page.compile_worker, self.render
-            )
-            # do not rerun compile functions until page is submitted
-            self.page.run_compile = False
-            return result
-        return self.render()
+        return self.run_worker(
+            self.page, '_compile', self.page.compile_worker, self.render
+        )
     
     def render(self):
         if self.page.terminal and not self.part.completed:
@@ -190,8 +149,10 @@ class Router(RouterMixin, db.Model):
         self.part.end_time = datetime.utcnow()
         self.part.completed, self.part.updated = False, True
         self.page._record_response()
-        self.page.run_compile = True
         if self.page.direction_from == 'back':
+            self.page.run_compile = True
+            if self.page.compile_worker:
+                self.page.compile_worker.reset()
             self.navigator.back(self.page.back_to)
             return self.redirect()
         return self.validate()
@@ -214,7 +175,6 @@ class Router(RouterMixin, db.Model):
             self.page, '_submit', self.page.submit_worker, self.forward_prep,
         )
 
-    @set_route
     def forward_prep(self):
         """Prepare for forward navigation
         
@@ -225,10 +185,7 @@ class Router(RouterMixin, db.Model):
         page = self.page
         if page.direction_from == 'back':
             self.navigator.back(page.back_to)
-        if (
-            page.direction_from in ('back', 'invalid')
-            or page.last_page()
-        ):
+        if page.direction_from in ('back', 'invalid') or page.last_page():
             return self.redirect()
         self.navigator.reset()
         return self.forward(page.forward_to)
@@ -258,15 +215,14 @@ class Router(RouterMixin, db.Model):
         forward_to : hemlock.Page
             Page to which to navigate.
         """
-        if self.navigator.in_progress:
-            loading_page = self.navigator.func()
-        else:
-            loading_page = self.navigator.forward(forward_to)
+        loading_page = (
+            self.navigator.func(self.navigator) if self.navigator.in_progress
+            else self.navigator.forward(forward_to)
+        )
         if loading_page is None and forward_to is not None:
             loading_page = self.navigator.forward(forward_to)
         return loading_page or self.redirect()
 
-    @set_route
     def redirect(self):
         self.reset()
         url_arg = 'hemlock.{}'.format(self.view_function)
@@ -277,6 +233,46 @@ class Router(RouterMixin, db.Model):
         return redirect(
             url_for(url_arg, part_id=self.part.id, part_key=self.part._key)
         )
+
+    def run_worker(
+            self, obj, method_name, worker, next_route, *args, **kwargs
+        ):
+        """
+        Run a worker if applicable.
+
+        Parameters
+        ----------
+        obj : Page or Branch
+            Object whose method should be run.
+
+        method_name : str
+            Name of the object's method to run. e.g. '_compile'
+
+        worker : hemlock.WorkerMixin or None
+            Worker which executes the method, if applicable.
+
+        next_route : router method
+            The next route to navigate to after executing the method.
+
+        \*args, \*\*kwargs :
+            Arguments and keyword arguments for `next_route`.
+
+        Returns
+        -------
+        page : str (html)
+            Page for the client. This will be a loading page, if the worker is 
+            running, or the next page of the survey.        
+        """
+        if worker is None:
+            getattr(obj, method_name)()
+            return next_route(*args, **kwargs)
+        if worker.job_finished:
+            worker.reset()
+            self.worker, self.worker_page = None, None
+            return next_route(*args, **kwargs)
+        self.worker = worker
+        self.worker_page = worker.enqueue_method(obj, method_name)
+        return self.worker_page
 
 
 class Navigator(RouterMixin, db.Model):
@@ -332,7 +328,6 @@ class Navigator(RouterMixin, db.Model):
             if loading_page is not None:
                 return loading_page
     
-    @set_route
     def forward_one(self):
         """Advance forward one page"""
         if self.page._eligible_to_insert_branch():
@@ -343,24 +338,28 @@ class Navigator(RouterMixin, db.Model):
     @set_route
     def insert_branch(self, origin):
         """Grow and insert new branch into the branch stack"""
-        return self.run_worker(
-            origin, '_navigate',
-            origin.navigate_worker, 
-            self._insert_branch, 
-            origin
-        )
+        # note the parallel between this function and Router.run_worker
+        worker = origin.navigate_worker
+        if worker is None:
+            origin._navigate()
+            return self._insert_branch(origin)
+        if worker.job_finished:
+            worker.reset()
+            self.router.worker, self.router.worker_page = None, None
+            return self._insert_branch(origin)
+        self.router.worker = worker
+        self.router.worker_page = worker.enqueue_method(origin, '_navigate')
+        return self.router.worker_page
     
-    @set_route
     def _insert_branch(self, origin):
         branch = origin.next_branch
         self.branch_stack.insert(self.branch.index+1, branch)
         self.increment_head()
         return self.forward_recurse()
 
-    @set_route
     def forward_recurse(self):
         """Recursive forward function
-    navigator
+
         Advance forward until the next Page is found (i.e. is not None).
         """
         if self.page is not None:

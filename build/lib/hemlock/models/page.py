@@ -477,6 +477,7 @@ class Page(BranchingBase, db.Model):
                     attr += extra
 
         self.questions = list(questions)
+        self.run_compile = True
         super().__init__(**kwargs)
         add_extra(self.css, extra_css)
         add_extra(self.js, extra_js)
@@ -678,11 +679,12 @@ class Page(BranchingBase, db.Model):
         -------
         self
         """
-        # the page uses its compile functions to f itself
-        [f(self) for f in self.compile]
-        if self.cache_compile:
-            self.compile = self.compile_worker = None
-        self.run_compile = False
+        if self.run_compile:
+            # the page uses its compile functions to f itself
+            [f(self) for f in self.compile]
+            if self.cache_compile:
+                self.compile = self.compile_worker = None
+            self.run_compile = False
         return self
     
     def _render(self):

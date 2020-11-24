@@ -170,9 +170,5 @@ def restart():
         if request.form.get('direction') == 'forward':
             initialize_participant(get_metadata())
         return redirect(url_for('hemlock.'+bp.default_route))
-        
-    p = Page(
-        Label(current_app.settings['restart_text']), 
-        back=True
-    )
-    return p._compile()._render()
+    # request method is GET
+    return current_app.settings.get('restart_page')

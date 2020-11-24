@@ -94,7 +94,7 @@ class ChoiceBase(InputBase, Base):
         default = (
             question.response if question.has_responded else question.default
         )
-        if not default:
+        if default in (None, []):
             return False
         return (
             self.value in default if isinstance(default, list)

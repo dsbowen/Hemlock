@@ -13,12 +13,12 @@ url_root = 'https://dsbowen.github.io/'
 navbar = Navbar(
 \    'Hemlock', 
 \    [
-\        Navitem('Application', href=url_root+'app'),
-\        Navitemdd(
+\        ('Application', href=url_root+'app'),
+\        (
 \            'Tools', 
 \            [
-\                Dropdownitem('Language', href=url_root+'lang'),
-\                Dropdownitem('Navbar', href=url_root+'navbar')
+\                ('Language', href=url_root+'lang'),
+\                ('Navbar', href=url_root+'navbar')
 \           ]
 \        )
 \    ], 
@@ -28,21 +28,6 @@ navbar = Navbar(
 Page(navbar=navbar.render()).preview()
 ```
 """
-
-# TODO use ConvertedList to enable this syntax
-
-# navitems=[
-#     ('Participant status', '/status'),
-#     (
-#         'Dropdown', 
-#         [
-#             ('Status', '/status'),
-#             ('Logout', '/logout')
-#         ]
-#     ),
-#     ('Download', '/download'),
-#     ('Logout', '/logout')
-# ]
 
 from .random import key
 from .statics import format_attrs

@@ -56,7 +56,7 @@ def response_type(question, resp_type):
             return RESP_TYPE_MSG.format('a number')
         return RESP_TYPE_MSG.format('the correct type of response')
 
-REQUIRE_MSG = '<p>Please respond to this question.<p>'
+REQUIRE_MSG = '<p>Please respond to this question.</p>'
 
 @Validate.register
 def require(question):
