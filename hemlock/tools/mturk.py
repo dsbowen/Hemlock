@@ -4,17 +4,27 @@ import numpy as np
 import pandas as pd
 from flask_login import current_user
 
-def consent_page(consent_label, input_label, require=True):
-    from ..models import Page
+REENTER_LABEL = '<p>Please re-enter your ID</p>'
+
+def consent_page(
+        consent_label, id_label, reenter_label=REENTER_LABEL, require=True
+    ):
+    from ..models import Page, Validate as V
     from ..qpolymorphs import Label, Input
 
+    id_q = Input(id_label, required=require, submit=_record_id)
     return Page(
         Label(consent_label),
-        Input(input_label, required=require, submit=_record_id)
+        id_q,
+        Input(reenter_label, required=require, validate=V(_match_id, id_q))
     )
 
+def _match_id(reenter_q, id_q):
+    if id_q.response.strip() != reenter_q.response.strip():
+        return '<p>Please make sure your IDs match</p>'
+
 def _record_id(id_input):
-    current_user.meta['WorkerId'] = id_input.data
+    current_user.meta['WorkerId'] = id_input.data.strip()
 
 def completion_page():
     from ..models import Page
@@ -24,8 +34,12 @@ def completion_page():
     current_user.meta['SurveyCode'] = code
     return Page(
         Label(
-            '''Thank you for completing the study. Your completion code is 
-            <b>{}</b>'''.format(code)
+            '''
+            <p>Thank you for completing the study. Your completion code is 
+            <b>{}</b></p>
+            
+            <p>The completion code is case-sensitive.</p>
+            '''.format(code)
         ),
         terminal=True
     )
