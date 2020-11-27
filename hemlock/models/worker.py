@@ -117,7 +117,10 @@ class Worker(WorkerMixin, Base, db.Model):
     {
     \    "addons": [
     \        "heroku-postgresql:hobby-basic",
-    \        "heroku-redis:hobby-dev"
+    \        {
+    \            "plan": "heroku-redis:premium-0",
+    \            "version": 5
+    \        }
     \    ],
     \    "formation": {
     \        "web": {"quantity": 1, "size": "hobby"},
