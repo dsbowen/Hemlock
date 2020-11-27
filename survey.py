@@ -20,7 +20,7 @@ def start():
             ),
             back=True, terminal=True,
             compile=log,
-            # compile_worker=True
+            compile_worker=True
         )
     )
 
