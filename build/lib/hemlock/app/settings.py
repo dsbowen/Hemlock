@@ -17,15 +17,17 @@ duplicate_keys : list, default=[]
     List of keys (column names) on which to block duplicate participants. If
     empty, the app will not screen out duplicates.
 
+loading_page : str or callable, default=gen_loading_page
+    Loading page HTML (str) or function which returns the loading page (str).
+
 restart_option : bool, default=True
     Indicates that participants who attempt to re-navigate to the index page 
     will be given the option to restart the survey. If `False`, participants 
     to attempt to re-navigate to the index page will be redirected to their 
     current survey page.
 
-restart_text : str, default='Click << to return...'
-    Text displayed to participants when given the option to restart or 
-    continue with the survey.
+restart_page : str or callable, default=gen_restart_page
+    Restart page HTML (str) or function which returns the restart page (str).
 
 screenout_csv : str, default='screenout.csv'
     Name of the csv file containing criteria for screening out participants.
@@ -116,11 +118,6 @@ import os
 PASSWORD = os.environ.get('PASSWORD', '')
 PASSWORD_HASH = generate_password_hash(PASSWORD)
 
-RESTART_TXT = """
-<p>Click << to resume your in progress survey. Click >> to restart the survey.</p>
-<p>If you choose to restart the survey, your responses will not be saved.</p>
-"""
-
 SCREENOUT_TXT = """
 <p>Our records indicate that you have already participated in this or similar surveys.</p>
 <p>Thank you for your continuing interest in our research.</p>
@@ -148,13 +145,29 @@ def gen_loading_page():
         forward=False
     )._render()
 
+def gen_restart_page():
+    from ..models import Page
+    from ..qpolymorphs import Label
+
+    return Page(
+        Label(
+            """
+            <p>Click << to resume the survey. Click >> to restart 
+            the survey.</p>
+            If you restart the survey, your responses will not be 
+            saved.
+            """
+        ),
+        back=True
+    )._render()
+
 settings = dict(
     clean_data=None,
     collect_IP=True,
     duplicate_keys=[],
     loading_page=gen_loading_page,
     restart_option=True,
-    restart_text=RESTART_TXT,
+    restart_page=gen_restart_page,
     screenout_csv='screenout.csv',
     screenout_keys=[],
     screenout_text=SCREENOUT_TXT,

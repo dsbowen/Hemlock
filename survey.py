@@ -1,15 +1,28 @@
 from hemlock import (
-    Branch, Page, Embedded, Binary, Check, Input, Label, Range, Textarea, 
+    Branch, Page, Embedded, Blank, Binary, Check, Input, Label, Range, Textarea, 
     Compile as C, Validate as V, route, settings
 )
-from hemlock.tools import consent_page
+from hemlock.tools import consent_page, completion_page
+
+from flask_login import current_user
 
 @route('/survey')
 def start():
     return Branch(
-        consent_page('consent', '<p>ID</p>'),
         Page(
-            Label('page 1'),
-            terminal=True
+            Label(
+                'Page 0'
+            )
+        ),
+        Page(
+            Label(
+                'Page 1'
+            ),
+            back=True, terinal=True,
+            compile=log,
+            compile_worker=True
         )
     )
+
+def log(page):
+    print('here')

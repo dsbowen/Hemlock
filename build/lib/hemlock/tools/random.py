@@ -2,6 +2,10 @@
 
 from flask_login import current_user
 
+import numpy as np
+
+import random
+import time
 from itertools import combinations, cycle, permutations, product
 from operator import itemgetter
 from random import choice, shuffle
@@ -44,6 +48,10 @@ def key(len_=90):
     first_char  = choice(ascii_letters)
     return first_char + ''.join(choice(chars) for _ in range(len_-1))
 
+def reset_random_seed():
+    seed = (1000 * int(time.time())) % 2**32
+    random.seed(seed)
+    np.random.seed(seed)
 
 class Randomizer():
     """
@@ -155,22 +163,34 @@ class Assigner(Randomizer):
         self.keys = conditions.keys()
         super().__init__(tuple(product(*conditions.values())))
         
-    def next(self):
+    def next(self, participant=None):
         """
         Assigns the participant to a condition. The condition assigment 
         updates the participant's metadata.
+
+        Parameters
+        ----------
+        participant : hemlock.Participant or None, default=None
+            This method records the assignment in this participant's `meta`
+            dictionary. If `None`, the participant is the current user.
 
         Returns
         -------
         assignment : dict
             Maps condition variable names to assigned conditions.
-        """
-        from ..models import Embedded
-        
+
+        Notes
+        -----
+        By default, this method assigns the participant using flask-login's
+        `current_user`. If you're assigning the participant in function 
+        handled by Redis, this won't work. You'll need to manually pass in the
+        participant.
+        """        
         assignment = super().next()
         assignment = {key: val for key, val in zip(self.keys, assignment)}
         try:
-            current_user.meta.update(assignment)
+            participant = participant or current_user
+            participant.meta.update(assignment)
         except:
             print('Unable to update participant metadata.')
         return assignment

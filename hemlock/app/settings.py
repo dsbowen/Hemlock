@@ -17,15 +17,17 @@ duplicate_keys : list, default=[]
     List of keys (column names) on which to block duplicate participants. If
     empty, the app will not screen out duplicates.
 
+loading_page : str or callable, default=gen_loading_page
+    Loading page HTML (str) or function which returns the loading page (str).
+
 restart_option : bool, default=True
     Indicates that participants who attempt to re-navigate to the index page 
     will be given the option to restart the survey. If `False`, participants 
     to attempt to re-navigate to the index page will be redirected to their 
     current survey page.
 
-restart_text : str, default='Click << to return...'
-    Text displayed to participants when given the option to restart or 
-    continue with the survey.
+restart_page : str or callable, default=gen_restart_page
+    Restart page HTML (str) or function which returns the restart page (str).
 
 screenout_csv : str, default='screenout.csv'
     Name of the csv file containing criteria for screening out participants.
@@ -150,10 +152,10 @@ def gen_restart_page():
     return Page(
         Label(
             """
-            <p>Click << to resume your in progress survey. Click >> to restart 
+            <p>Click << to resume the survey. Click >> to restart 
             the survey.</p>
-            <p>If you choose to restart the survey, your responses will not be 
-            saved.</p>
+            If you restart the survey, your responses will not be 
+            saved.
             """
         ),
         back=True

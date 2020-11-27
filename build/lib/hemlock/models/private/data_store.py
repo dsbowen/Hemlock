@@ -26,7 +26,6 @@ class DataStore(db.Model):
     _current_status = db.Column(MutableDictJSONType, default=DEFAULT_STATUS)
     data = db.Column(DataFrameType, default={})
     meta = db.Column(DataFrameType, default={})
-    parts_stored = db.relationship('Participant')
     
     @property
     def current_status(self):
@@ -58,13 +57,12 @@ class DataStore(db.Model):
         """Store data for given Participant"""
         self.remove_participant(part)
         self.data.append(part.get_data())
-        self.parts_stored.append(part)
         part.updated = False
         
     def remove_participant(self, part):
         """Remove data for given Participant"""
-        id_var = self.data.get('ID')
-        if id_var is None or part.id not in id_var:
+        id_var = set(self.data.get('ID') or [])
+        if not id_var or part.id not in id_var:
             return
         end = start = id_var.index(part.id)
         while end < len(id_var) and id_var[end] == part.id:

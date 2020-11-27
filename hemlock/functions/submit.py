@@ -1,9 +1,9 @@
 """# Submit functions"""
 
 from ..models import Submit
-from .utils import convert, correct_choices as correct_choices_
-
-import re
+from .utils import (
+    convert, correct_choices as correct_choices_, match as match_
+)
 
 @Submit.register
 def correct_choices(question, *values):
@@ -94,8 +94,9 @@ def match(question, pattern):
     ----------
     question : hemlock.Question
 
-    pattern : str
-        Regex pattern to match.
+    pattern : str or hemlock.Question
+        Regex pattern to match. If this is a `Question`, the pattern is the 
+        question's `response`'.
 
     Examples
     --------
@@ -114,9 +115,4 @@ def match(question, pattern):
     1
     ```
     """
-    try:
-        question.data = int(re.fullmatch(
-            str(pattern), (question.data or '')) is not None
-        )
-    except:
-        question.data = 0
+    question.data = int(match_(question, pattern) is not None)

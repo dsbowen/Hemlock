@@ -7,6 +7,8 @@ from datetime import MAXYEAR, MINYEAR, datetime, timedelta
 from random import choice, randint, random, randrange, shuffle
 from string import ascii_letters, digits
 
+import re
+
 def convert(obj, type_, *args, **kwargs):
     """
     Converts an object to a new type.
@@ -66,6 +68,33 @@ def correct_choices(q, *values):
         else q.response
     )
     return set(data) == set(values) if q.multiple else data in values
+
+def match(question, pattern):
+    """
+    Check for a full regular expression match of the question response against 
+    the pattern.
+
+    Parameters
+    ----------
+    question : hemlock.Question
+        Question whose response should match the pattern.
+
+    pattern : str or hemlock.Question
+        Pattern the response should match. If this is a `Question`, this function will look for a full match to the pattern question's `response`.
+
+    Returns
+    -------
+    full match : bool
+        Indicates that a full match was found.
+    """
+    from ..models import Question
+
+    def resp_to_str(response):
+        return str(response) if response is not None else ''
+
+    if isinstance(pattern, Question):
+        pattern = resp_to_str(pattern.response)
+    return re.fullmatch(str(pattern), resp_to_str(question.response))
 
 def random_datetime(inpt, min=datetime(1900, 1, 1), max=datetime(2100, 1, 1)):
     def get_dt(attr):

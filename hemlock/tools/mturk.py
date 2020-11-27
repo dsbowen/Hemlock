@@ -4,41 +4,88 @@ import numpy as np
 import pandas as pd
 from flask_login import current_user
 
-REENTER_LABEL = '<p>Please re-enter your ID</p>'
+ID_LABEL = '<p>Enter your MTurk ID to consent</p>'
+CONFIRM_LABEL = '<p>Confirm your ID</p>'
 
 def consent_page(
-        consent_label, id_label, reenter_label=REENTER_LABEL, require=True
+        consent_label=None, 
+        id_label=ID_LABEL, 
+        confirm_label=CONFIRM_LABEL, 
+        require=True
     ):
-    from ..models import Page, Validate as V
+    """
+    Parameters
+    ----------
+    consent_label : str or None, default=None
+        The consent terms for your study. If `None`, the consent label is
+        omitted.
+
+    id_label : str, default='Enter your MTurk ID to consent'
+        Label asking workers to enter their ID.
+
+    confirm_label : str, default='Confirm your ID'
+        Label asking for confirmation.
+
+    require : bool, default=True
+        Indicates that workers are required to enter their ID.
+
+    Returns
+    -------
+    consent page : hemlock.Page
+    """
+    from ..models import Page, Debug as D, Validate as V
     from ..qpolymorphs import Label, Input
 
-    id_q = Input(id_label, required=require, submit=_record_id)
-    return Page(
-        Label(consent_label),
-        id_q,
-        Input(reenter_label, required=require, validate=V(_match_id, id_q))
+    id_q = Input(
+        id_label, 
+        required=require, 
+        debug=D.send_keys('test'), 
+        submit=_record_id
     )
-
-def _match_id(reenter_q, id_q):
-    if id_q.response.strip() != reenter_q.response.strip():
-        return '<p>Please make sure your IDs match</p>'
+    page = Page(
+        id_q,
+        Input(
+            confirm_label, 
+            required=require,
+            debug=D.send_keys('test'),
+            validate=V.match(
+                id_q, error_msg='<p>IDs do not match</p>'
+            )
+        )
+    )
+    if consent_label:
+        page.questions.insert(0, Label(consent_label))
+    return page
 
 def _record_id(id_input):
     current_user.meta['WorkerId'] = id_input.data.strip()
 
-def completion_page():
+def completion_page(participant=None):
+    """
+    Parameters
+    ----------
+    participant : hemlock.Participant or None, default=None
+        Record the completion code in this participant's metadata. If `None`,
+        the completion code is recorded in flask-login's `current_user`.
+
+    Returns
+    -------
+    completion page: hemlock.Page
+        Completion page with unique completion code.
+    """
     from ..models import Page
     from ..qpolymorphs import Label
 
     code = key(6)
-    current_user.meta['SurveyCode'] = code
+    part = participant or current_user
+    part.meta['SurveyCode'] = code
     return Page(
         Label(
             '''
             <p>Thank you for completing the study. Your completion code is 
             <b>{}</b></p>
             
-            <p>The completion code is case-sensitive.</p>
+            The completion code is case-sensitive.
             '''.format(code)
         ),
         terminal=True

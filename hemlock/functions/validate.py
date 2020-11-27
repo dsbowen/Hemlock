@@ -7,7 +7,9 @@ the repsonse is invalid.
 
 from ..models import Validate
 from ..tools.lang import join, plural
-from .utils import convert, correct_choices as correct_choices_
+from .utils import (
+    convert, correct_choices as correct_choices_, match as match_
+)
 
 import re
 from operator import __ge__, __le__
@@ -868,8 +870,9 @@ def match(question, pattern):
     ----------
     question : hemlock.Question
 
-    pattern : str
-        Regex pattern to match.
+    pattern : str or hemlock.Question
+        Regex pattern to match. If this is a `Question`, the pattern is the 
+        question's `response`'.
 
     Examples
     --------
@@ -889,8 +892,7 @@ def match(question, pattern):
     Please enter a response with the correct pattern.
     ```
     """
-    if not re.compile(pattern).match((question.response or '')):
-        return REGEX_MSG
+    return REGEX_MSG if not match_(question, pattern) else None
 
 # Choice validation
 

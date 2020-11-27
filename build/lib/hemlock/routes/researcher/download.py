@@ -220,19 +220,53 @@ class FileCreator():
         participants whose data was updated since they were last stored in the
         data frame, or whose data has not yet been stored.
         """
-        stage = 'Preparing data frame'
-        yield self.btn.reset(stage, 0)
-        parts = Participant.query.all()
-        to_store = [
-            p for p in parts 
-            if p.updated or p not in self.datastore.parts_stored
-        ]
-        db.session.add_all(to_store)
-        for i, part in enumerate(to_store):
-            yield self.btn.report(stage, 100.*i/len(to_store))
-            self.datastore.store_participant(part)
+        def store_updated():
+            # stores ids of participants whose data was flagged as updated
+            stage = 'Storing participants with updates'
+            yield self.btn.reset(stage, 0)
+            updated = [part for part in parts if part.updated]
+            for i, part in enumerate(updated):
+                if i % 10 == 1:
+                    yield self.btn.report(stage, 100.*i/len(updated))
+                self.datastore.store_participant(part)
+            yield self.btn.report(stage, 100)
+
+        def store_missing():
+            """
+            Check for participants whose data are missing from the data 
+            frame. Why might this happen? Imagine two participants complete 
+            the survey in close succession. The first queries the data 
+            store, but before he commits his data, the second queries the 
+            data store. The first commits his data, but this commit is 
+            overridden when the second participant commits his data.
+            """
+            stage = 'Collecting participant data'
+            yield self.btn.reset(stage, 0)
+            stored_ids = list(set(self.datastore.data.get('ID') or []))
+            stored_ids.sort()
+            stored_ids_head = parts_head = 0
+            while parts_head < len(parts):
+                if parts_head % 10 == 1:
+                    yield self.btn.report(stage, 100.*parts_head/len(parts))
+                # Note: id of the participant at index parts_head is 
+                # parts_head + 1
+                if (
+                    stored_ids_head < len(stored_ids) 
+                    and stored_ids[stored_ids_head] == parts_head + 1
+                ):
+                    stored_ids_head += 1
+                else:
+                    self.datastore.store_participant(parts[parts_head])
+                parts_head += 1
+            yield self.btn.report(stage, 100)
+
+        parts = Participant.query.order_by('id').all()
+        for expr in store_updated():
+            yield expr
+        for expr in store_missing():
+            yield expr
         self.files.append(self.datastore.data.get_download_file())
-        yield self.btn.report(stage, 100)
+        yield self.btn.report('Data frame prepared', 100)
 
     def prep_meta(self):
         """

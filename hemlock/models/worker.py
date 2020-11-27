@@ -104,6 +104,15 @@ class Worker(WorkerMixin, Base, db.Model):
     1. Create a redis addon. Add `"heroku-redis:hobby-dev"` to `"addons"` in `app.json`.
     2. Add a worker to your dyno formation. Add `"worker: {"quantity": 1, "size": "hobby"}` to `"formation"` in `app.json`.
 
+    After step 1, your `Procfile` should look like:
+
+    ```
+    web: gunicorn -k eventlet app:app
+    worker: rq worker -u $REDIS_URL hemlock-task-queue
+    ```
+
+    After steps 2 and 3, your `app.json` should look like:
+
     ```json
     {
     \    "addons": [

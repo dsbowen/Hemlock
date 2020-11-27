@@ -67,6 +67,9 @@ def init_app():
     loading_page = current_app.settings.get('loading_page')
     if callable(loading_page):
         current_app.settings['loading_page'] = loading_page()
+    restart_page = current_app.settings.get('restart_page')
+    if callable(restart_page):
+        current_app.settings['restart_page'] = restart_page()
     # create data store
     if not DataStore.query.first():
         db.session.add(DataStore())

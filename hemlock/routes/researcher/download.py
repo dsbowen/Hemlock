@@ -250,9 +250,6 @@ class FileCreator():
                     yield self.btn.report(stage, 100.*parts_head/len(parts))
                 # Note: id of the participant at index parts_head is 
                 # parts_head + 1
-                if stored_ids_head < len(stored_ids):
-                    print('stored id is', stored_ids[stored_ids_head])
-                print('to_store is', parts_head + 1)
                 if (
                     stored_ids_head < len(stored_ids) 
                     and stored_ids[stored_ids_head] == parts_head + 1
