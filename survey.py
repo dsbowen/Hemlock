@@ -18,7 +18,7 @@ def start():
             Label(
                 'Page 1'
             ),
-            back=True, terinal=True,
+            back=True, terminal=True,
             compile=log,
             compile_worker=True
         )

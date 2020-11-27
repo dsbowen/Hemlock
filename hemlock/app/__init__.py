@@ -140,9 +140,12 @@ def _set_redis(app):
     """Set up Redis Queue"""
     redis_url = app.config.get('REDIS_URL')
     if redis_url is not None:
-        from redis import StrictRedis
+        from redis import ConnectionPool, Redis 
         from rq import Queue
-        app.redis = StrictRedis.from_url(redis_url)
+
+        connection_pool = ConnectionPool.from_url(redis_url)
+        app.redis = Redis(connection_pool=connection_pool, ssl_cert_reqs=None)
+        # app.redis = Redis.from_url(redis_url, ssl_cert_reqs=None)
         app.task_queue = Queue('hemlock-task-queue', connection=app.redis)
     else:
         app.redis = app.task_queue = None
