@@ -116,10 +116,12 @@ class Worker(WorkerMixin, Base, db.Model):
     ```json
     {
     \    "addons": [
-    \        "heroku-postgresql:hobby-basic",
+    \        "heroku-postgresql:hobby-dev", 
     \        {
     \            "plan": "heroku-redis:premium-0",
-    \            "version": 5
+    \            "options": {
+    \                "version": 5
+    \            }
     \        }
     \    ],
     \    "formation": {
