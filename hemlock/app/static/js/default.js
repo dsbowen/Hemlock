@@ -22,8 +22,3 @@ $("form").submit( function(e) {
     $(this).addClass("form-submitted");
     $("input.btn[name='direction']").attr("disabled", true);
 });
-
-// Get socket.io url
-// OLD VERSION
-// $SOCKET_URL = location.protocol+"//"+document.domain+':'+location.port
-$SOCKET_URL = window.location.origin

@@ -1,7 +1,7 @@
 """# Application factory and settings"""
 
-import eventlet
-eventlet.monkey_patch(socket=True)
+# import eventlet
+# eventlet.monkey_patch(socket=True)
 
 from .settings import settings
 

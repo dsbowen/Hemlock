@@ -1,5 +1,8 @@
 """Hemlock application file"""
 
+import eventlet
+eventlet.monkey_patch(socket=True)
+
 import survey
 
 from hemlock import create_app

@@ -61,7 +61,7 @@ class DataStore(db.Model):
         
     def remove_participant(self, part):
         """Remove data for given Participant"""
-        id_var = set(self.data.get('ID') or [])
+        id_var = self.data.get('ID') or []
         if not id_var or part.id not in id_var:
             return
         end = start = id_var.index(part.id)

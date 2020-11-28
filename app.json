@@ -2,15 +2,15 @@
     "addons": [
         "heroku-postgresql:hobby-dev", 
         {
-            "plan": "heroku-redis:premium-0",
+            "plan": "heroku-redis:hobby-dev",
             "options": {
                 "version": 5
             }
         }
     ],
     "formation": {
-        "web": {"quantity": 1, "size": "free"},
-        "worker": {"quantity": 1, "size": "free"}
+        "web": {"quantity": 2, "size": "standard-1x"},
+        "worker": {"quantity": 2, "size": "standard-1x"}
     },
     "env": {
         "APP_IMPORT": {
