@@ -1,7 +1,7 @@
 """Hemlock application file"""
 
 import eventlet
-eventlet.monkey_patch(socket=True)
+eventlet.monkey_patch()
 
 import survey
 
