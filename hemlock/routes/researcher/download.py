@@ -261,6 +261,7 @@ class FileCreator():
             yield self.btn.report(stage, 100)
 
         parts = Participant.query.order_by('id').all()
+        parts = [part for part in parts if part.status == 'Completed']
         for expr in store_updated():
             yield expr
         for expr in store_missing():
