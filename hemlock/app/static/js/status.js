@@ -2,7 +2,7 @@
 // This function listens for status updates and updates the researcher page
 
 $(document).ready(function(){
-    socket = io.connect(window.location.origin+"/participants-nsp", {transports: ["websocket"]})
+    var socket = io.connect(window.location.origin+"/participants-nsp", {transports: ["websocket"]})
     socket.on("connect", function(){
         console.log("Socket connected");
     });
