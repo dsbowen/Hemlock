@@ -36,7 +36,7 @@ login_manager = LoginManager()
 login_manager.login_view = 'hemlock.index'
 login_manager.login_message = None
 # scheduler = APScheduler()
-socketio = SocketIO(async_mode='eventlet')
+socketio = SocketIO(async_mode='eventlet', logger=True, engineio_logger=True)
 manager = Manager(db=db, socketio=socketio)
 MutableManager.db = db
 talisman = Talisman()
@@ -156,6 +156,6 @@ def _init_extensions(app, settings):
     login_manager.init_app(app)
     # scheduler.init_app(app)
     # scheduler.start()
-    socketio.init_app(app, logger=True, engineio_logger=True, message_queue=app.config.get('REDIS_URL'))
+    socketio.init_app(app, message_queue=app.config.get('REDIS_URL'))
     manager.init_app(app, **settings.get('Manager'))
     # talisman.init_app(app, **settings.get('Talisman'))
