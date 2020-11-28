@@ -4,7 +4,7 @@
         {
             "plan": "heroku-redis:hobby-dev",
             "options": {
-                "version": 5
+                "version": 6
             }
         }
     ],
@@ -37,10 +37,5 @@
             "description": "Replace 'my-hemlock-app' with the application name.",
             "value": "https://my-hemlock-app.herokuapp.com"
         }
-    },
-    "buildpacks": [
-        {"url": "heroku/python"},
-        {"url": "https://github.com/heroku/heroku-buildpack-chromedriver"},
-        {"url": "https://github.com/heroku/heroku-buildpack-google-chrome"}
-    ]
+    }
 }
