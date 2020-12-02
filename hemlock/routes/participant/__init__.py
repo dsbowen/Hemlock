@@ -35,7 +35,7 @@ def index():
         return redirect(url_for('hemlock.screenout'))
     
     in_progress = current_user.is_authenticated
-    if in_progress:
+    if in_progress and current_user.current_branch is not None:
         if current_user.current_page.first_page():
             # no need to restart if on first page
             return redirect(url_for('hemlock.'+bp.default_route))

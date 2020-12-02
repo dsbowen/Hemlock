@@ -1,6 +1,6 @@
 {
     "addons": [
-        "heroku-postgresql:hobby-dev"
+        "heroku-postgresql:standard-0"
     ],
     "formation": {
         "web": {"quantity": 2, "size": "standard-1x"}
