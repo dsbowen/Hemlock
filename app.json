@@ -1,16 +1,9 @@
 {
     "addons": [
-        "heroku-postgresql:hobby-dev", 
-        {
-            "plan": "heroku-redis:hobby-dev",
-            "options": {
-                "version": 6
-            }
-        }
+        "heroku-postgresql:hobby-dev"
     ],
     "formation": {
-        "web": {"quantity": 2, "size": "standard-1x"},
-        "worker": {"quantity": 2, "size": "standard-1x"}
+        "web": {"quantity": 2, "size": "standard-1x"}
     },
     "env": {
         "APP_IMPORT": {
@@ -37,5 +30,10 @@
             "description": "Replace 'my-hemlock-app' with the application name.",
             "value": "https://my-hemlock-app.herokuapp.com"
         }
-    }
+    },
+    "buildpacks": [
+        {"url": "heroku/python"},
+        {"url": "https://github.com/heroku/heroku-buildpack-chromedriver"},
+        {"url": "https://github.com/heroku/heroku-buildpack-google-chrome"}
+    ]
 }

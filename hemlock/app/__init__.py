@@ -36,7 +36,7 @@ login_manager = LoginManager()
 login_manager.login_view = 'hemlock.index'
 login_manager.login_message = None
 # scheduler = APScheduler()
-socketio = SocketIO(async_mode='eventlet', logger=True, engineio_logger=True)
+socketio = SocketIO(async_mode='eventlet')
 manager = Manager(db=db, socketio=socketio)
 MutableManager.db = db
 talisman = Talisman()

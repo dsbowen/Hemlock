@@ -226,8 +226,10 @@ class FileCreator():
             yield self.btn.reset(stage, 0)
             updated = [part for part in parts if part.updated]
             for i, part in enumerate(updated):
-                if i % 10 == 1:
-                    yield self.btn.report(stage, 100.*i/len(updated))
+                if i % 10 == 0:
+                    # commit every 10 participants to avoid memory issues
+                    db.session.commit()
+                yield self.btn.report(stage, 100.*i/len(updated))
                 self.datastore.store_participant(part)
             yield self.btn.report(stage, 100)
 
@@ -247,7 +249,9 @@ class FileCreator():
             stored_ids_head = parts_head = 0
             while parts_head < len(parts):
                 if parts_head % 10 == 1:
-                    yield self.btn.report(stage, 100.*parts_head/len(parts))
+                    # commit every 10 participants to avoid memory issues
+                    db.session.commit()
+                yield self.btn.report(stage, 100.*parts_head/len(parts))
                 # Note: id of the participant at index parts_head is 
                 # parts_head + 1
                 if (
@@ -261,7 +265,6 @@ class FileCreator():
             yield self.btn.report(stage, 100)
 
         parts = Participant.query.order_by('id').all()
-        parts = [part for part in parts if part.status == 'Completed']
         for expr in store_updated():
             yield expr
         for expr in store_missing():

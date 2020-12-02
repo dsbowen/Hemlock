@@ -98,31 +98,31 @@ class Worker(WorkerMixin, Base, db.Model):
     Progress: 100%
     ```
 
+    Notes
+    -----
+
     To run redis in production on heroku:
 
-    1. Declare a worker process. Open `Procfile` and add the line `worker: rq worker -u $REDIS_URL hemlock-task-queue`.
-    1. Create a redis addon. Add `"heroku-redis:hobby-dev"` to `"addons"` in `app.json`.
-    2. Add a worker to your dyno formation. Add `"worker: {"quantity": 1, "size": "hobby"}` to `"formation"` in `app.json`.
-
-    After step 1, your `Procfile` should look like:
+    <b>1. Declare a worker process</b>
+    
+    In the root directory of your project, open `Procfile`. Add the line `worker: rq worker -u $REDIS_URL hemlock-task-queue`. Your `Procfile` should look like:
 
     ```
     web: gunicorn -k eventlet app:app
     worker: rq worker -u $REDIS_URL hemlock-task-queue
     ```
 
-    After steps 2 and 3, your `app.json` should look like:
+    <b>2. Create a redis addon and provision worker processes</b>
+
+    In the root directory of your project, open `app.json`.
+
+    To create a Redis addon, add `{"plan": "heroku-redis:hobby-dev", "options": {"version": 5}}` to your `addons`. To provision worker processes, add `"worker: {"quantity": 1, "size": "hobby"}` to your `formation`. In sum, the top of `app.json` will look like:
 
     ```json
     {
     \    "addons": [
     \        "heroku-postgresql:hobby-dev", 
-    \        {
-    \            "plan": "heroku-redis:premium-0",
-    \            "options": {
-    \                "version": 5
-    \            }
-    \        }
+    \        {"plan": "heroku-redis:hobby-dev", "options": {"version": 5}}
     \    ],
     \    "formation": {
     \        "web": {"quantity": 1, "size": "hobby"},
@@ -132,7 +132,22 @@ class Worker(WorkerMixin, Base, db.Model):
     ```
 
     When scaling for production, I recommend using the premium-1 redis plan, 
-    quantity 10, size standard-1x.
+    quantity 5, size standard-1x. So `app.json` will look like:
+
+    ```json
+    {
+    \    "addons": [
+    \        "heroku-postgresql:standard-1x", 
+    \        {"plan": "heroku-redis:premium-1", "options": {"version": 5}}
+    \    ],
+    \    "formation": {
+    \        "web": {"quantity": 10, "size": "standard-1x"},
+    \        "worker": {"quantity": 5, "size": "standard-1x"}
+    \    },
+        ...
+    ```
+
+    Note that I recommend redis version 5, rather than the latest version 6. Why? Heroku required you to manually set up TLS authentication for redis 6, which is a complicated process, whereas you can bypass TLS authentication using redis 5.
     """
     id = db.Column(db.Integer, primary_key=True)
     _compile_id = db.Column(db.Integer, db.ForeignKey('page.id'))

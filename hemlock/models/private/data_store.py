@@ -50,13 +50,14 @@ class DataStore(db.Model):
         self._current_status[part.status] += 1
         current_status = json.dumps(self.current_status)
         socketio.emit('json', current_status, namespace='/participants-nsp')
-        if part.status in ['Completed', 'TimedOut']:
-            self.store_participant(part)
     
     def store_participant(self, part):
         """Store data for given Participant"""
         self.remove_participant(part)
-        self.data.append(part.get_data())
+        self.data.append(
+            part.cached_data if part.status in ('Completed', 'TimedOut')
+            else part.get_data()
+        )
         part.updated = False
         
     def remove_participant(self, part):

@@ -196,7 +196,7 @@ def approve_assignments(
         )
         
     def send_bonus(x):
-        if x.Approve:
+        if x.Approve and x.BonusAmount > 0:
             client.send_bonus(
                 WorkerId=x.WorkerId,
                 BonusAmount=str(round(x.BonusAmount, 2)),
