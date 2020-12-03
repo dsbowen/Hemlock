@@ -122,7 +122,7 @@ class Question(Data):
             self, label=None, extra_css=[], extra_js=[], 
             form_group_class=['card', 'form-group', 'question'],
             form_group_attrs={}, 
-            error_attrs={'style': {'color': 'rgb(114,28,36)'}}, 
+            error_attrs={'class': ['alert', 'alert-danger']}, 
             **kwargs
         ):
         def add_extra(attr, extra):

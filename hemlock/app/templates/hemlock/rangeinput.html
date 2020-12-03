@@ -1,0 +1,34 @@
+{% extends 'hemlock/form-group.html' %}
+
+{% set value = q.response if q.has_responded else q.default %}
+{% if value is none %}
+    {% set value = "" %}
+{% endif %}
+{% block content %}
+    {% block input %}
+    <div class="container">
+        <div class="row">
+            <div class="input-group" style="width: {{ q.width }};">
+                {% if q.prepend is not none %}
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        {{ q.prepend | safe }}
+                    </span>
+                </div>
+                {% endif %}
+                <input id="{{ q.key }}" name="{{ q.key }}" {{ q.input_attrs.to_html() | safe }} value="{{ value }}">
+                {% if q.append is not none %}
+                <div class="input-group-append">
+                    <span class="input-group-text">
+                        {{ q.append | safe }}
+                    </span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="col">
+                <input id="{{ q.key }}-slider" class="custom-range align-middle h-100" type="range" min="{{ q.min }}" max="{{ q.max }}" step="{{ q.step }}">
+            </div>
+        </div>   
+    </div>
+    {% endblock %}
+{% endblock %}
