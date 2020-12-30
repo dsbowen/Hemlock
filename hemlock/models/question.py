@@ -7,6 +7,7 @@ most useful when fleshed out. See section on question polymorphs.
 from ..app import db
 from ..tools import key
 from .bases import Data
+from .private import CSSListType, JSListType
 
 from flask import render_template, request
 from sqlalchemy.ext.orderinglist import ordering_list
@@ -96,8 +97,8 @@ class Question(Data):
     # HTML attributes
     key = db.Column(db.String(10))
     template = db.Column(db.String)
-    css = db.Column(MutableListJSONType, default=[])
-    js = db.Column(MutableListJSONType, default=[])
+    css = db.Column(CSSListType, default=[])
+    js = db.Column(JSListType, default=[])
     form_group_class = db.Column(MutableListJSONType, default=[])
     form_group_attrs = db.Column(HTMLAttrsType, default={})
     error = db.Column(db.Text)
@@ -129,10 +130,7 @@ class Question(Data):
             # add extra css or javascript
             if extra:
                 assert isinstance(extra, (str, list))
-                if isinstance(extra, str):
-                    attr.append(extra)
-                else:
-                    attr += extra
+                attr += [extra] if isinstance(extra, str) else extra
 
         self.key = key(10)
         self.compile, self.debug, self.validate, self.submit = [], [], [], []
@@ -180,7 +178,7 @@ class Question(Data):
         return render_template(self.template, q=self)
 
     def _render_js(self):
-        return '\n'.join(self.js)
+        return self.js.render()
 
     def _record_response(self):
         self.has_responded = True

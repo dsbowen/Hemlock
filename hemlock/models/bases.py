@@ -125,7 +125,7 @@ class Data(Base, MutableModelBase, db.Model):
         'polymorphic_on': data_type
     }
 
-    data = db.Column(MutableJSONType)
+    data = db.Column(MutableType)
     data_rows = db.Column(db.Integer, default=1)
     index = db.Column(db.Integer)
     var = db.Column(db.Text)

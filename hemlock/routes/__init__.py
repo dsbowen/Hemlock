@@ -11,6 +11,14 @@ from flask_login import current_user, login_required
 
 from functools import wraps
 
+@bp.errorhandler(500)
+def internal_server_error(e):
+    # set in_progress to False to let the router know it should retry when the
+    # participant refreshes the page
+    current_user._router.in_progress = False
+    db.session.commit()
+    return current_app.settings['error_500_page'], 500
+
 def route(path, default=False):
     """Decorator for registering a view function
 
@@ -63,14 +71,13 @@ def init_app():
     Additionally, set a scheduler job to log the status periodically.
     """
     db.create_all()
-    # cache loading page
-    loading_page = current_app.settings.get('loading_page')
-    if callable(loading_page):
-        current_app.settings['loading_page'] = loading_page()
-    restart_page = current_app.settings.get('restart_page')
-    if callable(restart_page):
-        current_app.settings['restart_page'] = restart_page()
-    # create data store
+    # cache static pages
+    static_pages = ['loading_page', 'restart_page', 'error_500_page']
+    for page_key in static_pages:
+        page = current_app.settings[page_key]
+        if callable(page):
+            current_app.settings[page_key] = page()
+    # create datastore
     if not DataStore.query.first():
         db.session.add(DataStore())
     db.session.commit()

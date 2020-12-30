@@ -31,8 +31,9 @@ from ..app import db, settings
 from ..tools import img
 from .bases import BranchingBase
 from .embedded import Timer
-from .worker import Worker
 from .functions import Compile, Validate, Submit, Debug
+from .private import CSSListType, JSListType
+from .worker import Worker
 
 from bs4 import BeautifulSoup
 from flask import current_app, render_template, request
@@ -427,8 +428,10 @@ class Page(BranchingBase, db.Model):
 
     # HTML attibutes
     template = db.Column(db.String)
-    css = db.Column(MutableListJSONType)
-    js = db.Column(MutableListJSONType)
+    # css = db.Column(MutableListJSONType)
+    css = db.Column(CSSListType)
+    # js = db.Column(MutableListJSONType)
+    js = db.Column(JSListType)
     navbar = db.Column(db.Text)
     error = db.Column(db.Text)
     error_attrs = db.Column(HTMLAttrsType)
@@ -469,12 +472,10 @@ class Page(BranchingBase, db.Model):
         ):
         def add_extra(attr, extra):
             # add extra css or javascript
+            assert isinstance(extra, (str, list))
             if extra:
                 assert isinstance(extra, (str, list))
-                if isinstance(extra, str):
-                    attr.append(extra)
-                else:
-                    attr += extra
+                attr += [extra] if isinstance(extra, str) else extra
 
         self.questions = list(questions)
         self.run_compile = True

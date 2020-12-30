@@ -209,7 +209,7 @@ def show_on_event(
 
     ```python
     name = Input("<p>What's your name?</p>")
-    greet = Label("<p>Hello, World!</p>")
+    greet = Label("Hello, World!")
     show_on_event(greet, name, '(w|W)orld', regex=True, duration=400)
     Page(name, greet).preview()
     ```
@@ -269,7 +269,7 @@ def _show_on_event_js(
         # value corresponds to option
         choice, option = False, True        
     return render_template(
-        'hemlock/show-on-event.html', 
+        'hemlock/show-on-event.js', 
         target=target, 
         condition=condition,
         choice=choice,

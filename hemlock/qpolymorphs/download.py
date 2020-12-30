@@ -52,4 +52,4 @@ class Download(DownloadBtnMixin, Question):
         super().__init__(label=label, template=template, **kwargs)
 
     def _render_js(self):
-        return '\n'.join(self.js + [self.render_script()])
+        return self.js.render() + self.render_script()

@@ -111,6 +111,7 @@ See <https://dsbowen.github.io/flask-worker/manager/> for more detail on
 Manager settings.
 """
 
+from flask import render_template
 from werkzeug.security import generate_password_hash
 
 import os
@@ -138,11 +139,11 @@ def gen_loading_page():
     return Page(
         Label(
             '''
-            The next page will be ready momentarily. Try refreshing the page
-            in a few seconds
+            The next page should load automatically in a few seconds.
             '''
         ),
-        forward=False
+        forward=False,
+        extra_js=render_template('hemlock/loading.js')
     )._render()
 
 def gen_restart_page():
@@ -161,10 +162,25 @@ def gen_restart_page():
         back=True
     )._render()
 
+def gen_500_page():
+    from ..models import Page
+    from ..qpolymorphs import Label
+
+    return Page(
+        Label(
+            """
+            <p>The application encountered an error. <b>Try refreshing the page</b> (this usually solves the problem).</p> 
+            If you keep getting an error, contact the survey administrator. We apologize for the inconvenience and thank your for your patience while we resolve the issue.
+            """
+        ),
+        forward=False
+    )._render()
+
 settings = dict(
     clean_data=None,
     collect_IP=True,
     duplicate_keys=[],
+    error_500_page=gen_500_page,
     loading_page=gen_loading_page,
     restart_option=True,
     restart_page=gen_restart_page,

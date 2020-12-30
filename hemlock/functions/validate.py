@@ -16,7 +16,7 @@ from operator import __ge__, __le__
 
 # Require and type validation
 
-RESP_TYPE_MSG = '<p>Please enter {}.</p>'
+RESP_TYPE_MSG = 'Please enter {}'
 
 @Validate.register
 def response_type(question, resp_type):
@@ -58,7 +58,7 @@ def response_type(question, resp_type):
             return RESP_TYPE_MSG.format('a number')
         return RESP_TYPE_MSG.format('the correct type of response')
 
-REQUIRE_MSG = '<p>Please respond to this question.</p>'
+REQUIRE_MSG = 'Please respond to this question'
 
 @Validate.register
 def require(question):
@@ -91,7 +91,7 @@ def require(question):
 
 # Set validation
 
-IS_IN_MSG = '<p>Please enter {}.</p>'
+IS_IN_MSG = 'Please enter {}'
 
 @Validate.register
 def is_in(question, valid_set, resp_type=None):
@@ -131,7 +131,7 @@ def is_in(question, valid_set, resp_type=None):
     if resp not in valid_set:
         return IS_IN_MSG.format(join('or', *valid_set))
 
-NOT_IN_MSG = '<p>Please do not enter {}.</p>'
+NOT_IN_MSG = 'Please do not enter {}'
 
 @Validate.register
 def is_not_in(question, invalid_set, resp_type=None):
@@ -177,7 +177,7 @@ def is_not_in(question, invalid_set, resp_type=None):
 
 # Range validation
 
-MAX_MSG = '<p>Please enter a response less than {}.</p>'
+MAX_MSG = 'Please enter a response less than {}'
 
 @Validate.register
 def max_val(question, max_, resp_type=None):
@@ -215,7 +215,7 @@ def max_val(question, max_, resp_type=None):
     error_msg = MAX_MSG.format(max_)
     return _compare_resp(question, max_, __le__, error_msg, resp_type)
 
-MIN_MSG = '<p>Please enter a response greater than {}.</p>'
+MIN_MSG = 'Please enter a response greater than {}'
 
 @Validate.register
 def min_val(question, min_, resp_type=None):
@@ -281,7 +281,7 @@ def _compare_resp(question, val, comparator, error_msg, resp_type=None):
     if not comparator(resp_type(question.response), val):
         return error_msg
 
-RANGE_MSG = '<p>Please enter a response between {0} and {1}.</p>'
+RANGE_MSG = 'Please enter a response between {0} and {1}'
 
 @Validate.register
 def range_val(question, min_, max_, resp_type=None):
@@ -331,8 +331,8 @@ def range_val(question, min_, max_, resp_type=None):
 
 # Length validation
 
-EXACT_CHOICES_MSG = '<p>Please select exactly {0} {choice}.</p>'
-EXACT_LEN_MSG = '<p>Please enter exactly {0} {character}.</p>'
+EXACT_CHOICES_MSG = 'Please select exactly {0} {choice}'
+EXACT_LEN_MSG = 'Please enter exactly {0} {character}'
 
 @Validate.register
 def exact_len(question, len_):
@@ -375,8 +375,8 @@ def exact_len(question, len_):
         return EXACT_CHOICES_MSG.format(len_, choice=plural(len_, 'choice'))
     return EXACT_LEN_MSG.format(len_, character=plural(len_, 'character'))
 
-MAX_CHOICES_MSG = '<p>Please select at most {0} {choice}.</p>'
-MAX_LEN_MSG = '<p>Please enter at most {0} {character}.</p>'
+MAX_CHOICES_MSG = 'Please select at most {0} {choice}'
+MAX_LEN_MSG = 'Please enter at most {0} {character}'
 
 @Validate.register
 def max_len(question, max_):
@@ -423,8 +423,8 @@ def max_len(question, max_):
         return MAX_CHOICES_MSG.format(max_, choice=plural(max_, 'choice'))
     return MAX_LEN_MSG.format(max_, character=plural(max_, 'character'))
 
-MIN_CHOICES_MSG = '<p>Please select at least {0} {choice}.</p>'
-MIN_LEN_MSG = '<p>Please enter at least {0} {character}.</p>'
+MIN_CHOICES_MSG = 'Please select at least {0} {choice}'
+MIN_LEN_MSG = 'Please enter at least {0} {character}'
 
 @Validate.register
 def min_len(question, min_):
@@ -469,8 +469,8 @@ def min_len(question, min_):
         return MIN_CHOICES_MSG.format(min_, choice=plural(min_, 'choice'))
     return MIN_LEN_MSG.format(min_, character=plural(min_, 'character'))
 
-RANGE_CHOICES_MSG = '<p>Please select between {0} and {1} choices.</p>'
-RANGE_LEN_MSG = '<p>Please enter between {0} and {1} characters.</p>'
+RANGE_CHOICES_MSG = 'Please select between {0} and {1} choices'
+RANGE_LEN_MSG = 'Please enter between {0} and {1} characters'
 
 @Validate.register
 def range_len(question, min_, max_):
@@ -520,7 +520,7 @@ def range_len(question, min_, max_):
 
 # Words validation
 
-EXACT_WORDS_MSG = '<p>Please enter exactly {0} {word}.</p>'
+EXACT_WORDS_MSG = 'Please enter exactly {0} {word}'
 
 @Validate.register
 def exact_words(question, nwords):
@@ -560,7 +560,7 @@ def exact_words(question, nwords):
     if _num_words(question.response) != nwords:
         return EXACT_WORDS_MSG.format(nwords, word=plural(nwords, 'word'))
 
-MAX_WORDS_MSG = '<p>Please enter at most {0} {word}.</p>'
+MAX_WORDS_MSG = 'Please enter at most {0} {word}'
 
 @Validate.register
 def max_words(question, max_):
@@ -598,7 +598,7 @@ def max_words(question, max_):
     if _num_words(question.response) > max_:
         return MAX_WORDS_MSG.format(max_, word=plural(max_,'word'))
 
-MIN_WORDS_MSG = '<p>Please enter at least {0} {word}.</p>'
+MIN_WORDS_MSG = 'Please enter at least {0} {word}'
 
 @Validate.register
 def min_words(question, min_):
@@ -639,7 +639,7 @@ def min_words(question, min_):
     if _num_words(question.response) < min_:
         return MIN_WORDS_MSG.format(min_, word=plural(min_,'word'))
 
-RANGE_WORDS_MSG = '<p>Please enter between {0} and {1} words.</p>'
+RANGE_WORDS_MSG = 'Please enter between {0} and {1} words'
 
 @Validate.register
 def range_words(question, min_, max_):
@@ -689,7 +689,7 @@ def _num_words(string):
 
 # Decimal validation
 
-EXACT_DECIMALS = '<p>Please enter a number with exactly {0} {decimal}.</p>'
+EXACT_DECIMALS = 'Please enter a number with exactly {0} {decimal}'
 
 @Validate.register
 def exact_decimals(question, ndec):
@@ -727,7 +727,7 @@ def exact_decimals(question, ndec):
     if decimals != ndec:
         return EXACT_DECIMALS.format(ndec, decimal=plural(ndec, 'decimal'))
 
-MAX_DECIMALS = '<p>Please enter a number with at most {0} {decimal}.</p>'
+MAX_DECIMALS = 'Please enter a number with at most {0} {decimal}'
 
 @Validate.register
 def max_decimals(question, max_):
@@ -765,7 +765,7 @@ def max_decimals(question, max_):
     if decimals > max_:
         return MAX_DECIMALS.format(max_, decimal=plural(max_, 'decimal'))
 
-MIN_DECIMALS = '<p>Please enter a number with at least {0} {decimal}.</p>'
+MIN_DECIMALS = 'Please enter a number with at least {0} {decimal}'
 
 @Validate.register
 def min_decimals(question, min_):
@@ -803,7 +803,7 @@ def min_decimals(question, min_):
     if decimals < min_:
         return MIN_DECIMALS.format(min_, decimal=plural(min_, 'decimal'))
 
-RANGE_DECIMALS = '<p>Please enter a number with {0} to {1} decimals.</p>'
+RANGE_DECIMALS = 'Please enter a number with {0} to {1} decimals'
 
 @Validate.register
 def range_decimals(question, min_, max_):
@@ -859,7 +859,7 @@ def _get_decimals(question):
 
 # Regex validation
 
-REGEX_MSG = '<p>Please enter a response with the correct pattern.</p>'
+REGEX_MSG = 'Please enter a response with the correct pattern'
 
 @Validate.register
 def match(question, pattern):

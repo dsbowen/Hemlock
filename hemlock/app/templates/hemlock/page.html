@@ -6,9 +6,9 @@
         {% block head %}
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        {{ page.css | join(" ") | safe }}
+        {{ page.css.render() | safe }}
         {% for q in page.questions %}
-            {{ q.css | join(" ") | safe }}
+            {{ q.css.render() | safe }}
         {% endfor %}
         {% endblock %}
     </head>
@@ -51,13 +51,15 @@
                     {% endif %}
                     <p style="clear:both;"><br></p>
         
+                    {% if page.banner is not none %}
                     <div id="banner">{{ page.banner | safe }}</div>
+                    {% endif %}
                 {% endblock %}
                 </form>
             </div>
         </div>
 
-        {{ page.js | join(" ") | safe }}
+        {{ page.js.render() | safe }}
         {% for q in page.questions %}
             {{ q._render_js() | safe }}
         {% endfor %}

@@ -49,7 +49,7 @@ def consent_page(
             required=require,
             debug=D.send_keys('test'),
             validate=V.match(
-                id_q, error_msg='<p>IDs do not match</p>'
+                id_q, error_msg='IDs do not match'
             )
         )
     )

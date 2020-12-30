@@ -1,8 +1,5 @@
 """# Application factory and settings"""
 
-# import eventlet
-# eventlet.monkey_patch(socket=True)
-
 from .settings import settings
 
 import pandas as pd

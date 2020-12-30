@@ -1,4 +1,3 @@
-<script>
 $(document).ready(function() {
     {% if option %}
         // the condition is a select element
@@ -36,4 +35,3 @@ $(document).ready(function() {
         show_on_event({{ duration }}); 
     });
 })
-</script>
