@@ -1,3 +1,5 @@
+"""# MTurk utilities"""
+
 from .random import key
 
 import numpy as np

@@ -141,7 +141,11 @@ jupyter-notebook : x.x.x
 ...
 ```
 
-## Google chrome
+## Google chrome and Chromedriver for WSL 1
+
+Follow these instructions if using WSL 1.
+
+### Google chrome
 
 Hemlock is developed and tested primarily on chrome. <a href="https://www.google.com/chrome/" target="_blank">Download chrome here</a>.
 
@@ -174,7 +178,7 @@ Now try again to open the webbrowser.
 
 If you came here from the tutorial, you're now ready to return to it and get started with your first hemlock project. [Click here to go back to the First Project section of the tutorial](../tutorial/first_project.md).
 
-## Chromedriver
+### Chromedriver
 
 Hemlock's custom debugging tool and survey view functions use <a href="https://chromedriver.chromium.org/downloads" target="_blank">chromedriver</a>. To use these features locally, you'll need to download chromedriver:
 
@@ -203,6 +207,12 @@ Chromedriver should still be in your path, which you can verify:
 $ which chromedriver
 /mnt/c/users/<my-windows-username>/webdrivers/chromedriver
 ```
+
+If you came here from the Debug section of the tutorial, you're now ready to return to it and run the debugger. [Click here to go back to the Debug section of the tutorial](../tutorial/debug.md).
+
+## Google chrome and chromedriver for WSL 2
+
+Follow <a href="https://www.gregbrisebois.com/posts/chromedriver-in-wsl2/" target="_blank">these instructions</a> if using WSL 2. Make sure you allow X server to access public networks. If you don't, <a href="https://skeptric.com/wsl2-xserver/" target="_blank">here</a> and <a href="https://github.com/cascadium/wsl-windows-toolbar-launcher#firewall-rules" target="_blank">here</a> for troubleshooting.
 
 If you came here from the Debug section of the tutorial, you're now ready to return to it and run the debugger. [Click here to go back to the Debug section of the tutorial](../tutorial/debug.md).
 

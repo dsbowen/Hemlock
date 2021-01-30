@@ -26,7 +26,7 @@ class ChoiceBase(InputBase, Base):
 
     Parameters
     ----------
-    label : str or bs4.BeautifulSoup, default=''
+    label : str or None, default=None
         Choice label.
 
     template : str
@@ -50,7 +50,7 @@ class ChoiceBase(InputBase, Base):
     key : str
         Randomly generated from ascii letters and digits.
 
-    label : str or bs4.BeautifulSoup
+    label : str
         Set from the `label` parameter.
 
     value : 
@@ -176,11 +176,11 @@ class Choice(ChoiceBase):
 
     Parameters
     ----------
-    label : str or bs4.BeautifulSoup, default=''
+    label : str or None, default=None
         Choice label.
 
     template : str, default='hemlock/choice.html'
-        Template for the choice `body`.
+        File name of the choice template.
 
     \*\*kwargs :
         Set the choice's value and name using keyword arguments.
@@ -262,11 +262,11 @@ class Option(ChoiceBase):
 
     Parameters
     ----------
-    label : str or bs4.BeautifulSoup, default=''
+    label : str or None, default=None
         Choice label.
 
     template : str, default='hemlock/option.html'
-        Template for the choice `body`.
+        File name of the option template.
 
     \*\*kwargs :
         Set the choice's value and name using keyword arguments.

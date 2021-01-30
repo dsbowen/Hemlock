@@ -189,7 +189,7 @@ class Page(BranchingBase, db.Model):
     Pages are queued in a branch. A page contains a list of questions which it
     displays to the participant in index order.
     
-    It inherits from [`hemlock.model.HTMLMixin`](bases.md).
+    It inherits from [`hemlock.model.BranchingBase`](bases.md).
 
     Parameters
     ----------
@@ -199,6 +199,17 @@ class Page(BranchingBase, db.Model):
     template : str, default='hemlock/page-body.html'
         Template for the page `body`.
 
+    extra_css : list, default=[]
+        List of extra css elements to add to the default css.
+
+    extra_js : list, default=[]
+        List of extra javascript elements to add to the default 
+        javascript.
+
+    delay_forward : int or None, default=None
+        Number of milliseconds for which to hide the forward button when the 
+        page is first displayed.
+
     Attributes
     ----------
     back : str or None, default=None
@@ -206,13 +217,19 @@ class Page(BranchingBase, db.Model):
         page. You may also set `back` to `True`, which will set the text to 
         `'<<'`.
 
-    banner : str or bs4.Tag, default=hemlock banner
+    back_btn_attrs : dict or None, default=None
+        Dictionary of HTML attributes for the back button.
+
+    banner : str or None
         Banner at the bottom of the page.
 
     cache_compile : bool, default=False
         Indicates that this page should cache the result of its compile 
         functions. Specifically, it removes all compile functions and the 
         compile worker from the page self `self._compile` is called.
+
+    css : list
+        List of css elements.
 
     direction_from : str or None, default=None
         Direction in which the participant navigated from this page. Possible 
@@ -223,20 +240,29 @@ class Page(BranchingBase, db.Model):
         values are `'back'`, `'invalid'`, and `'forward'`.
 
     error : str or None, default=None
-        Text of the page error message.
+        Error message.
+
+    error_attrs : dict
+        Dicitonary of HTML attributes for the error alert.
 
     forward : str or None, default='>>'
         Text of the forward button. If `None`, no forward button will appear 
         on the page. You may also set `forward` to `True`, which will set the 
         text to `'>>'`.
 
-    g : dict, default={}
-        Dictionary of miscellaneous objects.
+    forward_btn_attrs : dict
+        Dictionary of HTML attributes for the forward button.
+
+    g : misc, default=None
+        A miscellaneous object.
 
     index : int or None, default=None
         Order in which this page appears in its branch's page queue.
 
-    navbar : sqlalchemy_mutablesoup.MutableSoupType
+    js : list
+        List of javascript elements.
+
+    navbar : str or None, default=None
         Navigation bar.
 
     terminal : bool, default=False
@@ -328,8 +354,24 @@ class Page(BranchingBase, db.Model):
 
     app = push_app_context()
 
-    Page(Label('<p>Hello World</p>')).preview()
+    Page(Label('Hello World')).preview()
     ```
+
+    Notes
+    -----
+    A CSS element can be any of the following:
+
+    1. Link tag (str) e.g., `'<link rel="stylesheet" href="https://my-css-url">'`
+    2. Href (str) e.g., `"https://my-css-url"`
+    3. Style dictionary (dict) e.g., `{'body': {'background': 'coral'}}`
+
+    The style dictionary maps a css selector to an attributes dictionary. The attributes dictionary maps attribute names to values.
+
+    A javascript element can be any of the following:
+
+    1. Attributes dictionary (dict) e.g., `{'src': 'https://my-js-url'}`
+    2. JS code (str)
+    3. Tuple of (attributes dictionary, js code)
     """
     id = db.Column(db.Integer, primary_key=True)
     
@@ -421,16 +463,14 @@ class Page(BranchingBase, db.Model):
         'submit_worker', 
         'navigate_worker'
     )
-    def set_worker(self, key, worker):
+    def _set_worker(self, key, worker):
         if not worker:
             return
         return worker if isinstance(worker, Worker) else Worker()
 
     # HTML attibutes
     template = db.Column(db.String)
-    # css = db.Column(MutableListJSONType)
     css = db.Column(CSSListType)
-    # js = db.Column(MutableListJSONType)
     js = db.Column(JSListType)
     navbar = db.Column(db.Text)
     error = db.Column(db.Text)
@@ -442,7 +482,7 @@ class Page(BranchingBase, db.Model):
     banner = db.Column(db.Text)
 
     @validates('forward', 'back')
-    def validate_direction(self, key, val):
+    def _validate_direction(self, key, val):
         if not val:
             return None
         if val is True:

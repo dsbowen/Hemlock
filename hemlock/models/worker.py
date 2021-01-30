@@ -32,11 +32,11 @@ class Worker(WorkerMixin, Base, db.Model):
     def start():
     \    return Branch(
     \        Page(
-    \            Label('<p>Hello, World!</p>')
+    \            Label('Hello, World!')
     \        ),
     \        Page(
     \            Label(
-    \                '<p>Goodbye, Moon!</p>',
+    \                'Goodbye, Moon!',
     \                compile=C.complex_function(seconds=5)
     \            ),
     \            compile_worker=True,
@@ -76,7 +76,7 @@ class Worker(WorkerMixin, Base, db.Model):
     variable and run a redis queue from your project's root directory.
 
     **Note.** Windows cannot run redis natively. To run redis on Windows, use 
-    [Windows Subsystem for Linux](setup/wsl.md).
+    [Windows Subsystem for Linux](../setup/wsl.md).
 
     If using the hemlock template and hemlock-CLI:
 
@@ -147,7 +147,9 @@ class Worker(WorkerMixin, Base, db.Model):
         ...
     ```
 
-    Note that I recommend redis version 5, rather than the latest version 6. Why? Heroku required you to manually set up TLS authentication for redis 6, which is a complicated process, whereas you can bypass TLS authentication using redis 5.
+    Notes
+    -----
+    I recommend redis version 5, rather than the latest version 6. Why? Heroku required you to manually set up TLS authentication for redis 6, which is a complicated process, whereas you can bypass TLS authentication using redis 5.
     """
     id = db.Column(db.Integer, primary_key=True)
     _compile_id = db.Column(db.Integer, db.ForeignKey('page.id'))

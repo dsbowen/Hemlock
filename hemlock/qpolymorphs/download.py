@@ -17,7 +17,7 @@ class Download(DownloadBtnMixin, Question):
 
     Inherits from 
     [`flask_download_btn.DownloadBtnMixin`](https://dsbowen.github.io/flask-download-btn/download_btn_mixin/) and 
-    [`hemlock.Question`](question.md).
+    [`hemlock.Question`](../models/question.md).
 
     Parameters
     ----------

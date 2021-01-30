@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="hemlock-survey",
-    version="0.0.39",
+    version="0.0.42",
     author="Dillon Bowen",
     author_email="dsbowen@wharton.upenn.edu",
     description="A package for creating and deploying surveys",
@@ -22,7 +22,7 @@ setuptools.setup(
         'flask>=1.1.1',
         'flask-download-btn>=0.0.22',
         'flask-login>=0.4.1',
-        'flask-socketio>=4.2.1',
+        'flask-socketio==4.3.2', # 5.0.0 and later is giving a strange error message; check back for resolution https://github.com/miguelgrinberg/Flask-SocketIO/issues/1432
         'flask-sqlalchemy>=2.4.1',
         'flask-talisman>=0.7.0',
         'flask-worker>=0.0.14',
@@ -34,8 +34,7 @@ setuptools.setup(
         'selenium-tools>=0.0.1',
         'sqlalchemy>=1.3.12',
         'sqlalchemy-modelid>=0.0.3',
-        'sqlalchemy-mutable>=0.0.10',
-        'sqlalchemy-orderingitem>=0.0.5',
+        'sqlalchemy-mutable>=0.0.11',
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

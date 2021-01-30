@@ -21,7 +21,7 @@ class Range(InputBase, Question):
     increments.
 
     Inherits from [`hemlock.InputBase`](bases.md) and 
-    [`hemlock.Question`](question.md).
+    [`hemlock.Question`](../models/question.md).
 
     Parameters
     ----------
@@ -68,14 +68,14 @@ class RangeInput(InputBase, Question):
     Range slider with an input field.
 
     Inherits from [`hemlock.InputBase`](bases.md) and 
-    [`hemlock.Question`](question.md).
+    [`hemlock.Question`](../models/question.md).
 
     Parameters
     ----------
     label : str or None, default=None
         Range label.
 
-    template : str, default='hemlock/range.html'
+    template : str, default='hemlock/rangeinput.html'
         Template for the range body.
 
     width : str, default='5em'

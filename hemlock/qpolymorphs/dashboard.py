@@ -18,7 +18,7 @@ class Dashboard(Question):
 
     Parameters
     ----------
-    label : str or bs4.BeautifulSoup, default=''
+    label : str or None, default=None
         Dashboard label.
 
     template : str, default='hemlock/dash.html'
@@ -59,7 +59,7 @@ class Dashboard(Question):
     \            Dashboard(src='/dashapp/', var='n_clicks')
     \        ),
     \        Page(
-    \            Label('<p>The end.</p>'),
+    \            Label('The end.'),
     \            terminal=True
     \        )
     \    )

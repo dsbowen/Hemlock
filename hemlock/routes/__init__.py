@@ -2,7 +2,6 @@
 
 from ..app import bp, db
 from ..models import Participant
-from ..models.private import DataStore
 from . import participant
 from . import researcher
 
@@ -63,21 +62,3 @@ def get_part():
         part = Participant.query.get(part_id)
         assert part_key == part._key
     return part
-
-@bp.before_app_first_request
-def init_app():
-    """Create database tables and initialize data storage models
-    
-    Additionally, set a scheduler job to log the status periodically.
-    """
-    db.create_all()
-    # cache static pages
-    static_pages = ['loading_page', 'restart_page', 'error_500_page']
-    for page_key in static_pages:
-        page = current_app.settings[page_key]
-        if callable(page):
-            current_app.settings[page_key] = page()
-    # create datastore
-    if not DataStore.query.first():
-        db.session.add(DataStore())
-    db.session.commit()

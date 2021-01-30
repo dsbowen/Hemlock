@@ -14,12 +14,12 @@ class Textarea(InputBase, Question):
     """
     Textareas provide large text boxes for free responses.
 
-    Inherits from [`hemlock.qpolymorphs.InputGroup`](input_group.md) and 
-    [`hemlock.Question`](question.md).
+    Inherits from [`hemlock.qpolymorphs.InputBase`](bases.md) and 
+    [`hemlock.Question`](../models/question.md).
 
     Parameters
     ----------
-    label : str or bs4.BeautifulSoup, default=''
+    label : str, default=None
         Textarea label.
 
     template : str, default='hemlock/textarea.html'

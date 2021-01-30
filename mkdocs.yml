@@ -34,38 +34,41 @@ nav:
     - Setting and initialization: app.md
     - Debugging: debug.md
   - Functions:
-    - Compile: compile_functions.md
-    - Debug: debug_functions.md
-    - Submit: submit_functions.md
-    - Validate: validate_functions.md
+    - Compile: functions/compile.md
+    - Debug: functions/debug.md
+    - Submit: functions/submit.md
+    - Validate: functions/validate.md
   - Models:
-    - Bases: bases.md
-    - Branch: branch.md
-    - Choice: choice.md
-    - Embedded data and timers: embedded.md
-    - Function models: functions.md
-    - Page: page.md
-    - Participant: participant.md
-    - Question: question.md
-    - Worker: worker.md
+    - Bases: models/bases.md
+    - Branch: models/branch.md
+    - Embedded data and timers: models/embedded.md
+    - Function models: models/functions.md
+    - Page: models/page.md
+    - Participant: models/participant.md
+    - Question: models/question.md
+    - Worker: models/worker.md
   - Question polymorphs:
-    - Check: check.md
-    - Dashboard: dashboard.md
-    - Download: download.md
-    - File upload: file.md
-    - Input: input.md
-    - Input group: input_group.md
-    - Label: label.md
-    - Range: range.md
-    - Select: select.md
-    - Textarea: textarea.md
+    - Bases: questions/bases.md
+    - Blank: questions/blank.md
+    - Check: questions/check.md
+    - Choice: questions/choice.md
+    - Dashboard: questions/dashboard.md
+    - Download: questions/download.md
+    - File upload: questions/file.md
+    - Input: questions/input.md
+    - Label: questions/label.md
+    - Range: questions/range.md
+    - Select: questions/select.md
+    - Textarea: questions/textarea.md
   - Tools:
-    - Comprehension check: comprehension.md
-    - Language: lang.md
-    - Navbar: navbar.md
-    - Randomization: random.md
-    - Statics: statics.md
-    - Utilities: utils.md
+    - Comprehension check: tools/comprehension.md
+    - Language: tools/lang.md
+    - MTurk: tools/mturk.md
+    - Navbar: tools/navbar.md
+    - Randomization: tools/random.md
+    - Statics: tools/statics.md
+    - Titrate: tools/titrate.md
+    - Utilities: tools/utils.md
   - Security: security.md
   - Changelog: changelog.md
   - Acknowledgements: acknowledgements.md

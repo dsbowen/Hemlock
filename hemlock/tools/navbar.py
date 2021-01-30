@@ -17,8 +17,8 @@ navbar = Navbar(
 \        (
 \            'Tools', 
 \            [
-\                ('Language', href=url_root+'lang'),
-\                ('Navbar', href=url_root+'navbar')
+\                ('Language', href=url_root+'tools/lang'),
+\                ('Navbar', href=url_root+'tools/navbar')
 \           ]
 \        )
 \    ], 

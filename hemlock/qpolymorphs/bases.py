@@ -1,3 +1,5 @@
+"""# Base for input questions"""
+
 from ..app import db
 from ..models import Question
 
@@ -5,6 +7,11 @@ from sqlalchemy_mutable import HTMLAttrsType
 
 
 class InputBase():
+    """
+    This base class provides methods useful for debugging. Additionally, when 
+    setting and getting attributes, it intercepts and automatically handles 
+    input tag HTML attribues.
+    """
     _input_attr_names = [
         'class',
         'type',

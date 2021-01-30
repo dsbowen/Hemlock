@@ -23,7 +23,7 @@ function_filenames = ('compile', 'debug', 'submit', 'validate')
 for filename in function_filenames:
     path = os.path.join('hemlock/functions', filename+'.py')
     soup = PySoup(path=path, src_href=src_href)
-    outfile = os.path.join('docs_md', filename+'_functions.md')
+    outfile = os.path.join('docs_md/functions', filename+'.md')
     compile_md(soup, outfile=outfile)
 
 # models
@@ -36,11 +36,11 @@ def mod_question(soup):
     check.rm_methods('validate_choice')
 
 modifications = {'bases': mod_base, 'question': mod_question}
+modifications = {}
 
 model_filenames = [
     'bases',
     'branch',
-    'choice',
     'embedded',
     'functions',
     'page',
@@ -57,7 +57,7 @@ for filename in model_filenames:
     func = modifications.get(filename)
     if func:
         func(soup)
-    outfile = os.path.join('docs_md', filename+'.md')
+    outfile = os.path.join('docs_md/models', filename+'.md')
     compile_md(soup, outfile=outfile)
 
 # question polymorphs
@@ -71,14 +71,17 @@ modifications = {
     'input_group': mod_input_group,
     'check': mod_check
 }
+modifications = {}
 
 qpolymorph_filenames = [
+    'bases',
+    'blank',
     'check',
+    'choice',
     'dashboard',
     'download',
     'file',
     'input',
-    'input_group',
     'label',
     'range',
     'select',
@@ -93,16 +96,18 @@ for filename in qpolymorph_filenames:
     func = modifications.get(filename)
     if func:
         func(soup)
-    outfile = os.path.join('docs_md', filename+'.md')
+    outfile = os.path.join('docs_md/questions', filename+'.md')
     compile_md(soup, outfile=outfile)
 
 # tools
 tools_filenames = [
     'comprehension',
     'lang',
+    'mturk',
     'navbar',
     'random',
     'statics',
+    'titrate',
     'utils',
 ]
 
@@ -111,5 +116,5 @@ for filename in tools_filenames:
     soup = PySoup(path=path, parser='sklearn', src_href=src_href)
     soup.import_path = 'hemlock/tools'
     soup.rm_properties()
-    outfile = os.path.join('docs_md', filename+'.md')
+    outfile = os.path.join('docs_md/tools', filename+'.md')
     compile_md(soup, compiler='sklearn', outfile=outfile)

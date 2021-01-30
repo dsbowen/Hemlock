@@ -25,7 +25,7 @@ class Label(Question):
 
     app = push_app_context()
 
-    Page(Label('<p>Hello World</p>')).preview()
+    Page(Label('Hello World')).preview()
     ```
     """
     id = db.Column(db.Integer, db.ForeignKey('question.id'), primary_key=True)

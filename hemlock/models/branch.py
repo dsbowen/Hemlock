@@ -72,9 +72,9 @@ class Branch(BranchingBase, db.Model):
     app = push_app_context()
 
     Branch(
-    \    Page(Label('<p>Hello World</p>')),
-    \    Page(Label('<p>Hello Moon</p>')),
-    \    Page(Label('<p>Hello Star</p>'))
+    \    Page(Label('Hello World')),
+    \    Page(Label('Hello Moon')),
+    \    Page(Label('Hello Star'))
     ).preview()
     ```
 
@@ -147,7 +147,7 @@ class Branch(BranchingBase, db.Model):
     )
 
     @validates('navigate_worker')
-    def set_worker(self, key, worker):
+    def _set_worker(self, key, worker):
         if not worker:
             return
         return worker if isinstance(worker, Worker) else Worker()

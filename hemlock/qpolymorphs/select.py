@@ -19,19 +19,19 @@ class Select(InputBase, ChoiceQuestion):
     Select questions allow participants to select one or more options from a 
     dropdown menu.
 
-    Inherits from [`hemlock.InputGroup`](input_group.md) and 
-    [`hemlock.ChoiceQuestion`](question.md).
+    Inherits from [`hemlock.InputBase`](bases.md) and 
+    [`hemlock.ChoiceQuestion`](../models/question.md).
 
     Its default debug function is
-    [`click_choices`](debug_functions.md#hemlockfunctionsdebugclick_choices).
+    [`click_choices`](../functions/debug.md#hemlockfunctionsdebugclick_choices).
 
     Parameters
     ----------
-    label : str or bs4.BeautifulSoup, default=''
+    label : str or None, default=None
         Select question label.
 
     choices : list of hemlock.Option, str, tuple, or dict, default=[]
-        Options which participants can select.
+        Options the participant can select.
 
     template : str, default='hemlock/select.html'
         Template for the select body.
@@ -56,6 +56,16 @@ class Select(InputBase, ChoiceQuestion):
 
     Page(Select('<p>Select one.</p>', ['World','Moon','Star'])).preview()
     ```
+
+    Notes
+    -----
+    An option can be input as any of the following:
+
+    1. `Option` object.
+    2. `str`, treated as the choice label.
+    3. `(choice label, value)` tuple.
+    4. `(choice label, value, name)` tuple.
+    5. Dictionary with choice keyword arguments.
     """
     id = db.Column(db.Integer, db.ForeignKey('question.id'), primary_key=True)
     __mapper_args__ = {'polymorphic_identity': 'select'}

@@ -156,8 +156,7 @@ def match_found(visitor, tracked, keys):
 
 @bp.route('/screenout')
 def screenout():
-    p = Page(Label(current_app.settings['screenout_text']), forward=False)
-    return p._compile()._render()
+    return current_app.settings['screenout_page']
     
 @bp.route('/restart', methods=['GET','POST'])
 @login_required
