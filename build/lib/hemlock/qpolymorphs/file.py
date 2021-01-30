@@ -49,13 +49,12 @@ class File(InputBase, Question):
     """
     Allows participants to upload files.
 
-    Inherits from [`hemlock.qpolymorphs.InputGroup`](input_group.md), 
-    [`hemlock.models.InputBase`](bases.md), and 
-    [`hemlock.Question`](question.md).
+    Inherits from [`hemlock.qpolymorphs.InputBase`](bases.md)
+    and [`hemlock.Question`](../models/question.md).
 
     Parameters
     ----------
-    label : str or bs4.BeautifulSoup, default=''
+    label : str or None, default=None
         Upload file label.
 
     template : str, default='hemlock/file.html'

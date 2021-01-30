@@ -2,7 +2,6 @@
 
 from ..app import bp, db
 from ..models import Participant
-from ..models.private import DataStore
 from . import participant
 from . import researcher
 
@@ -10,6 +9,14 @@ from flask import current_app, session, request
 from flask_login import current_user, login_required
 
 from functools import wraps
+
+@bp.errorhandler(500)
+def internal_server_error(e):
+    # set in_progress to False to let the router know it should retry when the
+    # participant refreshes the page
+    current_user._router.in_progress = False
+    db.session.commit()
+    return current_app.settings['error_500_page'], 500
 
 def route(path, default=False):
     """Decorator for registering a view function
@@ -55,22 +62,3 @@ def get_part():
         part = Participant.query.get(part_id)
         assert part_key == part._key
     return part
-
-@bp.before_app_first_request
-def init_app():
-    """Create database tables and initialize data storage models
-    
-    Additionally, set a scheduler job to log the status periodically.
-    """
-    db.create_all()
-    # cache loading page
-    loading_page = current_app.settings.get('loading_page')
-    if callable(loading_page):
-        current_app.settings['loading_page'] = loading_page()
-    restart_page = current_app.settings.get('restart_page')
-    if callable(restart_page):
-        current_app.settings['restart_page'] = restart_page()
-    # create data store
-    if not DataStore.query.first():
-        db.session.add(DataStore())
-    db.session.commit()

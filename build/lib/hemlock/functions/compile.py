@@ -108,7 +108,7 @@ def shuffle(obj, *attrs):
     app = push_app_context()
 
     p = Page(
-    \    *(Label('<p>Label {}</p>'.format(i)) for i in range(4)),
+    \    *(Label('Label {}'.format(i)) for i in range(4)),
     \    compile=C.shuffle()
     )
     p.preview()._compile().preview()

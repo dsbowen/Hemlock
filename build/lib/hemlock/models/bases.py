@@ -20,7 +20,6 @@ class Base(ModelIdBase):
     Base for all Hemlock models.
 
     Interits from  
-    [`sqlalchemy_orderingitem.Orderingitem`](https://dsbowen.github.io/sqlalchemy-orderingitem/) and 
     [`sqlalchemy_modelid.ModelIdBase`](https://dsbowen.github.io/sqlalchemy-modelid/).
 
     Parameters
@@ -42,6 +41,12 @@ class Base(ModelIdBase):
 
 
 class BranchingBase(Base):
+    """
+    Attributes
+    ----------
+    navigate : callabe or None, default=None
+        A callable which returns the next branch.
+    """
     navigate = db.Column(MutableType)
 
     def _eligible_to_insert_branch(self):
@@ -125,7 +130,7 @@ class Data(Base, MutableModelBase, db.Model):
         'polymorphic_on': data_type
     }
 
-    data = db.Column(MutableJSONType)
+    data = db.Column(MutableType)
     data_rows = db.Column(db.Integer, default=1)
     index = db.Column(db.Integer)
     var = db.Column(db.Text)

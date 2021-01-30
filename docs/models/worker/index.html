@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Worker - Hemlock</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  <link href="../../css/extra.css" rel="stylesheet" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Worker";
+    var mkdocs_page_input_path = "models/worker.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Hemlock</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../contact/">Contact</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../checklist/">Checklist</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Tutorial</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/intro/">Introduction</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/first_project/">Your first project</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/run_local/">Running hemlock locally</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/qpolymorphs/">Question polymorphs</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/data/">Data</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/validate/">Validate</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/submit/">Submit</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/compile/">Compile</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/navigate/">Navigate</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/page_logic/">Page logic</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/comp_check/">Comprehension check</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/random_ass/">Random assignment</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/proposer_branch/">Proposer branch</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/responder_branch/">Responder branch</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/debug/">Debugging</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/deploy/">Deployment</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/extra/">Bells and whistles</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Setup</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../setup/win/">Windows</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../setup/wsl/">Windows Subsystem for Linux</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../setup/mac/">Mac</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../setup/linux/">Linux</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Application</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../app/">Setting and initialization</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../debug/">Debugging</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Functions</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../functions/compile/">Compile</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../functions/debug/">Debug</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../functions/submit/">Submit</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../functions/validate/">Validate</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Models</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../bases/">Bases</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../branch/">Branch</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../embedded/">Embedded data and timers</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../functions/">Function models</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../page/">Page</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../participant/">Participant</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../question/">Question</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Worker</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#hemlockworker">hemlock.Worker</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#notes">Notes</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Question polymorphs</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/bases/">Bases</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/blank/">Blank</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/check/">Check</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/choice/">Choice</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/dashboard/">Dashboard</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/download/">Download</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/file/">File upload</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/input/">Input</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/label/">Label</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/range/">Range</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/select/">Select</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/textarea/">Textarea</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Tools</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tools/comprehension/">Comprehension check</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tools/lang/">Language</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tools/mturk/">MTurk</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tools/navbar/">Navbar</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tools/random/">Randomization</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tools/statics/">Statics</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tools/titrate/">Titrate</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tools/utils/">Utilities</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../security/">Security</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../changelog/">Changelog</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../acknowledgements/">Acknowledgements</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Hemlock</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Models &raquo;</li>
+        
+      
+    
+    <li>Worker</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/dsbowen/hemlock/edit/master/docs_md/models/worker.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+<p><link rel="stylesheet" href="https://assets.readthedocs.org/static/css/readthedocs-doc-embed.css" type="text/css" /></p>
+<style>
+    a.src-href {
+        float: right;
+    }
+    p.attr {
+        margin-top: 0.5em;
+        margin-left: 1em;
+    }
+    p.func-header {
+        background-color: gainsboro;
+        border-radius: 0.1em;
+        padding: 0.5em;
+        padding-left: 1em;
+    }
+    table.field-table {
+        border-radius: 0.1em
+    }
+</style>
+<h1 id="worker">Worker</h1>
+<table class="docutils field-list field-table" frame="void" rules="none">
+    <col class="field-name" />
+    <col class="field-body" />
+    <tbody valign="top">
+
+    </tbody>
+</table>
+
+<h2 id="hemlockworker">hemlock.<strong>Worker</strong></h2>
+<p>Workers simplify interaction with a Redis queue. A worker attaches to a
+branch or page, and is responsible for one of its methods (compile,
+validate, submit, or navigate).</p>
+<p>When the method for which a worker is responsible is called, the worker
+sends the method to a Redis queue. While the Redis queue is processing
+this method, the worker shows participants a loading page. When the Redis
+queue finishes processing this method, the worker sends the client to his
+next page.</p>
+<p>Worker inherits from
+<a href="https://dsbowen.github.io.flask-worker/"><code>flask_worker.WorkerMixin</code></a>.</p>
+<table class="docutils field-list field-table" frame="void" rules="none">
+    <col class="field-name" />
+    <col class="field-body" />
+    <tbody valign="top">
+        <tr class="field">
+    <th class="field-name"><b>Notes:</b></td>
+    <td class="field-body" width="100%"><b>I recommend redis version 5, rather than the latest version 6. Why? Heroku required you to manually set up TLS authentication for redis 6, which is a complicated process, whereas you can bypass TLS authentication using redis 5. : <i></i></b>
+<p class="attr">
+
+</p></td>
+</tr>
+    </tbody>
+</table>
+
+<h4 id="notes">Notes</h4>
+<p>To run redis in production on heroku:</p>
+<p><b>1. Declare a worker process</b></p>
+<p>In the root directory of your project, open <code>Procfile</code>. Add the line <code>worker: rq worker -u $REDIS_URL hemlock-task-queue</code>. Your <code>Procfile</code> should look like:</p>
+<div class="highlight"><pre><span></span><code>web: gunicorn -k eventlet app:app
+worker: rq worker -u $REDIS_URL hemlock-task-queue
+</code></pre></div>
+<p><b>2. Create a redis addon and provision worker processes</b></p>
+<p>In the root directory of your project, open <code>app.json</code>.</p>
+<p>To create a Redis addon, add <code>{"plan": "heroku-redis:hobby-dev", "options": {"version": 5}}</code> to your <code>addons</code>. To provision worker processes, add <code>"worker: {"quantity": 1, "size": "hobby"}</code> to your <code>formation</code>. In sum, the top of <code>app.json</code> will look like:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">&quot;addons&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;heroku-postgresql:hobby-dev&quot;</span><span class="p">,</span>
+        <span class="p">{</span><span class="nt">&quot;plan&quot;</span><span class="p">:</span> <span class="s2">&quot;heroku-redis:hobby-dev&quot;</span><span class="p">,</span> <span class="nt">&quot;options&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}}</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;formation&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;web&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;quantity&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="s2">&quot;hobby&quot;</span><span class="p">},</span>
+        <span class="nt">&quot;worker&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;quantity&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="s2">&quot;hobby&quot;</span><span class="p">}</span>
+    <span class="p">},</span>
+<span class="err">...</span>
+</code></pre></div>
+<p>When scaling for production, I recommend using the premium-1 redis plan,
+quantity 5, size standard-1x. So <code>app.json</code> will look like:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">&quot;addons&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;heroku-postgresql:standard-1x&quot;</span><span class="p">,</span>
+        <span class="p">{</span><span class="nt">&quot;plan&quot;</span><span class="p">:</span> <span class="s2">&quot;heroku-redis:premium-1&quot;</span><span class="p">,</span> <span class="nt">&quot;options&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}}</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;formation&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;web&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;quantity&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="s2">&quot;standard-1x&quot;</span><span class="p">},</span>
+        <span class="nt">&quot;worker&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;quantity&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="s2">&quot;standard-1x&quot;</span><span class="p">}</span>
+    <span class="p">},</span>
+<span class="err">...</span>
+</code></pre></div>
+<h4 id="examples">Examples</h4>
+<p>In <code>survey.py</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Branch</span><span class="p">,</span> <span class="n">Compile</span> <span class="k">as</span> <span class="n">C</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">route</span>
+
+<span class="nd">@route</span><span class="p">(</span><span class="s1">&#39;/survey&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span>
+        <span class="n">Page</span><span class="p">(</span>
+            <span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Hello, World!&#39;</span><span class="p">)</span>
+        <span class="p">),</span>
+        <span class="n">Page</span><span class="p">(</span>
+            <span class="n">Label</span><span class="p">(</span>
+                <span class="s1">&#39;Goodbye, Moon!&#39;</span><span class="p">,</span>
+                <span class="nb">compile</span><span class="o">=</span><span class="n">C</span><span class="o">.</span><span class="n">complex_function</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+            <span class="p">),</span>
+            <span class="n">compile_worker</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">terminal</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+<span class="nd">@C</span><span class="o">.</span><span class="n">register</span>
+<span class="k">def</span> <span class="nf">complex_function</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">seconds</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">time</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">seconds</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Progress: </span><span class="si">{}</span><span class="s1">%&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="mf">100.</span><span class="o">*</span><span class="n">t</span><span class="o">/</span><span class="n">seconds</span><span class="p">)))</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Progress: 100%&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p>Note that the second page (or rather, one of its questions), needs to run
+a complex compile function. We add a worker to it by setting
+<code>compile_worker=True</code>. Use a similar syntax to add validate, submit, and
+navigate workers.</p>
+<p>Our <code>app.py</code> is standard:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">survey</span>
+
+<span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">create_app</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">create_app</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">hemlock.app</span> <span class="kn">import</span> <span class="n">socketio</span>
+    <span class="n">socketio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<p>To run the app locally, you will need to set the <code>REDIS_URL</code> environment
+variable and run a redis queue from your project's root directory.</p>
+<p><strong>Note.</strong> Windows cannot run redis natively. To run redis on Windows, use
+<a href="../../setup/wsl/">Windows Subsystem for Linux</a>.</p>
+<p>If using the hemlock template and hemlock-CLI:</p>
+<ol>
+<li>Open <code>env.yaml</code> and add the line <code>REDIS_URL: redis://</code>.</li>
+<li>Open a second terminal in your project's root directory and run the redis queue with <code>hlk rq</code>.</li>
+<li>Run the app by entering <code>hlk serve</code> in your first terminal.</li>
+</ol>
+<p>If not using the template or hemlock-CLI:</p>
+<ol>
+<li>Set your environment variable with <code>export REDIS_URL=redis://</code>.</li>
+<li>Open a second terminal in your project's root directory and enter <code>rq worker hemlock-task-queue</code>.</li>
+<li>Run the app by entering <code>python3 app.py</code> in your first terminal.</li>
+</ol>
+<p>Go to <a href="http://localhost:5000/">http://localhost:5000/</a> in your browser. Notice that, when you click past the first page, you see a loading gif before the second page is loaded. In your second terminal window, you should see:</p>
+<div class="highlight"><pre><span></span><code>Progress: 0%
+...
+Progress: 100%
+</code></pre></div>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../questions/bases/" class="btn btn-neutral float-right" title="Bases">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../question/" class="btn btn-neutral" title="Question"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/dsbowen/hemlock/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../question/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../../questions/bases/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

@@ -1,18 +1,14 @@
 """# Application factory and settings"""
 
-# import eventlet
-# eventlet.monkey_patch(socket=True)
-
 from .settings import settings
 
 import pandas as pd
-from flask import Flask, Blueprint
+from flask import Flask, Blueprint, current_app
 # from flask_apscheduler import APScheduler
 from flask_download_btn import DownloadBtnManager
 from flask_login import LoginManager
 from flask_socketio import SocketIO
 from flask_sqlalchemy import SQLAlchemy
-from flask_talisman import Talisman
 from flask_worker import Manager
 from sqlalchemy_mutable import MutableManager
 
@@ -36,10 +32,32 @@ login_manager = LoginManager()
 login_manager.login_view = 'hemlock.index'
 login_manager.login_message = None
 # scheduler = APScheduler()
-socketio = SocketIO(async_mode='eventlet', logger=True, engineio_logger=True)
+socketio = SocketIO(async_mode='eventlet')
 manager = Manager(db=db, socketio=socketio)
 MutableManager.db = db
-talisman = Talisman()
+
+@bp.before_app_first_request
+def init_app():
+    """
+    Create database tables and initialize data storage models
+    """
+    from ..models.private import DataStore
+
+    db.create_all()
+    # cache static pages
+    static_pages = [
+        'error_500_page', 'loading_page', 'restart_page', 'screenout_page'
+    ]
+    for page_key in static_pages:
+        page = current_app.settings[page_key]
+        if callable(page):
+            current_app.settings[page_key] = page()
+    # create datastore
+    if not DataStore.query.first():
+        db.session.add(DataStore())
+    # run additional before app first request functions
+    [f() for f in current_app.settings['before_app_first_request']]
+    db.session.commit()
 
 def push_app_context():
     """
@@ -62,16 +80,11 @@ def push_app_context():
     ```
     <Flask 'hemlock.app'>
     ```
-    """
-    from ..models.private import DataStore
-    
+    """    
     app = create_app()
     app.app_context().push()
     app.test_request_context().push()
-    db.create_all()
-    if not DataStore.query.first():
-        db.session.add(DataStore())
-        db.session.commit()
+    init_app()
     return app
 
 def create_app(settings=settings):
@@ -158,4 +171,3 @@ def _init_extensions(app, settings):
     # scheduler.start()
     socketio.init_app(app, message_queue=app.config.get('REDIS_URL'))
     manager.init_app(app, **settings.get('Manager'))
-    # talisman.init_app(app, **settings.get('Talisman'))

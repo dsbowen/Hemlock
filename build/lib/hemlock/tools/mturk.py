@@ -1,3 +1,5 @@
+"""# MTurk utilities"""
+
 from .random import key
 
 import numpy as np
@@ -49,7 +51,7 @@ def consent_page(
             required=require,
             debug=D.send_keys('test'),
             validate=V.match(
-                id_q, error_msg='<p>IDs do not match</p>'
+                id_q, error_msg='IDs do not match'
             )
         )
     )
@@ -196,7 +198,7 @@ def approve_assignments(
         )
         
     def send_bonus(x):
-        if x.Approve:
+        if x.Approve and x.BonusAmount > 0:
             client.send_bonus(
                 WorkerId=x.WorkerId,
                 BonusAmount=str(round(x.BonusAmount, 2)),

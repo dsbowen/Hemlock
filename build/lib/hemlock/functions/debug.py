@@ -318,6 +318,7 @@ def click_choices(driver, question, *values, if_selected=None, max_clicks=5):
     \    )
     )
     p.preview(driver)._debug(driver)
+    ```
     """
     def choose_values():
         order = list(range(len(question.choices)))

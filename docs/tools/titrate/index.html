@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Titrate - Hemlock</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  <link href="../../css/extra.css" rel="stylesheet" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Titrate";
+    var mkdocs_page_input_path = "tools/titrate.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Hemlock</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../contact/">Contact</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../checklist/">Checklist</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Tutorial</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/intro/">Introduction</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/first_project/">Your first project</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/run_local/">Running hemlock locally</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/qpolymorphs/">Question polymorphs</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/data/">Data</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/validate/">Validate</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/submit/">Submit</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/compile/">Compile</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/navigate/">Navigate</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/page_logic/">Page logic</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/comp_check/">Comprehension check</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/random_ass/">Random assignment</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/proposer_branch/">Proposer branch</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/responder_branch/">Responder branch</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/debug/">Debugging</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/deploy/">Deployment</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/extra/">Bells and whistles</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Setup</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../setup/win/">Windows</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../setup/wsl/">Windows Subsystem for Linux</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../setup/mac/">Mac</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../setup/linux/">Linux</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Application</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../app/">Setting and initialization</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../debug/">Debugging</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Functions</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../functions/compile/">Compile</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../functions/debug/">Debug</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../functions/submit/">Submit</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../functions/validate/">Validate</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Models</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../models/bases/">Bases</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../models/branch/">Branch</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../models/embedded/">Embedded data and timers</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../models/functions/">Function models</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../models/page/">Page</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../models/participant/">Participant</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../models/question/">Question</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../models/worker/">Worker</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Question polymorphs</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/bases/">Bases</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/blank/">Blank</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/check/">Check</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/choice/">Choice</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/dashboard/">Dashboard</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/download/">Download</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/file/">File upload</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/input/">Input</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/label/">Label</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/range/">Range</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/select/">Select</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/textarea/">Textarea</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Tools</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../comprehension/">Comprehension check</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../lang/">Language</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../mturk/">MTurk</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../navbar/">Navbar</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../random/">Randomization</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../statics/">Statics</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Titrate</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#hemlocktoolstitrate">hemlock.tools.titrate</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../utils/">Utilities</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../security/">Security</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../changelog/">Changelog</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../acknowledgements/">Acknowledgements</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Hemlock</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Tools &raquo;</li>
+        
+      
+    
+    <li>Titrate</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/dsbowen/hemlock/edit/master/docs_md/tools/titrate.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+<p><link rel="stylesheet" href="https://assets.readthedocs.org/static/css/readthedocs-doc-embed.css" type="text/css" /></p>
+<style>
+    a.src-href {
+        float: right;
+    }
+    p.attr {
+        margin-top: 0.5em;
+        margin-left: 1em;
+    }
+    p.func-header {
+        background-color: gainsboro;
+        border-radius: 0.1em;
+        padding: 0.5em;
+        padding-left: 1em;
+    }
+    table.field-table {
+        border-radius: 0.1em
+    }
+</style>
+<h1 id="titration-tool">Titration tool</h1>
+<p>Titration is used primarily to elicit willingness to pay or risk preferences.</p>
+<table class="docutils field-list field-table" frame="void" rules="none">
+    <col class="field-name" />
+    <col class="field-body" />
+    <tbody valign="top">
+
+    </tbody>
+</table>
+
+<h2 id="hemlocktoolstitrate">hemlock.tools.<strong>titrate</strong></h2>
+<p class="func-header">
+    <i>def</i> hemlock.tools.<b>titrate</b>(<i>gen_titrate_q, distribution, var, data_rows=1, tol=None, max_pages=None, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/titrate.py#L9">[source]</a>
+</p>
+
+<table class="docutils field-list field-table" frame="void" rules="none">
+    <col class="field-name" />
+    <col class="field-body" />
+    <tbody valign="top">
+        <tr class="field">
+    <th class="field-name"><b>Parameters:</b></td>
+    <td class="field-body" width="100%"><b>gen_titrate_q : <i>callable</i></b>
+<p class="attr">
+    Callable which takes the titration value and returns a <code>hemlock.Question</code>. If the question's <code>data</code> evaluates to <code>True</code>, the next iteration will increase the titration value. If the question's <code>data</code> evaluates to <code>False</code>, the next iteration will decrease the titration value.
+</p>
+<b>distribution : <i>callable</i></b>
+<p class="attr">
+    Callable with a <code>ppf</code> method which takes a quantile <code>q</code> and returns a value (e.g. <code>float</code>). I recommend <code>scipy.stats</code> distributions.
+</p>
+<b>var : <i>str</i></b>
+<p class="attr">
+    Name of the variable in which to store the titrated value.
+</p>
+<b>data_rows : <i>int, default=1</i></b>
+<p class="attr">
+    Number of data rows for the titration variable.
+</p>
+<b>tol : <i>float or None, default=None</i></b>
+<p class="attr">
+    Titration will stop when the titrated value reaches this precision. If <code>None</code>, titration stops after a certain number of questions.
+</p>
+<b>max_pages : <i>int or None, default=None</i></b>
+<p class="attr">
+    Titration will stop after this number of pages. If <code>None</code>, titration stops after a precision level is reached.
+</p>
+<b>**kwargs : <i></i></b>
+<p class="attr">
+    Keyword arguments are passed to the titration page constructor.
+</p></td>
+</tr>
+<tr class="field">
+    <th class="field-name"><b>Returns:</b></td>
+    <td class="field-body" width="100%"><b>FIrst titration page : <i>hemlock.Page</i></b>
+<p class="attr">
+
+</p></td>
+</tr>
+    </tbody>
+</table>
+
+<h4 id="examples">Examples</h4>
+<p>This example demonstrates how to use titration to more efficiently and
+precisely implement the
+<a href="http://www.planchet.net/EXT/ISFA/1226.nsf/9c8e3fd4d8874d60c1257052003eced6/9ba2376a9b20919cc125784b00355f88/$FILE/HOLT.pdf" target="_blank">Holt-Laury risk elicitation method</a>.
+The titration value is the probability at which the participant is
+indifferent between two lotteries.</p>
+<p>We then compute the coefficient of relative risk aversion assuming CRRA
+utility.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Branch</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Binary</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Validate</span> <span class="k">as</span> <span class="n">V</span><span class="p">,</span> <span class="n">route</span>
+<span class="kn">from</span> <span class="nn">hemlock.tools</span> <span class="kn">import</span> <span class="n">titrate</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">uniform</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="k">def</span> <span class="nf">gen_titrate_q</span><span class="p">(</span><span class="n">p_larger</span><span class="p">):</span>
+    <span class="c1"># p_larger is the probability of winning the larger amount of money</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">p_larger</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Binary</span><span class="p">(</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Which lottery would you rather have?</span>
+<span class="sd">        &#39;&#39;&#39;</span><span class="p">,</span>
+        <span class="p">[</span>
+            <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">/100 of $2.00, </span><span class="si">{}</span><span class="s1">/100 of $1.60&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="mi">100</span><span class="o">-</span><span class="n">p</span><span class="p">),</span>
+            <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">/100 of $3.85, </span><span class="si">{}</span><span class="s1">/100 of $0.10&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="mi">100</span><span class="o">-</span><span class="n">p</span><span class="p">)</span>
+        <span class="p">],</span>
+        <span class="n">inline</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="n">V</span><span class="o">.</span><span class="n">require</span><span class="p">()</span>
+    <span class="p">)</span>
+
+<span class="nd">@route</span><span class="p">(</span><span class="s1">&#39;/survey&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span>
+        <span class="n">titrate</span><span class="p">(</span><span class="n">gen_titrate_q</span><span class="p">,</span> <span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">var</span><span class="o">=</span><span class="s1">&#39;p&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">back</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+        <span class="n">Page</span><span class="p">(</span>
+            <span class="n">Label</span><span class="p">(</span><span class="nb">compile</span><span class="o">=</span><span class="n">disp_risk_aversion</span><span class="p">),</span>
+            <span class="n">back</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">terminal</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">disp_risk_aversion</span><span class="p">(</span><span class="n">label</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">u</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="c1"># CRRA utility function</span>
+            <span class="k">return</span> <span class="n">x</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">r</span><span class="p">)</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">r</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">.</span><span class="mi">01</span> <span class="k">else</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">p</span><span class="o">*</span><span class="n">u</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="p">(</span><span class="mf">1.6</span><span class="p">)</span><span class="o">-</span><span class="n">p</span><span class="o">*</span><span class="n">u</span><span class="p">(</span><span class="mf">3.85</span><span class="p">)</span><span class="o">-</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="p">(</span><span class="o">.</span><span class="mi">1</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span>
+
+    <span class="n">p</span> <span class="o">=</span> <span class="n">label</span><span class="o">.</span><span class="n">part</span><span class="o">.</span><span class="n">g</span><span class="p">[</span><span class="s1">&#39;p&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">100.</span> <span class="c1"># indifference point between 0 and 1</span>
+    <span class="c1"># coefficient of relative risk aversion if optimization starts from -3</span>
+    <span class="n">res_lower</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">3</span><span class="p">]))</span><span class="o">.</span><span class="n">x</span>
+    <span class="c1"># coefficient of relative risk aversion if optimization starts from 2</span>
+    <span class="n">res_upper</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">]))</span><span class="o">.</span><span class="n">x</span>
+    <span class="c1"># you can trivially minimize the function by setting r == 1 (approximately)</span>
+    <span class="c1"># this sets u(x) = 0 (approx.) for all x</span>
+    <span class="c1"># so choose the r farther from 1</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">res_lower</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">res_lower</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">&gt;</span><span class="nb">abs</span><span class="p">(</span><span class="n">res_upper</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">else</span> <span class="n">res_upper</span>
+    <span class="n">label</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        Indifference point is </span><span class="si">{:.0f}</span><span class="s1">/100. Coefficient of relative risk aversion is </span><span class="si">{:.2f}</span><span class="s1"></span>
+<span class="s1">        &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mf">100.</span><span class="o">*</span><span class="n">p</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
+</code></pre></div>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../utils/" class="btn btn-neutral float-right" title="Utilities">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../statics/" class="btn btn-neutral" title="Statics"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/dsbowen/hemlock/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../statics/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../utils/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

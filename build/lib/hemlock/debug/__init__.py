@@ -16,7 +16,7 @@ from hemlock import Branch, Page, Label, route
 @route('/survey')
 def start():
 \    x = 1/0
-\    return Branch(Page(Label('<p>Hello World</p>'), terminal=True))
+\    return Branch(Page(Label('Hello World'), terminal=True))
 ```
 
 In `app.py`:

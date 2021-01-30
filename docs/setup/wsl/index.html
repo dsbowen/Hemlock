@@ -117,13 +117,19 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#jupyter">Jupyter</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#google-chrome">Google chrome</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#chromedriver">Chromedriver</a>
+    <li class="toctree-l2"><a class="reference internal" href="#google-chrome-and-chromedriver-for-wsl-1">Google chrome and Chromedriver for WSL 1</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#chrome-and-chromedriver-compatibility">Chrome and chromedriver compatibility</a>
+    <li class="toctree-l3"><a class="reference internal" href="#google-chrome">Google chrome</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#chromedriver">Chromedriver</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#chrome-and-chromedriver-compatibility">Chrome and chromedriver compatibility</a>
     </li>
         </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#google-chrome-and-chromedriver-for-wsl-2">Google chrome and chromedriver for WSL 2</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#heroku">Heroku</a>
     </li>
@@ -143,72 +149,78 @@
                 </ul>
                 <p class="caption"><span class="caption-text">Functions</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../compile_functions/">Compile</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../functions/compile/">Compile</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../debug_functions/">Debug</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../functions/debug/">Debug</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../submit_functions/">Submit</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../functions/submit/">Submit</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../validate_functions/">Validate</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../functions/validate/">Validate</a>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">Models</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../bases/">Bases</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../models/bases/">Bases</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../branch/">Branch</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../models/branch/">Branch</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../choice/">Choice</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../models/embedded/">Embedded data and timers</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../embedded/">Embedded data and timers</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../models/functions/">Function models</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../functions/">Function models</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../models/page/">Page</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../page/">Page</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../models/participant/">Participant</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../participant/">Participant</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../models/question/">Question</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../question/">Question</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../worker/">Worker</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../models/worker/">Worker</a>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">Question polymorphs</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../check/">Check</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/bases/">Bases</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../dashboard/">Dashboard</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/blank/">Blank</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../download/">Download</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/check/">Check</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../file/">File upload</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/choice/">Choice</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../input/">Input</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/dashboard/">Dashboard</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../input_group/">Input group</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/download/">Download</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../label/">Label</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/file/">File upload</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../range/">Range</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/input/">Input</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../select/">Select</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/label/">Label</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../textarea/">Textarea</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/range/">Range</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/select/">Select</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../questions/textarea/">Textarea</a>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">Tools</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../comprehension/">Comprehension check</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tools/comprehension/">Comprehension check</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../lang/">Language</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tools/lang/">Language</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../navbar/">Navbar</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tools/mturk/">MTurk</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../random/">Randomization</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tools/navbar/">Navbar</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../statics/">Statics</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tools/random/">Randomization</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../utils/">Utilities</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tools/statics/">Statics</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tools/titrate/">Titrate</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tools/utils/">Utilities</a>
                     </li>
                 </ul>
                 <ul>
@@ -272,46 +284,37 @@
 <div class="highlight"><pre><span></span><code>$ python3
 Python 3.x.x
 </code></pre></div>
-
 <p>If you don't have python intalled on your WSL distribution, <a href="https://www.python.org/downloads/" target="_blank">download python here</a>. I recommend python3.6, rather than the latest version. Why? Because heroku, my recommended method of app deployment, uses python3.6, meaning that if you develop in python3.7+ and deploy in python3.6, you may encounter compatibility issues.</p>
 <p>Update your package lists:</p>
 <div class="highlight"><pre><span></span><code>$ sudo apt-get update
 </code></pre></div>
-
 <p>Install pip3:</p>
 <div class="highlight"><pre><span></span><code>$ sudo apt install -f -y python3-pip
 </code></pre></div>
-
 <p>Respond 'Yes' if asked whether you want to restart services automatically.</p>
 <p>Verify your pip3 installation:</p>
 <div class="highlight"><pre><span></span><code>$ pip3 --version
 pip x.x.x from /usr/lib/python3/dist-packages <span class="o">(</span>python <span class="m">3</span>.x<span class="o">)</span>
 </code></pre></div>
-
 <p>You'll also need the ability to create virtual environments:</p>
 <div class="highlight"><pre><span></span><code>$ apt install -f -y python3-venv
 </code></pre></div>
-
 <h4 id="pip-versus-pip3">pip versus pip3</h4>
 <p>You'll install several python packages using pip. Conventionally, the command to install these is:</p>
 <div class="highlight"><pre><span></span><code>$ pip install &lt;my-requested-package&gt;
 </code></pre></div>
-
 <p>You may need to replace this with:</p>
 <div class="highlight"><pre><span></span><code>$ pip3 install &lt;my-requested-package&gt;
 </code></pre></div>
-
 <p>Many hemlock-CLI commands assume you can pip install with <code>pip3</code>.</p>
 <h2 id="hemlock-cli">Hemlock-CLI</h2>
 <p>Hemlock's command line interface, hemlock-CLI, defines many useful commands for initializing, editing, and deploying hemlock projects. Download with:</p>
 <div class="highlight"><pre><span></span><code>$ pip install -U hemlock-cli
 </code></pre></div>
-
 <p>Verify your hemlock-CLI installation:</p>
 <div class="highlight"><pre><span></span><code>$ hlk --version
 hlk, version x.x.xx
 </code></pre></div>
-
 <h2 id="git-and-github">Git and github</h2>
 <p><a href="https://git-scm.com/" target="_blank">Git</a> is a version control system, and <a href="https://github.com/" target="_blank">github</a> hosts code repositories. Together, they allow you to share and collaborate on hemlock projects. You will also need git to initialize hemlock projects with the hemlock template.</p>
 <p>You can find <a href="https://git-scm.com/download/linux">git download and installation instructions here</a>.</p>
@@ -319,12 +322,10 @@ hlk, version x.x.xx
 <div class="highlight"><pre><span></span><code>$ git --version
 git version <span class="m">2</span>.17.1
 </code></pre></div>
-
 <p>Then, create a <a href="https://github.com" target="_blank">github account here</a>. Configure your github command line interface:</p>
 <div class="highlight"><pre><span></span><code>$ git config --global user.name &lt;my-github-username&gt;
 $ git config --global user.email &lt;my-github-user-email&gt;
 </code></pre></div>
-
 <p>Finally, you will need a personal access token to initialize hemlock applications with the hemlock command line interface.</p>
 <p><strong>Read everything until STOP before creating your github token.</strong></p>
 <ol>
@@ -342,20 +343,19 @@ $ git config --global user.email &lt;my-github-user-email&gt;
 <div class="highlight"><pre><span></span><code>$ code --version
 <span class="m">1</span>.xx.x
 </code></pre></div>
-
 <h2 id="jupyter">Jupyter</h2>
 <p><a href="https://jupyter.org/" target="_blank">Jupyter</a> allows you to quickly iterate on project designs. Install jupyter notebook with pip:</p>
 <div class="highlight"><pre><span></span><code>$ pip install -U notebook
 </code></pre></div>
-
 <p>Close and re-open your terminal. Verify your jupyter installation:</p>
 <div class="highlight"><pre><span></span><code>$ jupyter --version
 jupyter core     : x.x.x
 jupyter-notebook : x.x.x
 ...
 </code></pre></div>
-
-<h2 id="google-chrome">Google chrome</h2>
+<h2 id="google-chrome-and-chromedriver-for-wsl-1">Google chrome and Chromedriver for WSL 1</h2>
+<p>Follow these instructions if using WSL 1.</p>
+<h3 id="google-chrome">Google chrome</h3>
 <p>Hemlock is developed and tested primarily on chrome. <a href="https://www.google.com/chrome/" target="_blank">Download chrome here</a>.</p>
 <p>Verify that you can open it as follows:</p>
 <div class="highlight"><pre><span></span><code>$ python3
@@ -364,29 +364,24 @@ jupyter-notebook : x.x.x
 True
 &gt;&gt;&gt; exit<span class="o">()</span>
 </code></pre></div>
-
 <p>You should see chrome open to the hemlock docs.</p>
 <p><strong>Note.</strong> If this doesn't work, it's probably because the chrome executable isn't in your path. Run the following:</p>
 <div class="highlight"><pre><span></span><code>$ hlk setup wsl --chrome
 </code></pre></div>
-
 <p>Close and re-open your terminal. Verify your <code>BROWSER</code> variable:</p>
 <div class="highlight"><pre><span></span><code>$ <span class="nb">echo</span> <span class="nv">$BROWSER</span>
 /mnt/c/program files <span class="o">(</span>x86<span class="o">)</span>/google/chrome/application/chrome.exe
 </code></pre></div>
-
 <p>Now try again to open the webbrowser.</p>
 <p>If you came here from the tutorial, you're now ready to return to it and get started with your first hemlock project. <a href="../../tutorial/first_project/">Click here to go back to the First Project section of the tutorial</a>.</p>
-<h2 id="chromedriver">Chromedriver</h2>
+<h3 id="chromedriver">Chromedriver</h3>
 <p>Hemlock's custom debugging tool and survey view functions use <a href="https://chromedriver.chromium.org/downloads" target="_blank">chromedriver</a>. To use these features locally, you'll need to download chromedriver:</p>
 <div class="highlight"><pre><span></span><code>$ hlk setup wsl --chromedriver
 </code></pre></div>
-
 <p>Close and re-open your terminal. Verify your chromedriver installation:</p>
 <div class="highlight"><pre><span></span><code>$ which chromedriver
 /mnt/c/users/&lt;my-windows-username&gt;/webdrivers/chromedriver
 </code></pre></div>
-
 <h4 id="chrome-and-chromedriver-compatibility">Chrome and chromedriver compatibility</h4>
 <p>As of 07/14/2020, <code>hlk setup wsl --chromedriver</code> installs chromedriver for chrome 83. While chrome updates automatically, chromedriver does not. This means that you will encounter compatibility issues when chrome updates to version 84+. To fix this:</p>
 <ol>
@@ -398,20 +393,20 @@ True
 <div class="highlight"><pre><span></span><code>$ which chromedriver
 /mnt/c/users/&lt;my-windows-username&gt;/webdrivers/chromedriver
 </code></pre></div>
-
+<p>If you came here from the Debug section of the tutorial, you're now ready to return to it and run the debugger. <a href="../../tutorial/debug/">Click here to go back to the Debug section of the tutorial</a>.</p>
+<h2 id="google-chrome-and-chromedriver-for-wsl-2">Google chrome and chromedriver for WSL 2</h2>
+<p>Follow <a href="https://www.gregbrisebois.com/posts/chromedriver-in-wsl2/" target="_blank">these instructions</a> if using WSL 2. Make sure you allow X server to access public networks. If you don't, <a href="https://skeptric.com/wsl2-xserver/" target="_blank">here</a> and <a href="https://github.com/cascadium/wsl-windows-toolbar-launcher#firewall-rules" target="_blank">here</a> for troubleshooting.</p>
 <p>If you came here from the Debug section of the tutorial, you're now ready to return to it and run the debugger. <a href="../../tutorial/debug/">Click here to go back to the Debug section of the tutorial</a>.</p>
 <h2 id="heroku">Heroku</h2>
 <p>Heroku is an easy and inexpensive service for deploying web applications (i.e. putting them online), including hemlock applications. <a href="https://signup.heroku.com/" target="_blank">Sign up for heroku here</a>.</p>
 <p>If using hemlock-CLI, you can install and configure the heroku command line interface with:</p>
 <div class="highlight"><pre><span></span><code>$ hlk setup wsl --heroku-cli
 </code></pre></div>
-
 <p>This will prompt you to create and log in to a heroku account.</p>
 <p>Verify your heroku-CLI installation:</p>
 <div class="highlight"><pre><span></span><code>$ heroku --version
 heroku/x.xx.x linux-x64 node-vxx.xx.x
 </code></pre></div>
-
 <p><strong>Note.</strong> See <a href="https://github.com/heroku/legacy-cli/issues/1969" target="_blank">this github issue</a> if you experience a 'EACCES' error. <em>Do not</em> simply use <code>sudo</code>; this only masks issues you'll encounter later.</p>
 <p><a href="../../tutorial/deploy/">Click here to return to the Deploy section of the tutorial</a>.</p>
               

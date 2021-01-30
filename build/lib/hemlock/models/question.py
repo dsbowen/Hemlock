@@ -7,6 +7,7 @@ most useful when fleshed out. See section on question polymorphs.
 from ..app import db
 from ..tools import key
 from .bases import Data
+from .private import CSSListType, JSListType
 
 from flask import render_template, request
 from sqlalchemy.ext.orderinglist import ordering_list
@@ -27,29 +28,72 @@ class Question(Data):
     order.
 
     It inherits from 
-    [`hemlock.models.Data` and `hemlock.models.HTMLMixin`](bases.md).
+    [`hemlock.models.Data`](bases.md).
 
     Parameters
     ----------
-    label : str or bs4.BeautifulSoup, default=''
+    label : str or None, default=None
         Question label.
 
     template : str, default='form-group.html'
-        Template for the question `body`.
+        File name of question template.
+
+    extra_css : list, default=[]
+        List of extra CSS elements to add to the default CSS.
+
+    extra_js : list, default=[]
+        List of extra javascript elements to add to the default 
+        javascript.
+
+    form_group_class : list, default=['card', 'form-group', 'question']
+        List of form group classes.
+
+    form_group_attrs : dict, default={}
+        Dictionary of HTML attribues for the form group tag.
+
+    error_attrs : dict, default={'class' ['alert', 'alert-danger']}
+        Dictionary of HTML attributes for the error alert.
 
     Attributes
     ----------
-    default : sqlalchemy_mutable.MutableType
+    append : str or None, default=None
+        Text (usually) appended to the input tag.
+
+    css : list, default=[]
+        List of CSS elements.
+
+    default : misc
         Default question response.
 
     error : str or None, default=None
-        Text of the question error message.
+        Error message.
+
+    error_attrs : dict
+        Set from the `error_attrs` parameter.
+
+    form_group_class : list
+        Set from the `form_group_class` parameter.
+
+    form_group_attrs : dict
+        Set from the `form_group_attrs` parameter.
+
+    has_responded : bool, default=False
+        Indicates that the participant has responded to this question.
+
+    input_attrs : dict
+        Dictionary of HTML attributes for the input tag.
 
     label : str or None, default=None
         Question label.
 
-    response : sqlalchemy_mutable.MutableType
+    prepend : str or None, default=None
+        Text (usually) prepended to the input tag.
+
+    response : misc
         Participant's response.
+
+    template : str
+        Set from the `template` parameter.
 
     Relationships
     -------------
@@ -74,6 +118,22 @@ class Question(Data):
 
     debug : list of hemlock.Debug, default=[]
         List of debug functions; run during debugging. The default debug function is unique to the question type.
+
+    Notes
+    -----
+    A CSS element can be any of the following:
+
+    1. Link tag (str) e.g., `'<link rel="stylesheet" href="https://my-css-url">'`
+    2. Href (str) e.g., `"https://my-css-url"`
+    3. Style dictionary (dict) e.g., `{'body': {'background': 'coral'}}`
+
+    The style dictionary maps a css selector to an attributes dictionary. The attributes dictionary maps attribute names to values.
+
+    A Javascript element can be any of the following:
+
+    1. Attributes dictionary (dict) e.g., `{'src': 'https://my-js-url'}`
+    2. JS code (str)
+    3. Tuple of (attributes dictionary, js code)
     """
     id = db.Column(db.Integer, db.ForeignKey('data.id'), primary_key=True)
     question_type = db.Column(db.String)
@@ -96,8 +156,8 @@ class Question(Data):
     # HTML attributes
     key = db.Column(db.String(10))
     template = db.Column(db.String)
-    css = db.Column(MutableListJSONType, default=[])
-    js = db.Column(MutableListJSONType, default=[])
+    css = db.Column(CSSListType, default=[])
+    js = db.Column(JSListType, default=[])
     form_group_class = db.Column(MutableListJSONType, default=[])
     form_group_attrs = db.Column(HTMLAttrsType, default={})
     error = db.Column(db.Text)
@@ -122,17 +182,14 @@ class Question(Data):
             self, label=None, extra_css=[], extra_js=[], 
             form_group_class=['card', 'form-group', 'question'],
             form_group_attrs={}, 
-            error_attrs={'style': {'color': 'rgb(114,28,36)'}}, 
+            error_attrs={'class': ['alert', 'alert-danger']}, 
             **kwargs
         ):
         def add_extra(attr, extra):
             # add extra css or javascript
             if extra:
                 assert isinstance(extra, (str, list))
-                if isinstance(extra, str):
-                    attr.append(extra)
-                else:
-                    attr += extra
+                attr += [extra] if isinstance(extra, str) else extra
 
         self.key = key(10)
         self.compile, self.debug, self.validate, self.submit = [], [], [], []
@@ -180,7 +237,7 @@ class Question(Data):
         return render_template(self.template, q=self)
 
     def _render_js(self):
-        return '\n'.join(self.js)
+        return self.js.render()
 
     def _record_response(self):
         self.has_responded = True
@@ -223,7 +280,7 @@ class ChoiceQuestion(Question):
 
     Parameters
     ----------
-    label : str or bs4.BeautifulSoup, default=''
+    label : str or None, default=None
         Question label.
 
     choices : list, default=[]
@@ -246,12 +303,13 @@ class ChoiceQuestion(Question):
 
     Notes
     -----
-    `choices` can be set using the following formats:
-    1. list of choice objects.
-    2. list of `str`, treated as choice labels.
-    3. list of `(choice label, value)` tuples.
-    4. list of `(choice label, value, name)` tuples.
-    5. list of dictionaries with choice keyword arguments.
+    A choice can be any of the following:
+
+    1. Choice objects (type will depend on the choice question).
+    2. `str`, treated as the choice label.
+    3. `(choice label, value)` tuple.
+    4. `(choice label, value, name)` tuple.
+    5. Dictionary with choice keyword arguments.
     """
     choices = None # must be implemented by choice question
 

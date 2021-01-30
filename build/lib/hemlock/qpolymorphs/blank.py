@@ -14,6 +14,37 @@ settings['Blank'] = {
 
 
 class Blank(InputBase, Question):
+    """
+    Fill in the blank question.
+
+    Parameters
+    ----------
+    label : tuple, list, or None, default=None
+        If the label is a `tuple` or `list`, the participant's response will 
+        fill in the blanks between items.
+
+    template : str, default='hemlock/input.html'
+        File name of the Jinja template.
+
+    blank_empty : str, default=''
+        String used to fill in the blank when the participant's response is 
+        empty.
+
+    Examples
+    --------
+    ```python
+    from hemlock import Page, Blank
+
+    Page(
+    \    Blank(
+    \        ('Hello, ', '!'),
+    \        blank_empty='_____'
+    \    )
+    ).preview()
+    ```
+
+    Enter 'World' in the input and the label will change to 'Hello, World!'.
+    """
     id = db.Column(db.Integer, db.ForeignKey('question.id'), primary_key=True)
     __mapper_args__ = {'polymorphic_identity': 'blank'}
 

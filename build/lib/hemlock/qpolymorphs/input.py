@@ -41,20 +41,16 @@ class Input(InputBase, Question):
     """
     Inputs take text input by default, or other types of html inputs.
 
-    Inherits from [`hemlock.qpolymorphs.InputGroup`](input_group.md), 
-    [`hemlock.models.InputBase`](bases.md) and 
-    [`hemlock.Question`](question.md).
+    Inherits from [hemlock.models.InputBase`](bases.md) and 
+    [`hemlock.Question`](../models/question.md).
 
     Parameters
     ----------
-    label : str or bs4.BeautifulSoup, default=''
+    label : str or None, default=None
         Input label.
 
     template : str, default='hemlock/input.html'
         Template for the input body.
-
-    Attributes
-    ----------
     
     Examples
     --------

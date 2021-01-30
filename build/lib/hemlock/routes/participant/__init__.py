@@ -35,7 +35,7 @@ def index():
         return redirect(url_for('hemlock.screenout'))
     
     in_progress = current_user.is_authenticated
-    if in_progress:
+    if in_progress and current_user.current_branch is not None:
         if current_user.current_page.first_page():
             # no need to restart if on first page
             return redirect(url_for('hemlock.'+bp.default_route))
@@ -156,8 +156,7 @@ def match_found(visitor, tracked, keys):
 
 @bp.route('/screenout')
 def screenout():
-    p = Page(Label(current_app.settings['screenout_text']), forward=False)
-    return p._compile()._render()
+    return current_app.settings['screenout_page']
     
 @bp.route('/restart', methods=['GET','POST'])
 @login_required

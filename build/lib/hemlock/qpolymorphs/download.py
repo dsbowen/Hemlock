@@ -17,7 +17,7 @@ class Download(DownloadBtnMixin, Question):
 
     Inherits from 
     [`flask_download_btn.DownloadBtnMixin`](https://dsbowen.github.io/flask-download-btn/download_btn_mixin/) and 
-    [`hemlock.Question`](question.md).
+    [`hemlock.Question`](../models/question.md).
 
     Parameters
     ----------
@@ -52,4 +52,4 @@ class Download(DownloadBtnMixin, Question):
         super().__init__(label=label, template=template, **kwargs)
 
     def _render_js(self):
-        return '\n'.join(self.js + [self.render_script()])
+        return self.js.render() + self.render_script()

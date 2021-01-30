@@ -10,7 +10,7 @@ from .choice import ChoiceListType
 class CheckBase(InputBase, ChoiceQuestion):
     """
     Base for `hemlock.Binary` and `hemlock.Check` question types. Inherits 
-    from [`hemlock.ChoiceQuestion`](question.md).
+    from [`hemlock.ChoiceQuestion`](../models/question.md).
 
     Attributes
     ----------
@@ -22,6 +22,16 @@ class CheckBase(InputBase, ChoiceQuestion):
         Indicates that choices should be 
         [inline](https://getbootstrap.com/docs/4.0/components/forms/#inline), 
         as opposed to vertical.
+
+    Notes
+    -----
+    A choice can be input as any of the following:
+
+    1. `Choice` object.
+    2. `str`, treated as the choice label.
+    3. `(choice label, value)` tuple.
+    4. `(choice label, value, name)` tuple.
+    5. Dictionary with choice keyword arguments.
     """
     choices = db.Column(ChoiceListType)
     multiple = db.Column(db.Boolean, default=False)
@@ -43,18 +53,18 @@ class Check(CheckBase):
     Inherits from [`hemlock.qpolymorphs.check.CheckBase`](check.md).
 
     Its default debug function is 
-    [`click_choices`](debug_functions.md#hemlockfunctionsdebugclick_choices).
+    [`click_choices`](../functions/debug.md#hemlockfunctionsdebugclick_choices).
 
     Parameters
     ----------
-    label : str or bs4.BeautifulSoup, default=''
+    label : str or None, default=None
         Check question label.
 
     choices : list of hemlock.Choice, str, tuple, or dict, default=[]
         Choices which participants can check.
 
     template : str, default='hemlock/check.html'
-        Template for the check body.
+        File name of the Jinja template.
 
     Attributes
     ----------
@@ -101,11 +111,11 @@ class Binary(CheckBase):
     Inherits from [`hemlock.qpolymorphs.check.CheckBase`](check.md).
 
     Its default debug function is 
-    [`click_choices`](debug_functions.md#hemlockfunctionsdebugclick_choices).
+    [`click_choices`](../functions/debug.md#hemlockfunctionsdebugclick_choices).
     
     Parameters
     ----------
-    label : str or bs4.BeautifulSoup, default=''
+    label : str or None, default=None
         Check question label.
 
     choices : list of [str, str], default=['Yes', 'No']
@@ -113,7 +123,7 @@ class Binary(CheckBase):
         the second as 0.
 
     template : str, default='hemlock/check.html'
-        Template for the check body.
+        File name of the Jinja template.
 
     Attributes
     ----------
