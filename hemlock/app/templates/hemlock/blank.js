@@ -1,4 +1,4 @@
-$(document).ready(function() {        
+$(document).ready(function() {
     function fill_blank() {
         if (question.val() == ''){
             blank.text("{{ q.blank_empty }}");
@@ -8,8 +8,8 @@ $(document).ready(function() {
         }
     }
 
-    question = $("#{{ q.key }}");
-    blank = $("span[name='{{ q.blank_id }}']");
+    var question = $("#{{ q.key }}");
+    var blank = $("span[name='{{ q.blank_id }}']");
     fill_blank();
     question.on("input", function(){
         fill_blank();
