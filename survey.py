@@ -1,7 +1,5 @@
 from hemlock import Branch, Page, Label, route, settings
 
-settings['duplicate_keys'] = ['IPv4']
-
 @route('/survey')
 def start():
     return Branch(

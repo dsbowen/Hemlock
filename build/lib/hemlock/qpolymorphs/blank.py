@@ -58,5 +58,5 @@ class Blank(InputBase, Question):
 
     def __setattr__(self, key, val):
         if key == 'label' and isinstance(val, (tuple, list)):
-            val = '<span name={}></span>'.format(self.blank_id).join(val)
+            val = '<span name="{}"></span>'.format(self.blank_id).join(val)
         super().__setattr__(key, val)
