@@ -15,12 +15,12 @@ def login():
     def login_page():
         error = None
         if request.args.get('incorrect_password'):
-            error = 'The password you entered was incorrect.'
+            error = 'The password you entered was incorrect'
         elif request.args.get('requested'):
             error = 'Login required to access this page.'
         return Page(
             Input(
-                'Please enter your password.', 
+                '<p>Please enter your password</p>', 
                 type='password', key='password'
             ),
             error=error, forward='Login'

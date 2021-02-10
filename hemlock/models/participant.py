@@ -154,6 +154,7 @@ class Participant(UserMixin, Base, db.Model):
     def data_elements(self):
         elements = [e for e in self.embedded]
         elements += [e for b in self.branch_stack for e in b.data_elements]
+        db.session.flush(elements)
         elements.sort(key=lambda e: e.id)
         return elements
     
@@ -280,6 +281,8 @@ class Participant(UserMixin, Base, db.Model):
         part : hemlock.Participant
         """
         part = Participant(meta={})
+        db.session.add(part)
+        db.session.flush([part])
         login_user(part)
         if gen_root:
             part._init_tree(gen_root)

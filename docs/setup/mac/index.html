@@ -293,7 +293,7 @@
 <p><strong>STOP.</strong></p>
 <p>Close and re-open your terminal window. Verify your python installation.</p>
 <div class="highlight"><pre><span></span><code>$ python3 --version
-Python <span class="m">3</span>.x.x
+Python <span class="m">3</span>.6.8
 </code></pre></div>
 <p>Upgrade pip:</p>
 <div class="highlight"><pre><span></span><code>$ python3 -m pip install --upgrade pip
@@ -314,7 +314,7 @@ hlk, version x.x.xx
 <p><a href="https://git-scm.com/" target="_blank">Git</a> is a version control system, and <a href="https://github.com/" target="_blank">github</a> hosts code repositories. Together, they allow you to share and collaborate on hemlock projects. You will also need git to initialize hemlock projects with the hemlock template.</p>
 <p>Macs typically have git pre-installed, which you can verify:</p>
 <div class="highlight"><pre><span></span><code>$ git --version
-git version <span class="m">2</span>.27.0.mac.1
+git version x.xx.x
 </code></pre></div>
 <p>If you don't have git, follow the <a href="https://git-scm.com/download/mac">download and installation instructions here</a>.</p>
 <p>Then, create a <a href="https://github.com">github account here</a>. Configure your github command line interface:</p>
@@ -325,8 +325,8 @@ $ git config --global user.email &lt;my-github-user-email&gt;
 <div class="highlight"><pre><span></span><code>$ git config --global user.name dsbowen
 $ git config --global user.email dsbowen@wharton.upenn.edu
 </code></pre></div>
-<p>Finally, you will need a personal access token to initialize hemlock applications with the hemlock command line interface.</p>
 <p><strong>Read everything until STOP before creating your github token.</strong></p>
+<p>Finally, you will need a personal access token to initialize hemlock applications with the hemlock command line interface.</p>
 <ol>
 <li>Create a github token by following <a href="https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token" target="_blank">these instructions</a>.</li>
 <li>When setting permissions (step 7), check 'repo'.</li>
@@ -360,33 +360,21 @@ traitlets        : <span class="m">4</span>.3.3
 <h2 id="google-chrome">Google chrome</h2>
 <p>Hemlock is developed and tested primarily on chrome. <a href="https://www.google.com/chrome/" target="_blank">Download chrome here</a>.</p>
 <p>Verify that you can open it as follows:</p>
-<div class="highlight"><pre><span></span><code>$ python3
-&gt;&gt;&gt; import webbrowser
-&gt;&gt;&gt; webbrowser.open<span class="o">(</span><span class="s1">&#39;https://dsbowen.github.io/hemlock&#39;</span><span class="o">)</span>
-True
-&gt;&gt;&gt; exit<span class="o">()</span>
+<div class="highlight"><pre><span></span><code>$ python3 -m webbrowser https://dsbowen.github.io
 </code></pre></div>
-<p>You should see chrome open to the hemlock docs.</p>
-<p><strong>Note.</strong> <code>&gt;&gt;&gt;</code> is where you enter python commands in the python interpreter.</p>
+<p>You should see chrome open to my github.io page.</p>
 <p>If you came here from the tutorial, you're now ready to return to it and get started with your first hemlock project. <a href="../../tutorial/first_project/">Click here to go back to the First Project section of the tutorial</a>.</p>
 <h2 id="chromedriver">Chromedriver</h2>
 <p>Hemlock's custom debugging tool and survey view functions use <a href="https://chromedriver.chromium.org/downloads" target="_blank">chromedriver</a>. To use these features locally, you'll need to download chromedriver:</p>
 <div class="highlight"><pre><span></span><code>$ hlk setup mac --chromedriver
 </code></pre></div>
+<p>This will ask you to copy the chromedriver Mac download URL from <a href="https://chromedriver.chromium.org/downloads" target="_blank">here</a> and paste it in your terminal window.</p>
 <p>Close and re-open your terminal. Verify your chromedriver installation:</p>
-<div class="highlight"><pre><span></span><code>$ which chromedriver
-/users/&lt;my-mac-username&gt;/webdrivers/chromedriver
+<div class="highlight"><pre><span></span><code>$ chromedriver --version
+ChromeDriver x.xx.x
 </code></pre></div>
 <h4 id="chrome-and-chromedriver-compatibility">Chrome and chromedriver compatibility</h4>
-<p>As of 07/14/2020, <code>hlk setup mac --chromedriver</code> installs chromedriver for chrome 83. While chrome updates automatically, chromedriver does not. This means that you will encounter compatibility issues when chrome updates to version 84+. To fix this:</p>
-<ol>
-<li><a href="https://chromedriver.chromium.org/downloads" target="_blank">Download the latest chromedriver here</a>.</li>
-<li>Put the chrome binary, <code>chromedriver</code>, in <code>/users/&lt;my-mac-username&gt;/webdrivers/</code>. For example, I would put my chromedriver binary in <code>/users/dsbowen/webdrivers/</code>.</li>
-</ol>
-<p>Chromedriver should still be in your path, which you can verify:</p>
-<div class="highlight"><pre><span></span><code>$ which chromedriver
-/users/&lt;my-mac-username&gt;/webdrivers/chromedriver
-</code></pre></div>
+<p>Google Chrome will automatically update. Chromedriver will not. If you encounter a compatibility error in the future, simply repeat the above instructions.</p>
 <p>If you came here from the Debug section of the tutorial, you're now ready to return to it and run the debugger. <a href="../../tutorial/debug/">Click here to go back to the Debug section of the tutorial</a>.</p>
 <h2 id="heroku">Heroku</h2>
 <p>Heroku is an easy and inexpensive service for deploying web applications (i.e. putting them online), including hemlock applications. <a href="https://signup.heroku.com/" target="_blank">Sign up for heroku here</a>.</p>

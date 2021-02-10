@@ -23,8 +23,8 @@ Out:
 
 ```
 {'ID': [1],
- 'EndTime': [datetime.datetime(2020, 7, 8, 11, 46, 54, 462552)],
- 'StartTime': [datetime.datetime(2020, 7, 8, 11, 46, 54, 462552)],
+ 'EndTime': ['2021-02-10 15:34:28.116156'],
+ 'StartTime': ['2021-02-10 15:34:28.116156'],
  'Status': ['InProgress']}
 ```
 
@@ -43,25 +43,29 @@ Out:
 
 ```
 {'ID': [1],
- 'EndTime': [datetime.datetime(2020, 7, 8, 11, 46, 54, 462552)],
- 'StartTime': [datetime.datetime(2020, 7, 8, 11, 46, 54, 462552)],
+ 'EndTime': ['2021-02-10 15:34:28.116156'],
+ 'StartTime': ['2021-02-10 15:34:28.116156'],
  'Status': ['InProgress'],
- 'MyVariable': ['MyData'],
- 'MyVariableOrder': [0],
- 'MyVariableIndex': [0]}
+ 'MyVariable': ['MyData']}
 ```
 
 This adds an `Embedded` data object to our participant. Embedded data are a type of data element, like questions, but unlike questions, are not displayed to participants. We can add embedded data to a participant, branch, or page.
 
-When we examine the data, we see that the participant has a new variable named `'MyVariable'` with data `['MyData']`. We also see two additional variables named `'MyVariableOrder'` and `'MyVariableIndex'`. Hemlock automatically adds order and index data for every data element. Order is the order in which this data element appeared in the survey, relative to other data elements belonging to the same variable. Index is the order in which this data element appeared in its parent's list of children; for example, the order in which a question appeared on its page.
+Looking at the data, we see that the participant has a new variable named `'MyVariable'` with data `['MyData']`.
 
 ## Ordering
 
-The order in which data elements appear in the data frame is the order in which they were created; not necessarily the order in which they appear to the participant. For example:
+Tl;dr When you have multiple data elements contributing data to the same variable, hemlock automatically orders them in a sensible way. If you find that your data frame isn't ordering your data the way you want, come back and reread this.
+
+The order in which data elements appear in the data frame is the order in which they were added to the database; not necessarily the order in which they appear to the participant. For example:
 
 ```python
+from hemlock import db
+
 embedded1 = Embedded('MyVariable', 1)
 embedded0 = Embedded('MyVariable', 0)
+db.session.add_all([embedded1, embedded0])
+db.session.flush([embedded1, embedded0])
 part.embedded = [embedded0, embedded1]
 dict(part.get_data())
 ```
@@ -70,17 +74,15 @@ Out:
 
 ```
 {'ID': [1, 1],
- 'EndTime': [datetime.datetime(2020, 7, 8, 11, 46, 54, 462552),
-  datetime.datetime(2020, 7, 8, 11, 46, 54, 462552)],
- 'StartTime': [datetime.datetime(2020, 7, 8, 11, 46, 54, 462552),
-  datetime.datetime(2020, 7, 8, 11, 46, 54, 462552)],
+ 'EndTime': ['2021-02-10 15:34:28.116156', '2021-02-10 15:34:28.116156'],
+ 'StartTime': ['2021-02-10 15:34:28.116156', '2021-02-10 15:34:28.116156'],
  'Status': ['InProgress', 'InProgress'],
- 'MyVariable': [1, 0],
- 'MyVariableOrder': [1, 0],
- 'MyVariableIndex': [1, 0]}
+ 'MyVariable': [1, 0]}
 ```
 
-Note that the data for `'MyVariable'` are `[1, 0]` because we created `embedded1` before `embedded0`.
+Note that the data for `'MyVariable'` are `[1, 0]` because we added `embedded1` before to the database before `embedded0` using `db.session.add_all` and `db.session.flush`.
+
+Again, hemlock automatically manages your database, so you you'll only need to use `db.session.add_all` and `db.session.flush` in rare cases.
 
 ## Data rows
 
@@ -95,34 +97,62 @@ Out:
 
 ```
 {'ID': [1, 1, 1],
- 'EndTime': [datetime.datetime(2020, 7, 8, 11, 46, 54, 462552),
-  datetime.datetime(2020, 7, 8, 11, 46, 54, 462552),
-  datetime.datetime(2020, 7, 8, 11, 46, 54, 462552)],
- 'StartTime': [datetime.datetime(2020, 7, 8, 11, 46, 54, 462552),
-  datetime.datetime(2020, 7, 8, 11, 46, 54, 462552),
-  datetime.datetime(2020, 7, 8, 11, 46, 54, 462552)],
+ 'EndTime': ['2021-02-10 15:34:28.116156',
+  '2021-02-10 15:34:28.116156',
+  '2021-02-10 15:34:28.116156'],
+ 'StartTime': ['2021-02-10 15:34:28.116156',
+  '2021-02-10 15:34:28.116156',
+  '2021-02-10 15:34:28.116156'],
  'Status': ['InProgress', 'InProgress', 'InProgress'],
- 'MyVariable': ['MyData', 'MyData', 'MyData'],
- 'MyVariableOrder': [0, 0, 0],
- 'MyVariableIndex': [0, 0, 0]}
+ 'MyVariable': ['MyData', 'MyData', 'MyData']}
 ```
 
 Additionally, we often want to 'fill in' rows of a variable to match the length of a data frame. For example, we may not know in advance how many rows a participant will contribute to the data frame, but we know that we want the participant's demographic information to appear on all rows. To do this, we set `data_rows` to a negative number. For example, `data_rows=-2` means 'fill in two rows with this data entry and, when you download the data, fill in any blank rows after this with the same data':
 
 ```python
 part.embedded = [
-    # these data will fill in empty rows at the bottom of the data frame
-    Embedded('MyFilledVariable', 'MyFilledData', data_rows=-1),
     # these data will appear on three rows of the data frame
-    Embedded('MyVariable', 'MyData', data_rows=3)
+    Embedded('MyVariable', 'MyData', data_rows=3),
+    # these data will fill in empty rows at the bottom of the data frame
+    Embedded('MyFilledVariable', 'MyFilledData', data_rows=-1)
 ]
-dict(part.get_data())['MyFilledVariable']
+dict(part.get_data())
 ```
 
 Out:
 
 ```
-['MyFilledData', 'MyFilledData', 'MyFilledData']
+{'ID': [1, 1, 1],
+ 'EndTime': ['2021-02-10 15:59:28.018253',
+  '2021-02-10 15:59:28.018253',
+  '2021-02-10 15:59:28.018253'],
+ 'StartTime': ['2021-02-10 15:59:28.018253',
+  '2021-02-10 15:59:28.018253',
+  '2021-02-10 15:59:28.018253'],
+ 'Status': ['InProgress', 'InProgress', 'InProgress'],
+ 'MyVariable': ['MyData', 'MyData', 'MyData'],
+ 'MyFilledVariable': ['MyFilledData', 'MyFilledData', 'MyFilledData']}
+```
+
+Finally, a data element can contribute a list of values to the data frame:
+
+```python
+part.embedded = [Embedded('var', [0, 1, 2])]
+dict(part.get_data())
+```
+
+Out:
+
+```
+{'ID': [1, 1, 1],
+ 'EndTime': ['2021-02-10 15:58:34.743335',
+  '2021-02-10 15:58:34.743335',
+  '2021-02-10 15:58:34.743335'],
+ 'StartTime': ['2021-02-10 15:58:34.743335',
+  '2021-02-10 15:58:34.743335',
+  '2021-02-10 15:58:34.743335'],
+ 'Status': ['InProgress', 'InProgress', 'InProgress'],
+ 'var': [0, 1, 2]}
 ```
 
 ## Adding data to our survey
@@ -130,7 +160,6 @@ Out:
 We can add data to our existing survey in much the same way: by setting a question's `var` and (when necessary) `data_rows` attribute. We generally want demographics information to appear in all rows of the data frame, so we'll set `data_rows=-1`.
 
 In `survey.py`:
-
 
 ```python
 ...
@@ -140,12 +169,11 @@ def start():
     return Branch(
         Page(
             Input(
-                '<p>Enter your date of birth.</p>',
-                placeholder='mm/dd/yyyy',
-                var='DoB', data_rows=-1
+                '<p>Enter your month and year of birth.</p>',
+                type='month', var='DoB', data_rows=-1
             ),
-            Check(
-                '<p>Indicate your gender.</p>',
+            Select(
+                '<p>What is your gender?</p>',
                 ['Male', 'Female', 'Other'],
                 var='Gender', data_rows=-1
             ),
@@ -153,18 +181,15 @@ def start():
             ...
 ```
 
-**Note.** When a participant submits a page, the questions' data are recorded in a `data` attribute. A question's data will be added to the data frame if and only if you set its `var` attribute. However, data will be stored in a question's `data` attribute whether or not the `var` attribute is set.
+**Note.** When a participant submits a page, the questions' data are recorded in a `data` attribute. A question's data will be added to the data frame if and only if you set its `var` attribute. However, data will be stored in a question's `data` attribute whether or not the variable is set.
 
 ## Downloading data
 
 Run your survey locally, fill in the demographics page, and continue to the end of the survey. Your data will be recorded in the database.
 
-To download your data, navigate to <http://localhost:5000/download> in your browser. Select 'Data frame', then click the download button. This will download a zip file containing your data in .csv format. 
+To download your data, navigate to <http://localhost:5000/download> in your browser. Select 'Data frame', then click the download button. This will download a zip file containing your data in `.csv` format.
 
-Take a look at the data. In addition to what we've already covered, there are a few things to notice:
-
-1. Variables like `GenderMaleIndex` and `GenderFemaleIndex` record the order in which a question displayed its choices.
-2. The data of questions for which you can select multiple choices are automatically one-hot encoded. For example, if `RaceWhite` and `RaceAsian` are both 1, and the rest of the race variables are 0, this means means the participant is part White and part Asian.
+Note that the data of questions for which you can select multiple choices are automatically one-hot encoded. For example, if `RaceWhite` and `RaceBlack` are both 1, and the rest of the race variables are 0, this means means the participant is part White and part Black.
 
 ## Summary
 

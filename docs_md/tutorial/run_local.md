@@ -54,7 +54,7 @@ from hemlock import Branch, Page, Label, route
 def start():
     return Branch(
         Page(
-            Label('<p>Hello, World!</p>'), 
+            Label('Hello, World!'),
             terminal=True
         )
     )
@@ -81,12 +81,26 @@ After our imports, we use the `@route('/survey')` decorator to register our firs
 Navigate functions direct the 'survey flow'. All navigate functions return `Branch` objects. A branch contains a list of pages which it displays to participants. We set a branch's pages by passing them as arguments to the constructor, or by setting a branch's `pages` attribute, meaning that the following are equivalent:
 
 ```python
-b = Branch(Page(Label('<p>Label 0</p>')), Page(Label('<p>Label 1</p>')))
+b = Branch(
+    Page(
+        Label('Label 0')
+    ), 
+    Page(
+        Label('Label 1')
+    )
+)
 ```
 
 ```python
 b = Branch()
-b.pages = [Page(Label('<p>Label 0</p>')), Page(Label('<p>Label 1</p>'))]
+b.pages = [
+    Page(
+        Label('Label 0')
+    ), 
+    Page(
+        Label('Label 1')
+    )
+]
 ```
 
 We also passed a keyword (named) argument to the page constructor, `terminal=True`. This tells the application 'end here'.
@@ -114,12 +128,6 @@ During development, you may encounter a database error from which your app can't
 1. Exit with Ctrl + C.
 2. Remove the database with `rm data.db`.
 3. Run your app again with `hlk serve`.
-
-<!-- You may also want to clear the database after running your app:
-
-```
-$ rm data.db # del data.db on windows command prompt
-``` -->
 
 ## Summary
 

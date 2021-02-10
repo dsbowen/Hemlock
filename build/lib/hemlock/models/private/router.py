@@ -150,7 +150,6 @@ class Router(RouterMixin, db.Model):
         self.part.completed, self.part.updated = False, True
         self.page._record_response()
         if self.page.direction_from == 'back':
-            self.page.run_compile = True
             if self.page.compile_worker:
                 self.page.compile_worker.reset()
             self.navigator.back(self.page.back_to)
@@ -379,7 +378,10 @@ class Navigator(RouterMixin, db.Model):
             self.back_one()
             
     def back_one(self):
-        """Navigate backward one Page"""      
+        """Navigate backward one Page"""
+        # re-run compile functions the next time the participant goes forward 
+        # to this page
+        self.page.run_compile = True
         if self.page == self.branch.start_page:
             return self.remove_branch()
         self.branch._back()

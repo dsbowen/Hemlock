@@ -66,31 +66,6 @@ $ ls
     $ hlk setup-venv my-first-project
     ```
 
-!!! note "If using WSL"
-    You'll need to specify your distribution as an environment variable. Open the file which sets your local environment variables:
-
-    ```bash
-    $ code env.yaml
-    ```
-
-    And add the following line:
-
-    ```yaml
-    WSL_DISTRIBUTION: Ubuntu-20.04 # or other WSL distribution
-    ```
-
-    If you're not sure which distribution you have, run:
-
-    ```bash
-    $ explorer.exe .
-    ```
-
-    This will open a file explorer. At the top of the file explorer, you'll see:
-
-    > `<my-wsl-distribution>\home\<my-wsl-username>\my-first-project`
-
-    We're looking for `<my-wsl-distribution>`.
-
 ## Preview a page in jupyter notebook
 
 Jupyter notebook is a great tool for iterating quickly on project designs. I recommend using it for most of your work. Open the jupyter dashboard with:
@@ -103,7 +78,9 @@ Jupyter will attempt to open the dashboard automatically in your browser. If thi
 
 Open the file named `blackboard.ipynb`.
 
-Change the kernel to `my-first-project` (in general, your project name). At the top of the notebook click Kernel >> Change kernel >> my-first-project.
+You may be propted to choose a 'kernel' when you open `blackboard.ipynb`. If so, choose 'my-first-project' (in general, your project name).
+
+If you aren't prompted to choose a kernel, manually change the kernel to 'my-first-project'. At the top of the notebook click Kernel >> Change kernel >> my-first-project.
 
 Run the first cell (Shift + Enter) to set up the environment and application context. It's not important right now to understand exactly what it does.
 
@@ -112,7 +89,9 @@ Now, create your first hemlock page. In a new code cell below the first one, ent
 ```python
 from hemlock import Page, Label
 
-p = Page(Label('<p>Hello, World!</p>'))
+p = Page(
+    Label('Hello, World!')
+)
 p.preview()
 ```
 
@@ -128,20 +107,26 @@ Previewing works by creating temporary preview files. When you're done previewin
 
 The first line simply imports `Page` and `Label` objects.
 
-The next line, `p = Page(Label('<p>Hello, World!</p>'))`, creates a `Page` instance. A `Page` contains a list of 'questions' which it displays to participants. We can set a page's questions by passing them as arguments to the `Page` constructor. Alternatively, we can set a page's questions by setting the page's `questions` attribute, meaning that the following are equivalent:
+The next line, `p = Page(Label('Hello, World!'))`, creates a `Page` instance. A `Page` contains a list of 'questions' which it displays to participants. We can set a page's questions by passing them as arguments to the `Page` constructor. Alternatively, we can set a page's questions by setting the page's `questions` attribute, meaning that the following are equivalent:
 
 ```python
-p = Page(Label('<p>Label 0</p>'), Label('<p>Label 1</p>'))
+p = Page(
+    Label('Label 0'), 
+    Label('Label 1')
+)
 ```
 
 ```python
 p = Page()
-p.questions = [Label('<p>Label 0</p>'), Label('<p>Label 1</p>')]
+p.questions = [
+    Label('Label 0'), 
+    Label('Label 1')
+]
 ```
 
-The `Page`'s question is a `Label`, although this is in some sense a misnomer because label objects only contains text. The first argument to `Label` is a string, written in html, which the label object displays on its page.
+The `Page`'s question is a `Label`, although this is in some sense a misnomer because label objects only contains text. The first argument to `Label` is a string, written in HTML, which the label object displays on its page.
 
-**Note.** If you don't like writing html, you can easily find Word to html converters online.
+**Note.** If you don't like writing HTML, you can easily find Word to HTML converters online.
 
 ## Summary
 

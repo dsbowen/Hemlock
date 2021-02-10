@@ -289,8 +289,8 @@ $ git config --global user.email &lt;my-github-user-email&gt;
 <div class="highlight"><pre><span></span><code>$ git config --global user.name dsbowen
 $ git config --global user.email dsbowen@wharton.upenn.edu
 </code></pre></div>
-<p>Finally, you will need a personal access token to initialize hemlock applications with the hemlock command line interface (more on this later).</p>
 <p><strong>Read everything until STOP before creating your github token.</strong></p>
+<p>Finally, you will need a personal access token to initialize hemlock applications with the hemlock command line interface (more on this later).</p>
 <ol>
 <li>Create a github token by following <a href="https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token" target="_blank">these instructions</a>.</li>
 <li>When setting permissions (step 7), check 'repo'.</li>
@@ -308,7 +308,7 @@ $ git config --global user.email dsbowen@wharton.upenn.edu
 <p>Close and re-open your terminal window and enter:</p>
 <div class="highlight"><pre><span></span><code>$ which python
 </code></pre></div>
-<p>You should see a line print underneath <code>which python</code>. This is the location of your python executable (i.e. the file that runs python). On my computer, it looks like:</p>
+<p>You should see a line print underneath <code>which python</code>. This is the location of your python executable (i.e., the file that runs python). On my computer, it looks like:</p>
 <div class="highlight"><pre><span></span><code>/c/Users/DBSpe/AppData/Local/Programs/Python/Python36-32/python
 </code></pre></div>
 <p>The python executable may be in a different location on your computer. In general, it'll look like:</p>
@@ -376,36 +376,21 @@ traitlets        : <span class="m">4</span>.3.3
 <h2 id="google-chrome">Google chrome</h2>
 <p>Hemlock is developed and tested primarily on chrome. <a href="https://www.google.com/chrome/" target="_blank">Download chrome here</a>.</p>
 <p>Verify that you can open it as follows:</p>
-<div class="highlight"><pre><span></span><code>$ python3
-&gt;&gt;&gt; import webbrowser
-&gt;&gt;&gt; webbrowser.open<span class="o">(</span><span class="s1">&#39;https://dsbowen.github.io/hemlock&#39;</span><span class="o">)</span>
-True
-&gt;&gt;&gt; exit<span class="o">()</span>
+<div class="highlight"><pre><span></span><code>$ python3 -m webbrowser https://dsbowen.github.io
 </code></pre></div>
-<p>You should see chrome open to the hemlock docs.</p>
-<p><strong>Note.</strong> <code>&gt;&gt;&gt;</code> is where you enter python commands. This is called the 'python interpreter'.</p>
+<p>You should see chrome open to my github.io page.</p>
 <p>If you came here from the tutorial, you're now ready to return to it and get started with your first hemlock project. <a href="../../tutorial/first_project/">Click here to go back to the First Project section of the tutorial</a>.</p>
 <h2 id="chromedriver">Chromedriver</h2>
 <p>Hemlock's custom debugging tool and survey view functions use <a href="https://chromedriver.chromium.org/downloads" target="_blank">chromedriver</a>. To use these features locally, you'll need to download chromedriver:</p>
 <div class="highlight"><pre><span></span><code>$ hlk setup win --chromedriver
 </code></pre></div>
+<p>This will ask you to copy the chromedriver Windows download URL from <a href="https://chromedriver.chromium.org/downloads" target="_blank">here</a> and paste it in your terminal window.</p>
 <p>Close and re-open your terminal. Verify your chromedriver installation:</p>
-<div class="highlight"><pre><span></span><code>$ which chromedriver.exe
+<div class="highlight"><pre><span></span><code>$ chromedriver --version
+ChromeDriver x.xx.x
 </code></pre></div>
-<p>The line underneath <code>which chromedriver.exe</code> is the location of your chromedriver executable. On my computer, it looks like:</p>
-<div class="highlight"><pre><span></span><code>/c/users/dbspe/webdrivers/chromedriver.exe
-</code></pre></div>
-<p>It's okay if your chromedriver executable is in a different location.</p>
 <h4 id="chrome-and-chromedriver-compatibility">Chrome and chromedriver compatibility</h4>
-<p>As of 07/14/2020, <code>hlk setup win --chromedriver</code> installs chromedriver for chrome 83. While chrome updates automatically, chromedriver does not. This means that you will encounter compatibility issues when chrome updates to version 84+. To fix this:</p>
-<ol>
-<li><a href="https://chromedriver.chromium.org/downloads" target="_blank">Download the latest chromedriver here</a>.</li>
-<li>Put the chromedriver executable, <code>chromedriver.exe</code>, in <code>C:\users\&lt;my-windows-username&gt;\webdrivers\</code>. For example, I would put my chromedriver executable in <code>C:\users\dbspe\webdrivers\</code>.</li>
-</ol>
-<p>Chromedriver should still be in your path, which you can verify:</p>
-<div class="highlight"><pre><span></span><code>$ which chromedriver.exe
-&lt;my-chromedriver-location&gt;/chromedriver.exe
-</code></pre></div>
+<p>Google Chrome will automatically update. Chromedriver will not. If you encounter a compatibility error in the future, simply repeat the above instructions.</p>
 <p>If you came here from the Debug section of the tutorial, you're now ready to return to it and run the debugger. <a href="../../tutorial/debug/">Click here to go back to the Debug section of the tutorial</a>.</p>
 <h2 id="heroku">Heroku</h2>
 <p>Heroku is an easy and inexpensive service for deploying web applications (i.e. putting them online), including hemlock applications. <a href="https://signup.heroku.com/" target="_blank">Sign up for heroku here</a>.</p>

@@ -45,9 +45,9 @@ $ git config --global user.name dsbowen
 $ git config --global user.email dsbowen@wharton.upenn.edu
 ```
 
-Finally, you will need a personal access token to initialize hemlock applications with the hemlock command line interface (more on this later).
-
 **Read everything until STOP before creating your github token.**
+
+Finally, you will need a personal access token to initialize hemlock applications with the hemlock command line interface (more on this later).
 
 1. Create a github token by following <a href="https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token" target="_blank">these instructions</a>.
 2. When setting permissions (step 7), check 'repo'.
@@ -77,7 +77,7 @@ Close and re-open your terminal window and enter:
 $ which python
 ```
 
-You should see a line print underneath `which python`. This is the location of your python executable (i.e. the file that runs python). On my computer, it looks like:
+You should see a line print underneath `which python`. This is the location of your python executable (i.e., the file that runs python). On my computer, it looks like:
 
 ```bash
 /c/Users/DBSpe/AppData/Local/Programs/Python/Python36-32/python
@@ -197,17 +197,11 @@ Hemlock is developed and tested primarily on chrome. <a href="https://www.google
 
 Verify that you can open it as follows:
 
-```bash
-$ python3
->>> import webbrowser
->>> webbrowser.open('https://dsbowen.github.io/hemlock')
-True
->>> exit()
+```
+$ python3 -m webbrowser https://dsbowen.github.io
 ```
 
-You should see chrome open to the hemlock docs.
-
-**Note.** `>>>` is where you enter python commands. This is called the 'python interpreter'.
+You should see chrome open to my github.io page.
 
 If you came here from the tutorial, you're now ready to return to it and get started with your first hemlock project. [Click here to go back to the First Project section of the tutorial](../tutorial/first_project.md).
 
@@ -219,33 +213,18 @@ Hemlock's custom debugging tool and survey view functions use <a href="https://c
 $ hlk setup win --chromedriver
 ```
 
+This will ask you to copy the chromedriver Windows download URL from <a href="https://chromedriver.chromium.org/downloads" target="_blank">here</a> and paste it in your terminal window.
+
 Close and re-open your terminal. Verify your chromedriver installation:
 
 ```bash
-$ which chromedriver.exe
+$ chromedriver --version
+ChromeDriver x.xx.x
 ```
-
-The line underneath `which chromedriver.exe` is the location of your chromedriver executable. On my computer, it looks like:
-
-```bash
-/c/users/dbspe/webdrivers/chromedriver.exe
-```
-
-It's okay if your chromedriver executable is in a different location.
 
 #### Chrome and chromedriver compatibility
 
-As of 07/14/2020, `hlk setup win --chromedriver` installs chromedriver for chrome 83. While chrome updates automatically, chromedriver does not. This means that you will encounter compatibility issues when chrome updates to version 84+. To fix this:
-
-1. <a href="https://chromedriver.chromium.org/downloads" target="_blank">Download the latest chromedriver here</a>.
-2. Put the chromedriver executable, `chromedriver.exe`, in `C:\users\<my-windows-username>\webdrivers\`. For example, I would put my chromedriver executable in `C:\users\dbspe\webdrivers\`.
-
-Chromedriver should still be in your path, which you can verify:
-
-```bash
-$ which chromedriver.exe
-<my-chromedriver-location>/chromedriver.exe
-```
+Google Chrome will automatically update. Chromedriver will not. If you encounter a compatibility error in the future, simply repeat the above instructions.
 
 If you came here from the Debug section of the tutorial, you're now ready to return to it and run the debugger. [Click here to go back to the Debug section of the tutorial](../tutorial/debug.md).
 

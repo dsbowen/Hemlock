@@ -7,7 +7,7 @@ from .models import (
 )
 from .qpolymorphs import (
     Binary, Blank, Check, Choice, Dashboard, Download, File, Input, Label, 
-    Range, Select, Option, Textarea
+    Range, RangeInput, Select, Option, Textarea
 )
 from .routes import route
 from .functions import compile, debug, submit, validate

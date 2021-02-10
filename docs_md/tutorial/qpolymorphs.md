@@ -8,68 +8,74 @@ Click here to see what your <a href="https://github.com/dsbowen/hemlock-tutorial
 
 ## Creating a demographics page
 
-We'll use jupyter notebook as a blackboard to iterate on our demographics page design. After pushing the application context, we'll create the following page:
+We'll use jupyter notebook as a blackboard to iterate on our demographics page design. After pushing the application context, we'll create a demographics page based on the World Values Survey:
 
 ```python
-from hemlock import Check, Input, Page, Label, Range, Select
+from hemlock import Binary, Check, Input, Page, Label, RangeInput, Select
 
 p = Page(
     Input(
-        '<p>Enter your date of birth.</p>',
-        placeholder='mm/dd/yyyy'
+        '<p>Enter your month and year of birth.</p>',
+        type='month'
     ),
-    Check(
-        '<p>Indicate your gender.</p>',
+    Select(
+        '<p>What is your gender?</p>',
         ['Male', 'Female', 'Other']
     ),
     Check(
-        '<p>Indicate your race or ethnicity. Check as many as apply.</p>',
+        '''
+        <p>Which race or ethnicity do you belong to?</p> 
+        <p>Check as many as apply.</p>
+        ''',
         [
             'White',
-            'Black or African-American',
-            'Asian',
-            'Native Hawaiian or other Pacific Islander',
+            'Black',
+            ('South Asian (Indian, Pakistani, etc.)', 'SouthAsian'),
+            ('East Asian (Chinese, Japanese, etc.)', 'EastAsian'),
+            ('Arabic or Central Asian', 'ArabicCentralAsian'),
             'Other',
         ],
         multiple=True
     ),
-    Select(
-        '<p>Select your current marital status.</p>',
-        [
-            'Married',
-            'Widowed',
-            'Divorced',
-            'Separated',
-            'Never married',
-        ]
+    Input(
+        '<p>How many children do you have?</p>',
+        type='number', min=0
     ),
-    Range(
+    Binary(
+        '<p>Are you the primary wage earner in your household?</p>'
+    ),
+    RangeInput(
         '''
-        <p>At the right end of the scale are the people who are the 
-        best off; those who have the most money, the most 
-        education, and the best jobs. On the left are the people 
-        who are the worst off; those who have the least money, the 
-        least education, and the worst jobs (or are unemployed). 
-        Please indicate where you think you stand on this scale.</p>
+        <p>On a scale from 0 (lowest) to 10 (highest), which income group does 
+        your household belong to?</p>
         ''',
         min=0, max=10
-    ),
+    )
 )
+p.preview()
 ```
 
 As usual, use `p.preview()` to preview the page and `[os.remove(f) for f in app.tmpfiles if os.path.exists(f)]` when you're done.
 
 ## Code explanation
 
-Here we add several 'question polymorphs' (i.e. types of questions) to our page. 
+Here we add several 'question polymorphs' (i.e., types of questions) to our page. 
 
-The first is an input. We add `placeholder='mm/dd/yyyy'`, telling participants the expected format of their date of birth.
+The first is an input. The first argument is the question label (`'Enter your month and year of birth.'`). We also specify the type of input by passing `type='month'` to the `Input` constructor. Without the `type` argument, participants can enter any text they want into the input. You can checkout other HTML input types [here](https://www.w3schools.com/html/html_form_input_types.asp).
 
-The next two are check questions, which allow participants to check one or more choices. Notice that the first check question allows participants to check only one choice; we allow participants to check multiple choices in the second check question by passing `multiple=True`.
+The next question is a select, or dropdown, question. Again, the first argument is the question label. The second argument is a list of choices the participant can select.
 
-The fourth question is a select (dropdown) question. If we wanted, we also could have passed `multiple=True` to its contructor to allow participants to select multiple options.
+The third question is a check question. Like a select question, this allows participants to select from a list of choices. The first argument is the question label, and the second argument is a list of choices. Notice that some of the choices are strings (`'White'`, `'Black'`) while some are tuples (`('South Asian (Indian, Pakistani, etc.)', 'SouthAsian')`). Passing the choice as a tuple tells hemlock to 'recode' the value when you download the data. Participants taking the survey see 'South Asian (Indian, Pakistani, etc.)' as one of the choices, but when you download the data, the corresponding column is named `SouthAsian`.
 
-Our final question is a range slider. By default, it goes from 0 to 100, but we set its range from 0 to 10 here.
+Also notice that we pass `multiple=True` to the `Check` constructor. This allows participants to select multiple choices. By default, `multiple` is `False`, meaning participants can only select one choice. We can also pass `multiple=True` to `Select` questions to allow participants to select multiple choices from a dropdown menu.
+
+The fourth question is another input, this time requiring a `number`. We also specify `min=0` because you can't have negative children.
+
+The fifth question is a binary, which is like a check but for exactly two choices. By default, the choices are `'Yes'` and `'No'`, and their values are recoded as `1` and `0` when you download the data.
+
+The last question is a `RangeInput`, which is what you get when a range slider and an input give each other a special hug. By default, range inputs go from 0 to 100, but we change it from 0 to 10 by specifying the min and max values.
+
+These are just some of the many question types hemlock offers. Check out more under the 'Question Polymorphs' header on in the navigation bar for more.
 
 ## Adding the page to the survey
 
@@ -83,13 +89,13 @@ def start():
     return Branch(
         Page(
             Input(
-                '<p>Enter your date of birth.</p>',
-                placeholder='mm/dd/yyyy'
+                '<p>Enter your month and year of birth.</p>',
+                type='month'
             ),
             # INSERT THE REST OF THE DEMOGRAPHICS PAGE HERE
         ),
         Page(
-            Label('<p>Thank you for completing this survey.</p>'), 
+            Label('Thank you for completing this survey!'), 
             terminal=True
         )
     )

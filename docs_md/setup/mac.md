@@ -48,7 +48,7 @@ Close and re-open your terminal window. Verify your python installation.
 
 ```bash
 $ python3 --version
-Python 3.x.x
+Python 3.6.8
 ```
 
 Upgrade pip:
@@ -87,7 +87,7 @@ Macs typically have git pre-installed, which you can verify:
 
 ```bash
 $ git --version
-git version 2.27.0.mac.1
+git version x.xx.x
 ```
 
 If you don't have git, follow the [download and installation instructions here](https://git-scm.com/download/mac).
@@ -106,9 +106,9 @@ $ git config --global user.name dsbowen
 $ git config --global user.email dsbowen@wharton.upenn.edu
 ```
 
-Finally, you will need a personal access token to initialize hemlock applications with the hemlock command line interface.
-
 **Read everything until STOP before creating your github token.**
+
+Finally, you will need a personal access token to initialize hemlock applications with the hemlock command line interface.
 
 1. Create a github token by following <a href="https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token" target="_blank">these instructions</a>.
 2. When setting permissions (step 7), check 'repo'.
@@ -158,17 +158,11 @@ Hemlock is developed and tested primarily on chrome. <a href="https://www.google
 
 Verify that you can open it as follows:
 
-```bash
-$ python3
->>> import webbrowser
->>> webbrowser.open('https://dsbowen.github.io/hemlock')
-True
->>> exit()
+```
+$ python3 -m webbrowser https://dsbowen.github.io
 ```
 
-You should see chrome open to the hemlock docs.
-
-**Note.** `>>>` is where you enter python commands in the python interpreter.
+You should see chrome open to my github.io page.
 
 If you came here from the tutorial, you're now ready to return to it and get started with your first hemlock project. [Click here to go back to the First Project section of the tutorial](../tutorial/first_project.md).
 
@@ -180,26 +174,18 @@ Hemlock's custom debugging tool and survey view functions use <a href="https://c
 $ hlk setup mac --chromedriver
 ```
 
+This will ask you to copy the chromedriver Mac download URL from <a href="https://chromedriver.chromium.org/downloads" target="_blank">here</a> and paste it in your terminal window.
+
 Close and re-open your terminal. Verify your chromedriver installation:
 
 ```bash
-$ which chromedriver
-/users/<my-mac-username>/webdrivers/chromedriver
+$ chromedriver --version
+ChromeDriver x.xx.x
 ```
 
 #### Chrome and chromedriver compatibility
 
-As of 07/14/2020, `hlk setup mac --chromedriver` installs chromedriver for chrome 83. While chrome updates automatically, chromedriver does not. This means that you will encounter compatibility issues when chrome updates to version 84+. To fix this:
-
-1. <a href="https://chromedriver.chromium.org/downloads" target="_blank">Download the latest chromedriver here</a>.
-2. Put the chrome binary, `chromedriver`, in `/users/<my-mac-username>/webdrivers/`. For example, I would put my chromedriver binary in `/users/dsbowen/webdrivers/`.
-
-Chromedriver should still be in your path, which you can verify:
-
-```bash
-$ which chromedriver
-/users/<my-mac-username>/webdrivers/chromedriver
-```
+Google Chrome will automatically update. Chromedriver will not. If you encounter a compatibility error in the future, simply repeat the above instructions.
 
 If you came here from the Debug section of the tutorial, you're now ready to return to it and run the debugger. [Click here to go back to the Debug section of the tutorial](../tutorial/debug.md).
 

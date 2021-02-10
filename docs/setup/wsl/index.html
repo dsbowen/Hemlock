@@ -103,6 +103,12 @@
                     </li>
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">Windows Subsystem for Linux</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#update-your-package-lists">Update your package lists</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#visual-studio-code">Visual studio code</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#x-server">X Server</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#python3-and-pip3">Python3 and pip3</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#pip-versus-pip3">pip versus pip3</a>
@@ -113,23 +119,15 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#git-and-github">Git and github</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#visual-studio-code">Visual studio code</a>
-    </li>
     <li class="toctree-l2"><a class="reference internal" href="#jupyter">Jupyter</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#google-chrome-and-chromedriver-for-wsl-1">Google chrome and Chromedriver for WSL 1</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#google-chrome">Google chrome</a>
+    <li class="toctree-l2"><a class="reference internal" href="#google-chrome">Google chrome</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#chromedriver">Chromedriver</a>
+    <li class="toctree-l2"><a class="reference internal" href="#chromedrover">Chromedrover</a>
         <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#chrome-and-chromedriver-compatibility">Chrome and chromedriver compatibility</a>
+    <li class="toctree-l3"><a class="reference internal" href="#chrome-and-chromedriver-compatibility">Chrome and chromedriver compatibility</a>
     </li>
         </ul>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#google-chrome-and-chromedriver-for-wsl-2">Google chrome and chromedriver for WSL 2</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#heroku">Heroku</a>
     </li>
@@ -276,18 +274,43 @@
               
                 <h1 id="windows-subsystem-for-linux-wsl-setup">Windows Subsystem for Linux (WSL) setup</h1>
 <p>These instructions were written for Windows 10.</p>
-<p>Why WSL? The main reason I use WSL is that Windows OS doesn't have a fork (only a spoon), which means you'll need WSL if you want to run Redis. You can find <a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10" target="_blank">download instructions for WSL here</a>. Either WSL 1 or 2 should work. I personally use the Ubuntu distribution.</p>
-<p>After you've installed WSL, open a terminal window (WIN + R, then enter e.g. 'ubuntu2004'. You may be prompted to create a username and password.</p>
+<p>Why WSL? The main reason I use WSL is that Windows OS doesn't have a fork (only a spoon), which means you'll need WSL if you want to run Redis. You can find <a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10" target="_blank">download instructions for WSL here</a>. Download WSL2, not WSL1. I personally use the Ubuntu distribution.</p>
+<p>After you've installed WSL, open a terminal window (WIN + R, then enter e.g., 'ubuntu2004'. You may be prompted to create a username and password.</p>
+<h2 id="update-your-package-lists">Update your package lists</h2>
+<div class="highlight"><pre><span></span><code>$ sudo apt-get update
+</code></pre></div>
+<h2 id="visual-studio-code">Visual studio code</h2>
+<p><strong>Read everything until STOP before downloading or installing anything.</strong></p>
+<p>I recommend visual studio code for editing python files.</p>
+<p>You can find <a href="https://code.visualstudio.com/" target="_blank">download and installation instructions for VS code here</a>. Make sure to download the Windows version, not the Linux version.</p>
+<p><strong>STOP</strong></p>
+<p>Close and re-open your terminal. Verify your VS code installation:</p>
+<div class="highlight"><pre><span></span><code>$ code --version
+<span class="m">1</span>.xx.x
+</code></pre></div>
+<h2 id="x-server">X Server</h2>
+<p>X server allows you to install python packages and interact with web browsers inside WSL.</p>
+<p>Download and install <a href="https://sourceforge.net/projects/vcxsrv/">VcXsrv</a> <strong>in Windows</strong>. Make sure you allow X server to access public networks. If you accidentally didn't, see <a href="https://skeptric.com/wsl2-xserver/" target="_blank">here</a> and <a href="https://github.com/cascadium/wsl-windows-toolbar-launcher#firewall-rules" target="_blank">here</a> for troubleshooting.</p>
+<p>Then run <code>xlaunch.exe</code> from the VcSrc folder in Program Files. Keep the default settings <em>except make sure to select "Disable access control"</em>.</p>
+<p>Finally, we set the DISPLAY environment variable for the X server. Open your <code>.profile</code> or <code>.bashrc</code> file with:</p>
+<div class="highlight"><pre><span></span><code>$ code .profile <span class="c1"># or code .bashrc</span>
+</code></pre></div>
+<p>Add these lines to the bottom of the file.</p>
+<div class="highlight"><pre><span></span><code>export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk &#39;{print $2; exit;}&#39;):0.0
+export LIBGL_ALWAYS_INDIRECT=1
+</code></pre></div>
+<p>Verify that you've set the DISPLAY variable correctly:</p>
+<div class="highlight"><pre><span></span><code>$ <span class="nb">echo</span> <span class="nv">$DISPLAY</span>
+<span class="m">172</span>.19.192.1:0.0
+</code></pre></div>
+<p>If that didn't work, close and re-open your terminal, then run <code>echo $DISPLAY</code> again.</p>
 <h2 id="python3-and-pip3">Python3 and pip3</h2>
 <p>Python is hemlock's primary language. Pip allows you to install python packages, including hemlock and its command line interface, hemlock-CLI.</p>
 <p>Most WSL distributions come with python3. Verify your python installation with:</p>
-<div class="highlight"><pre><span></span><code>$ python3
+<div class="highlight"><pre><span></span><code>$ python3 --version
 Python 3.x.x
 </code></pre></div>
 <p>If you don't have python intalled on your WSL distribution, <a href="https://www.python.org/downloads/" target="_blank">download python here</a>. I recommend python3.6, rather than the latest version. Why? Because heroku, my recommended method of app deployment, uses python3.6, meaning that if you develop in python3.7+ and deploy in python3.6, you may encounter compatibility issues.</p>
-<p>Update your package lists:</p>
-<div class="highlight"><pre><span></span><code>$ sudo apt-get update
-</code></pre></div>
 <p>Install pip3:</p>
 <div class="highlight"><pre><span></span><code>$ sudo apt install -f -y python3-pip
 </code></pre></div>
@@ -326,23 +349,14 @@ git version <span class="m">2</span>.17.1
 <div class="highlight"><pre><span></span><code>$ git config --global user.name &lt;my-github-username&gt;
 $ git config --global user.email &lt;my-github-user-email&gt;
 </code></pre></div>
-<p>Finally, you will need a personal access token to initialize hemlock applications with the hemlock command line interface.</p>
 <p><strong>Read everything until STOP before creating your github token.</strong></p>
+<p>Finally, you will need a personal access token to initialize hemlock applications with the hemlock command line interface.</p>
 <ol>
 <li>Create a github token by following <a href="https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token" target="_blank">these instructions</a>.</li>
 <li>When setting permissions (step 7), check 'repo'.</li>
 <li>Copy your token and store it somewhere accessible. For example, I store my token in a file named <code>github_token.txt</code>.</li>
 </ol>
 <p><strong>STOP.</strong></p>
-<h2 id="visual-studio-code">Visual studio code</h2>
-<p>I recommend visual studio code for editing python files. </p>
-<p><strong>Read everything until STOP before downloading or installing anything.</strong></p>
-<p>You can find <a href="https://code.visualstudio.com/" target="_blank">download and installation instructions for VS code here</a>. Make sure to download the Windows version, not the Linux version.</p>
-<p><strong>STOP</strong></p>
-<p>Close and re-open your terminal. Verify your VS code installation:</p>
-<div class="highlight"><pre><span></span><code>$ code --version
-<span class="m">1</span>.xx.x
-</code></pre></div>
 <h2 id="jupyter">Jupyter</h2>
 <p><a href="https://jupyter.org/" target="_blank">Jupyter</a> allows you to quickly iterate on project designs. Install jupyter notebook with pip:</p>
 <div class="highlight"><pre><span></span><code>$ pip install -U notebook
@@ -353,49 +367,27 @@ jupyter core     : x.x.x
 jupyter-notebook : x.x.x
 ...
 </code></pre></div>
-<h2 id="google-chrome-and-chromedriver-for-wsl-1">Google chrome and Chromedriver for WSL 1</h2>
-<p>Follow these instructions if using WSL 1.</p>
-<h3 id="google-chrome">Google chrome</h3>
-<p>Hemlock is developed and tested primarily on chrome. <a href="https://www.google.com/chrome/" target="_blank">Download chrome here</a>.</p>
-<p>Verify that you can open it as follows:</p>
-<div class="highlight"><pre><span></span><code>$ python3
-&gt;&gt;&gt; import webbrowser
-&gt;&gt;&gt; webbrowser.open<span class="o">(</span><span class="s1">&#39;https://dsbowen.github.io/hemlock&#39;</span><span class="o">)</span>
-True
-&gt;&gt;&gt; exit<span class="o">()</span>
-</code></pre></div>
-<p>You should see chrome open to the hemlock docs.</p>
-<p><strong>Note.</strong> If this doesn't work, it's probably because the chrome executable isn't in your path. Run the following:</p>
+<h2 id="google-chrome">Google chrome</h2>
+<p>To download and install Google chrome, run:</p>
 <div class="highlight"><pre><span></span><code>$ hlk setup wsl --chrome
 </code></pre></div>
-<p>Close and re-open your terminal. Verify your <code>BROWSER</code> variable:</p>
-<div class="highlight"><pre><span></span><code>$ <span class="nb">echo</span> <span class="nv">$BROWSER</span>
-/mnt/c/program files <span class="o">(</span>x86<span class="o">)</span>/google/chrome/application/chrome.exe
+<p>Verify your installation:</p>
+<div class="highlight"><pre><span></span><code>$ google-chrome-stable --version
 </code></pre></div>
-<p>Now try again to open the webbrowser.</p>
+<p>Verify that you can open it as follows:</p>
+<div class="highlight"><pre><span></span><code>$ python3 -m webbrowser https://dsbowen.github.io
+</code></pre></div>
+<p>You should see chrome open to my github.io page.</p>
 <p>If you came here from the tutorial, you're now ready to return to it and get started with your first hemlock project. <a href="../../tutorial/first_project/">Click here to go back to the First Project section of the tutorial</a>.</p>
-<h3 id="chromedriver">Chromedriver</h3>
-<p>Hemlock's custom debugging tool and survey view functions use <a href="https://chromedriver.chromium.org/downloads" target="_blank">chromedriver</a>. To use these features locally, you'll need to download chromedriver:</p>
+<h2 id="chromedrover">Chromedrover</h2>
+<p>To download and install chromedriver, run:</p>
 <div class="highlight"><pre><span></span><code>$ hlk setup wsl --chromedriver
 </code></pre></div>
-<p>Close and re-open your terminal. Verify your chromedriver installation:</p>
-<div class="highlight"><pre><span></span><code>$ which chromedriver
-/mnt/c/users/&lt;my-windows-username&gt;/webdrivers/chromedriver
+<p>Verify your installation</p>
+<div class="highlight"><pre><span></span><code>$ chromedriver --version
 </code></pre></div>
 <h4 id="chrome-and-chromedriver-compatibility">Chrome and chromedriver compatibility</h4>
-<p>As of 07/14/2020, <code>hlk setup wsl --chromedriver</code> installs chromedriver for chrome 83. While chrome updates automatically, chromedriver does not. This means that you will encounter compatibility issues when chrome updates to version 84+. To fix this:</p>
-<ol>
-<li><a href="https://chromedriver.chromium.org/downloads" target="_blank">Download the latest chromedriver here</a>. Windows version, not Linux version.</li>
-<li>Put the chrome executable, <code>chromedriver.exe</code> in <code>C:\users\&lt;my-windows-username&gt;\webdrivers\</code>.</li>
-<li>Rename the executable from <code>chromedriver.exe</code> to <code>chromedriver</code>.</li>
-</ol>
-<p>Chromedriver should still be in your path, which you can verify:</p>
-<div class="highlight"><pre><span></span><code>$ which chromedriver
-/mnt/c/users/&lt;my-windows-username&gt;/webdrivers/chromedriver
-</code></pre></div>
-<p>If you came here from the Debug section of the tutorial, you're now ready to return to it and run the debugger. <a href="../../tutorial/debug/">Click here to go back to the Debug section of the tutorial</a>.</p>
-<h2 id="google-chrome-and-chromedriver-for-wsl-2">Google chrome and chromedriver for WSL 2</h2>
-<p>Follow <a href="https://www.gregbrisebois.com/posts/chromedriver-in-wsl2/" target="_blank">these instructions</a> if using WSL 2. Make sure you allow X server to access public networks. If you don't, <a href="https://skeptric.com/wsl2-xserver/" target="_blank">here</a> and <a href="https://github.com/cascadium/wsl-windows-toolbar-launcher#firewall-rules" target="_blank">here</a> for troubleshooting.</p>
+<p>Google chrome will automatically update. Chromedriver will not. If you encounter a compatibility error in the future, simply repeat the above instructions.</p>
 <p>If you came here from the Debug section of the tutorial, you're now ready to return to it and run the debugger. <a href="../../tutorial/debug/">Click here to go back to the Debug section of the tutorial</a>.</p>
 <h2 id="heroku">Heroku</h2>
 <p>Heroku is an easy and inexpensive service for deploying web applications (i.e. putting them online), including hemlock applications. <a href="https://signup.heroku.com/" target="_blank">Sign up for heroku here</a>.</p>

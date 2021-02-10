@@ -1,6 +1,6 @@
 # Linux setup
 
-These instructions are based on the Ubuntu distribution of WSL.
+These instructions were written for Ubuntu 20.04.
 
 ## Python3 and pip3
 
@@ -79,9 +79,9 @@ $ git config --global user.name <my-github-username>
 $ git config --global user.email <my-github-user-email>
 ```
 
-Finally, you will need a personal access token to initialize hemlock applications with the hemlock command line interface.
-
 **Read everything until STOP before creating your github token.**
+
+Finally, you will need a personal access token to initialize hemlock applications with the hemlock command line interface.
 
 1. Create a github token by following <a href="https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token" target="_blank">these instructions</a>.
 2. When setting permissions (step 7), check 'repo'.
@@ -121,17 +121,13 @@ jupyter-notebook : x.x.x
 
 Hemlock is developed and tested primarily on chrome. <a href="https://www.google.com/chrome/" target="_blank">Download chrome here</a>.
 
-Verify that you can open it as follows:
+Verify that you can open it:
 
-```bash
-$ python3
->>> import webbrowser
->>> webbrowser.open('https://dsbowen.github.io/hemlock')
-True
->>> exit()
+```
+$ python3 -m webbrowser https://dsbowen.github.io
 ```
 
-You should see chrome open to the hemlock docs.
+You should see chrome open to my github.io page.
 
 If you came here from the tutorial, you're now ready to return to it and get started with your first hemlock project. [Click here to go back to the First Project section of the tutorial](../tutorial/first_project.md).
 
@@ -143,26 +139,18 @@ Hemlock's custom debugging tool and survey view functions use <a href="https://c
 $ hlk setup linux --chromedriver
 ```
 
-Close and re-open your terminal. Verify your chromedriver installation:
+This will ask you to copy the chromedriver Linux download URL from <a href="https://chromedriver.chromium.org/downloads" target="_blank">here</a> and paste it in your terminal window.
+
+Verify your chromedriver installation:
 
 ```bash
-$ which chromedriver
-/home/<my-linux-username>/webdrivers/chromedriver
+$ chromedriver --version
+ChromeDriver xx.xxxx
 ```
 
 #### Chrome and chromedriver compatibility
 
-As of 07/14/2020, `hlk setup linux --chromedriver` installs chromedriver for chrome 83. While chrome updates automatically, chromedriver does not. This means that you will encounter compatibility issues when chrome updates to version 84+. To fix this:
-
-1. <a href="https://chromedriver.chromium.org/downloads" target="_blank">Download the latest chromedriver here</a>.
-2. Put the chrome binary in `/home/<my-linux-username>/webdrivers/`.
-
-Chromedriver should still be in your path, which you can verify:
-
-```bash
-$ which chromedriver
-/home/<my-linux-username>/webdrivers/chromedriver
-```
+Google Chrome will automatically update. Chromedriver will not. If you encounter a compatibility error in the future, simply repeat the above instructions.
 
 If you came here from the Debug section of the tutorial, you're now ready to return to it and run the debugger. [Click here to go back to the Debug section of the tutorial](../tutorial/debug.md).
 

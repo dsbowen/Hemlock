@@ -24,9 +24,18 @@ def _send_data(func):
         part._previous_status = part.status
         return_val = func(part, update)
         if part._previous_status == part.status:
+            # status hasn't changed; no need to update data store
             return return_val
-        DataStore.query.first().update_status(part)
+        if part.status in ('Completed', 'TimedOut'):
+            # cache the participant's data before querying the data store
+            part.get_data()
+        ds = DataStore.query.first()
+        ds.update_status(part)
+        if part.status in ('Completed', 'TimedOut'):
+            ds.store_participant(part)
+        db.session.commit()
         return return_val
+
     return status_update
 
 
@@ -156,6 +165,7 @@ class Participant(UserMixin, Base, db.Model):
     )
 
     _previous_status = db.Column(db.String(16))
+    cached_data = db.Column(MutableDictType, default={})
     _completed = db.Column(db.Boolean, default=False)
     end_time = db.Column(db.DateTime)
     g = db.Column(MutableDictType)
@@ -297,6 +307,7 @@ class Participant(UserMixin, Base, db.Model):
         df.add(data=self.get_meta(), rows=-1)
         [df.add(data=e._pack_data(), rows=e.data_rows) for e in elements]
         df.pad()
+        self.cached_data = df
         return df
     
     def _set_order(self):

@@ -110,13 +110,13 @@ def random_datetime(inpt, min=datetime(1900, 1, 1), max=datetime(2100, 1, 1)):
 
 def random_num(inpt, min=-1000, max=1000, step=.001, p_int=.5):
     start = inpt.get_attribute('min')
-    start = min if not start else float(start)
+    start = min if start in (None, '') else float(start)
     stop = inpt.get_attribute('max')
-    stop = max if not stop else float(stop)
+    stop = max if stop in (None, '') else float(stop)
     step_ = inpt.get_attribute('step')
-    step_ = step if not step_ or step_ == 'any' else float(step_)
+    step_ = step if step_ in (None, '') or step_ == 'any' else float(step_)
     x = start + random() * (stop - start)
-    x = round(x / step) * step_
+    x = round(x / step_) * step_
     inpt.send_keys(str(int(x) if random() < p_int else x))
 
 def random_str(inpt, maxlength=100, p_whitespace=.2):

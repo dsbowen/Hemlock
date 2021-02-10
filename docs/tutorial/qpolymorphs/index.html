@@ -257,59 +257,61 @@
 <p>By the end of this part of the tutorial, you'll be able to add a variety of question polymorphs to your survey pages.</p>
 <p>Click here to see what your <a href="https://github.com/dsbowen/hemlock-tutorial/blob/v0.1/blackboard.ipynb" target="_blank"><code>blackboard.ipynb</code></a> and <a href="https://github.com/dsbowen/hemlock-tutorial/blob/v0.1/survey.py" target="_blank"><code>survey.py</code></a> files should look like at the end of this part of the tutorial.</p>
 <h2 id="creating-a-demographics-page">Creating a demographics page</h2>
-<p>We'll use jupyter notebook as a blackboard to iterate on our demographics page design. After pushing the application context, we'll create the following page:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Check</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Range</span><span class="p">,</span> <span class="n">Select</span>
+<p>We'll use jupyter notebook as a blackboard to iterate on our demographics page design. After pushing the application context, we'll create a demographics page based on the World Values Survey:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Binary</span><span class="p">,</span> <span class="n">Check</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">RangeInput</span><span class="p">,</span> <span class="n">Select</span>
 
 <span class="n">p</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span>
     <span class="n">Input</span><span class="p">(</span>
-        <span class="s1">&#39;&lt;p&gt;Enter your date of birth.&lt;/p&gt;&#39;</span><span class="p">,</span>
-        <span class="n">placeholder</span><span class="o">=</span><span class="s1">&#39;mm/dd/yyyy&#39;</span>
+        <span class="s1">&#39;&lt;p&gt;Enter your month and year of birth.&lt;/p&gt;&#39;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;month&#39;</span>
     <span class="p">),</span>
-    <span class="n">Check</span><span class="p">(</span>
-        <span class="s1">&#39;&lt;p&gt;Indicate your gender.&lt;/p&gt;&#39;</span><span class="p">,</span>
+    <span class="n">Select</span><span class="p">(</span>
+        <span class="s1">&#39;&lt;p&gt;What is your gender?&lt;/p&gt;&#39;</span><span class="p">,</span>
         <span class="p">[</span><span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="s1">&#39;Other&#39;</span><span class="p">]</span>
     <span class="p">),</span>
     <span class="n">Check</span><span class="p">(</span>
-        <span class="s1">&#39;&lt;p&gt;Indicate your race or ethnicity. Check as many as apply.&lt;/p&gt;&#39;</span><span class="p">,</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        &lt;p&gt;Which race or ethnicity do you belong to?&lt;/p&gt; </span>
+<span class="sd">        &lt;p&gt;Check as many as apply.&lt;/p&gt;</span>
+<span class="sd">        &#39;&#39;&#39;</span><span class="p">,</span>
         <span class="p">[</span>
             <span class="s1">&#39;White&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;Black or African-American&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;Asian&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;Native Hawaiian or other Pacific Islander&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Black&#39;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s1">&#39;South Asian (Indian, Pakistani, etc.)&#39;</span><span class="p">,</span> <span class="s1">&#39;SouthAsian&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;East Asian (Chinese, Japanese, etc.)&#39;</span><span class="p">,</span> <span class="s1">&#39;EastAsian&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;Arabic or Central Asian&#39;</span><span class="p">,</span> <span class="s1">&#39;ArabicCentralAsian&#39;</span><span class="p">),</span>
             <span class="s1">&#39;Other&#39;</span><span class="p">,</span>
         <span class="p">],</span>
         <span class="n">multiple</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">),</span>
-    <span class="n">Select</span><span class="p">(</span>
-        <span class="s1">&#39;&lt;p&gt;Select your current marital status.&lt;/p&gt;&#39;</span><span class="p">,</span>
-        <span class="p">[</span>
-            <span class="s1">&#39;Married&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;Widowed&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;Divorced&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;Separated&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;Never married&#39;</span><span class="p">,</span>
-        <span class="p">]</span>
+    <span class="n">Input</span><span class="p">(</span>
+        <span class="s1">&#39;&lt;p&gt;How many children do you have?&lt;/p&gt;&#39;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;number&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span>
     <span class="p">),</span>
-    <span class="n">Range</span><span class="p">(</span>
+    <span class="n">Binary</span><span class="p">(</span>
+        <span class="s1">&#39;&lt;p&gt;Are you the primary wage earner in your household?&lt;/p&gt;&#39;</span>
+    <span class="p">),</span>
+    <span class="n">RangeInput</span><span class="p">(</span>
         <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        &lt;p&gt;At the right end of the scale are the people who are the </span>
-<span class="sd">        best off; those who have the most money, the most </span>
-<span class="sd">        education, and the best jobs. On the left are the people </span>
-<span class="sd">        who are the worst off; those who have the least money, the </span>
-<span class="sd">        least education, and the worst jobs (or are unemployed). </span>
-<span class="sd">        Please indicate where you think you stand on this scale.&lt;/p&gt;</span>
+<span class="sd">        &lt;p&gt;On a scale from 0 (lowest) to 10 (highest), which income group does </span>
+<span class="sd">        your household belong to?&lt;/p&gt;</span>
 <span class="sd">        &#39;&#39;&#39;</span><span class="p">,</span>
         <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">10</span>
-    <span class="p">),</span>
+    <span class="p">)</span>
 <span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
 </code></pre></div>
 <p>As usual, use <code>p.preview()</code> to preview the page and <code>[os.remove(f) for f in app.tmpfiles if os.path.exists(f)]</code> when you're done.</p>
 <h2 id="code-explanation">Code explanation</h2>
-<p>Here we add several 'question polymorphs' (i.e. types of questions) to our page. </p>
-<p>The first is an input. We add <code>placeholder='mm/dd/yyyy'</code>, telling participants the expected format of their date of birth.</p>
-<p>The next two are check questions, which allow participants to check one or more choices. Notice that the first check question allows participants to check only one choice; we allow participants to check multiple choices in the second check question by passing <code>multiple=True</code>.</p>
-<p>The fourth question is a select (dropdown) question. If we wanted, we also could have passed <code>multiple=True</code> to its contructor to allow participants to select multiple options.</p>
-<p>Our final question is a range slider. By default, it goes from 0 to 100, but we set its range from 0 to 10 here.</p>
+<p>Here we add several 'question polymorphs' (i.e., types of questions) to our page. </p>
+<p>The first is an input. The first argument is the question label (<code>'Enter your month and year of birth.'</code>). We also specify the type of input by passing <code>type='month'</code> to the <code>Input</code> constructor. Without the <code>type</code> argument, participants can enter any text they want into the input. You can checkout other HTML input types <a href="https://www.w3schools.com/html/html_form_input_types.asp">here</a>.</p>
+<p>The next question is a select, or dropdown, question. Again, the first argument is the question label. The second argument is a list of choices the participant can select.</p>
+<p>The third question is a check question. Like a select question, this allows participants to select from a list of choices. The first argument is the question label, and the second argument is a list of choices. Notice that some of the choices are strings (<code>'White'</code>, <code>'Black'</code>) while some are tuples (<code>('South Asian (Indian, Pakistani, etc.)', 'SouthAsian')</code>). Passing the choice as a tuple tells hemlock to 'recode' the value when you download the data. Participants taking the survey see 'South Asian (Indian, Pakistani, etc.)' as one of the choices, but when you download the data, the corresponding column is named <code>SouthAsian</code>.</p>
+<p>Also notice that we pass <code>multiple=True</code> to the <code>Check</code> constructor. This allows participants to select multiple choices. By default, <code>multiple</code> is <code>False</code>, meaning participants can only select one choice. We can also pass <code>multiple=True</code> to <code>Select</code> questions to allow participants to select multiple choices from a dropdown menu.</p>
+<p>The fourth question is another input, this time requiring a <code>number</code>. We also specify <code>min=0</code> because you can't have negative children.</p>
+<p>The fifth question is a binary, which is like a check but for exactly two choices. By default, the choices are <code>'Yes'</code> and <code>'No'</code>, and their values are recoded as <code>1</code> and <code>0</code> when you download the data.</p>
+<p>The last question is a <code>RangeInput</code>, which is what you get when a range slider and an input give each other a special hug. By default, range inputs go from 0 to 100, but we change it from 0 to 10 by specifying the min and max values.</p>
+<p>These are just some of the many question types hemlock offers. Check out more under the 'Question Polymorphs' header on in the navigation bar for more.</p>
 <h2 id="adding-the-page-to-the-survey">Adding the page to the survey</h2>
 <p>Once we're satisfied with the preview, we incorporate the page into our survey. Our <code>survey.py</code> file should be:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Branch</span><span class="p">,</span> <span class="n">Check</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Range</span><span class="p">,</span> <span class="n">Select</span><span class="p">,</span> <span class="n">route</span>
@@ -319,13 +321,13 @@
     <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span>
         <span class="n">Page</span><span class="p">(</span>
             <span class="n">Input</span><span class="p">(</span>
-                <span class="s1">&#39;&lt;p&gt;Enter your date of birth.&lt;/p&gt;&#39;</span><span class="p">,</span>
-                <span class="n">placeholder</span><span class="o">=</span><span class="s1">&#39;mm/dd/yyyy&#39;</span>
+                <span class="s1">&#39;&lt;p&gt;Enter your month and year of birth.&lt;/p&gt;&#39;</span><span class="p">,</span>
+                <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;month&#39;</span>
             <span class="p">),</span>
             <span class="c1"># INSERT THE REST OF THE DEMOGRAPHICS PAGE HERE</span>
         <span class="p">),</span>
         <span class="n">Page</span><span class="p">(</span>
-            <span class="n">Label</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;Thank you for completing this survey.&lt;/p&gt;&#39;</span><span class="p">),</span> 
+            <span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Thank you for completing this survey!&#39;</span><span class="p">),</span> 
             <span class="n">terminal</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
     <span class="p">)</span>

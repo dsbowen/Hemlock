@@ -304,35 +304,21 @@ $ ls
 <div class="highlight"><pre><span></span><code>$ hlk setup-venv my-first-project
 </code></pre></div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">If using WSL</p>
-<p>You'll need to specify your distribution as an environment variable. Open the file which sets your local environment variables:</p>
-<div class="highlight"><pre><span></span><code>$ code env.yaml
-</code></pre></div>
-<p>And add the following line:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">WSL_DISTRIBUTION</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Ubuntu-20.04</span> <span class="c1"># or other WSL distribution</span>
-</code></pre></div>
-<p>If you're not sure which distribution you have, run:</p>
-<div class="highlight"><pre><span></span><code>$ explorer.exe .
-</code></pre></div>
-<p>This will open a file explorer. At the top of the file explorer, you'll see:</p>
-<blockquote>
-<p><code>&lt;my-wsl-distribution&gt;\home\&lt;my-wsl-username&gt;\my-first-project</code></p>
-</blockquote>
-<p>We're looking for <code>&lt;my-wsl-distribution&gt;</code>.</p>
-</div>
 <h2 id="preview-a-page-in-jupyter-notebook">Preview a page in jupyter notebook</h2>
 <p>Jupyter notebook is a great tool for iterating quickly on project designs. I recommend using it for most of your work. Open the jupyter dashboard with:</p>
 <div class="highlight"><pre><span></span><code>$ jupyter notebook
 </code></pre></div>
 <p>Jupyter will attempt to open the dashboard automatically in your browser. If this fails, the terminal window will show you links to the dashboard that you can manually copy and paste into your browser.</p>
 <p>Open the file named <code>blackboard.ipynb</code>.</p>
-<p>Change the kernel to <code>my-first-project</code> (in general, your project name). At the top of the notebook click Kernel &gt;&gt; Change kernel &gt;&gt; my-first-project.</p>
+<p>You may be propted to choose a 'kernel' when you open <code>blackboard.ipynb</code>. If so, choose 'my-first-project' (in general, your project name).</p>
+<p>If you aren't prompted to choose a kernel, manually change the kernel to 'my-first-project'. At the top of the notebook click Kernel &gt;&gt; Change kernel &gt;&gt; my-first-project.</p>
 <p>Run the first cell (Shift + Enter) to set up the environment and application context. It's not important right now to understand exactly what it does.</p>
 <p>Now, create your first hemlock page. In a new code cell below the first one, enter the following:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Label</span>
 
-<span class="n">p</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="n">Label</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;Hello, World!&lt;/p&gt;&#39;</span><span class="p">))</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span>
+    <span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Hello, World!&#39;</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="n">p</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
 </code></pre></div>
 <p>This opens a preview of your page in your browser.</p>
@@ -341,14 +327,20 @@ $ ls
 </code></pre></div>
 <h2 id="code-explanation">Code explanation</h2>
 <p>The first line simply imports <code>Page</code> and <code>Label</code> objects.</p>
-<p>The next line, <code>p = Page(Label('&lt;p&gt;Hello, World!&lt;/p&gt;'))</code>, creates a <code>Page</code> instance. A <code>Page</code> contains a list of 'questions' which it displays to participants. We can set a page's questions by passing them as arguments to the <code>Page</code> constructor. Alternatively, we can set a page's questions by setting the page's <code>questions</code> attribute, meaning that the following are equivalent:</p>
-<div class="highlight"><pre><span></span><code><span class="n">p</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="n">Label</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;Label 0&lt;/p&gt;&#39;</span><span class="p">),</span> <span class="n">Label</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;Label 1&lt;/p&gt;&#39;</span><span class="p">))</span>
+<p>The next line, <code>p = Page(Label('Hello, World!'))</code>, creates a <code>Page</code> instance. A <code>Page</code> contains a list of 'questions' which it displays to participants. We can set a page's questions by passing them as arguments to the <code>Page</code> constructor. Alternatively, we can set a page's questions by setting the page's <code>questions</code> attribute, meaning that the following are equivalent:</p>
+<div class="highlight"><pre><span></span><code><span class="n">p</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span>
+    <span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Label 0&#39;</span><span class="p">),</span> 
+    <span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Label 1&#39;</span><span class="p">)</span>
+<span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="n">p</span> <span class="o">=</span> <span class="n">Page</span><span class="p">()</span>
-<span class="n">p</span><span class="o">.</span><span class="n">questions</span> <span class="o">=</span> <span class="p">[</span><span class="n">Label</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;Label 0&lt;/p&gt;&#39;</span><span class="p">),</span> <span class="n">Label</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;Label 1&lt;/p&gt;&#39;</span><span class="p">)]</span>
+<span class="n">p</span><span class="o">.</span><span class="n">questions</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Label 0&#39;</span><span class="p">),</span> 
+    <span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Label 1&#39;</span><span class="p">)</span>
+<span class="p">]</span>
 </code></pre></div>
-<p>The <code>Page</code>'s question is a <code>Label</code>, although this is in some sense a misnomer because label objects only contains text. The first argument to <code>Label</code> is a string, written in html, which the label object displays on its page.</p>
-<p><strong>Note.</strong> If you don't like writing html, you can easily find Word to html converters online.</p>
+<p>The <code>Page</code>'s question is a <code>Label</code>, although this is in some sense a misnomer because label objects only contains text. The first argument to <code>Label</code> is a string, written in HTML, which the label object displays on its page.</p>
+<p><strong>Note.</strong> If you don't like writing HTML, you can easily find Word to HTML converters online.</p>
 <h2 id="summary">Summary</h2>
 <p>In this part of the tutorial, you learned how to initialize a new hemlock project and create and preview a page.</p>
 <p>In the next part of the tutorial, you'll learn how to run a hemlock application locally.</p>

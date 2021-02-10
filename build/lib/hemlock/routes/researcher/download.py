@@ -226,7 +226,8 @@ class FileCreator():
             yield self.btn.reset(stage, 0)
             updated = [part for part in parts if part.updated]
             for i, part in enumerate(updated):
-                if i % 10 == 1:
+                if i % 10 == 0:
+                    # commit every 10 participants to avoid memory issues
                     db.session.commit()
                 yield self.btn.report(stage, 100.*i/len(updated))
                 self.datastore.store_participant(part)
@@ -248,6 +249,7 @@ class FileCreator():
             stored_ids_head = parts_head = 0
             while parts_head < len(parts):
                 if parts_head % 10 == 1:
+                    # commit every 10 participants to avoid memory issues
                     db.session.commit()
                 yield self.btn.report(stage, 100.*parts_head/len(parts))
                 # Note: id of the participant at index parts_head is 
@@ -262,19 +264,12 @@ class FileCreator():
                 parts_head += 1
             yield self.btn.report(stage, 100)
 
-        print('preparing dataframe')
         parts = Participant.query.order_by('id').all()
-        # parts = [part for part in parts if part.status == 'Completed']
-        # parts = []
-        print('about to store updated')
         for expr in store_updated():
             yield expr
-        print('about to store missing')
         for expr in store_missing():
             yield expr
-        print('attaching file')
         self.files.append(self.datastore.data.get_download_file())
-        print('file attached')
         yield self.btn.report('Data frame prepared', 100)
 
     def prep_meta(self):

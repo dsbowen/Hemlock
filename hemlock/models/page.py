@@ -628,13 +628,6 @@ class Page(BranchingBase, db.Model):
 
         Notes
         -----
-        If running in WSL, first specify the distribution as an environment
-        variable. For example, if running in Ubuntu:
-
-        ```bash
-        $ export WSL_DISTRIBUTION=Ubuntu
-        ```
-
         This method does not run the compile functions.
         """
         def get_static_paths():
@@ -656,21 +649,17 @@ class Page(BranchingBase, db.Model):
             url = element.attrs.get(attr)
             for path, folder in static_paths:
                 if url.startswith(path):
-                    element[attr] = dist + folder + url[len(path):]
+                    element[attr] = '//' + folder + url[len(path):]
                     break
 
         def create_tmp_file():
             # create tempoarary file and write out HTML
             with NamedTemporaryFile('w', suffix='.html', delete=False) as f:
                 f.write(str(html))
-                uri = 'file://'+('wsl$'+ dist + f.name if dist else f.name)
                 if hasattr(current_app, 'tmpfiles'):
                     current_app.tmpfiles.append(f.name)
-            return uri
+            return f.name
 
-        dist = os.environ.get('WSL_DISTRIBUTION', '')
-        if not dist.startswith('/'):
-            dist = '/'+dist
         static_paths = get_static_paths()
         html = BeautifulSoup(self._render(), 'lxml')
         convert_rel_paths('href')

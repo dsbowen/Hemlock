@@ -2,9 +2,62 @@
 
 These instructions were written for Windows 10.
 
-Why WSL? The main reason I use WSL is that Windows OS doesn't have a fork (only a spoon), which means you'll need WSL if you want to run Redis. You can find <a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10" target="_blank">download instructions for WSL here</a>. Either WSL 1 or 2 should work. I personally use the Ubuntu distribution.
+Why WSL? The main reason I use WSL is that Windows OS doesn't have a fork (only a spoon), which means you'll need WSL if you want to run Redis. You can find <a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10" target="_blank">download instructions for WSL here</a>. Download WSL2, not WSL1. I personally use the Ubuntu distribution.
 
-After you've installed WSL, open a terminal window (WIN + R, then enter e.g. 'ubuntu2004'. You may be prompted to create a username and password.
+After you've installed WSL, open a terminal window (WIN + R, then enter e.g., 'ubuntu2004'. You may be prompted to create a username and password.
+
+## Update your package lists
+
+```bash
+$ sudo apt-get update
+```
+
+## Visual studio code
+
+**Read everything until STOP before downloading or installing anything.**
+
+I recommend visual studio code for editing python files.
+
+You can find <a href="https://code.visualstudio.com/" target="_blank">download and installation instructions for VS code here</a>. Make sure to download the Windows version, not the Linux version.
+
+**STOP**
+
+Close and re-open your terminal. Verify your VS code installation:
+
+```bash
+$ code --version
+1.xx.x
+```
+
+## X Server
+
+X server allows you to install python packages and interact with web browsers inside WSL.
+
+Download and install [VcXsrv](https://sourceforge.net/projects/vcxsrv/) **in Windows**. Make sure you allow X server to access public networks. If you accidentally didn't, see <a href="https://skeptric.com/wsl2-xserver/" target="_blank">here</a> and <a href="https://github.com/cascadium/wsl-windows-toolbar-launcher#firewall-rules" target="_blank">here</a> for troubleshooting.
+
+Then run `xlaunch.exe` from the VcSrc folder in Program Files. Keep the default settings *except make sure to select "Disable access control"*.
+
+Finally, we set the DISPLAY environment variable for the X server. Open your `.profile` or `.bashrc` file with:
+
+```bash
+$ code .profile # or code .bashrc
+```
+
+Add these lines to the bottom of the file.
+
+```
+export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0
+export LIBGL_ALWAYS_INDIRECT=1
+```
+
+Verify that you've set the DISPLAY variable correctly:
+
+```bash
+$ echo $DISPLAY
+172.19.192.1:0.0
+```
+
+If that didn't work, close and re-open your terminal, then run `echo $DISPLAY` again.
 
 ## Python3 and pip3
 
@@ -13,17 +66,11 @@ Python is hemlock's primary language. Pip allows you to install python packages,
 Most WSL distributions come with python3. Verify your python installation with:
 
 ```
-$ python3
+$ python3 --version
 Python 3.x.x
 ```
 
 If you don't have python intalled on your WSL distribution, <a href="https://www.python.org/downloads/" target="_blank">download python here</a>. I recommend python3.6, rather than the latest version. Why? Because heroku, my recommended method of app deployment, uses python3.6, meaning that if you develop in python3.7+ and deploy in python3.6, you may encounter compatibility issues.
-
-Update your package lists:
-
-```bash
-$ sudo apt-get update
-```
 
 Install pip3:
 
@@ -97,32 +144,15 @@ $ git config --global user.name <my-github-username>
 $ git config --global user.email <my-github-user-email>
 ```
 
-Finally, you will need a personal access token to initialize hemlock applications with the hemlock command line interface.
-
 **Read everything until STOP before creating your github token.**
+
+Finally, you will need a personal access token to initialize hemlock applications with the hemlock command line interface.
 
 1. Create a github token by following <a href="https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token" target="_blank">these instructions</a>.
 2. When setting permissions (step 7), check 'repo'.
 3. Copy your token and store it somewhere accessible. For example, I store my token in a file named `github_token.txt`.
 
 **STOP.**
-
-## Visual studio code
-
-I recommend visual studio code for editing python files. 
-
-**Read everything until STOP before downloading or installing anything.**
-
-You can find <a href="https://code.visualstudio.com/" target="_blank">download and installation instructions for VS code here</a>. Make sure to download the Windows version, not the Linux version.
-
-**STOP**
-
-Close and re-open your terminal. Verify your VS code installation:
-
-```bash
-$ code --version
-1.xx.x
-```
 
 ## Jupyter
 
@@ -141,78 +171,47 @@ jupyter-notebook : x.x.x
 ...
 ```
 
-## Google chrome and Chromedriver for WSL 1
+## Google chrome
 
-Follow these instructions if using WSL 1.
-
-### Google chrome
-
-Hemlock is developed and tested primarily on chrome. <a href="https://www.google.com/chrome/" target="_blank">Download chrome here</a>.
-
-Verify that you can open it as follows:
-
-```bash
-$ python3
->>> import webbrowser
->>> webbrowser.open('https://dsbowen.github.io/hemlock')
-True
->>> exit()
-```
-
-You should see chrome open to the hemlock docs.
-
-**Note.** If this doesn't work, it's probably because the chrome executable isn't in your path. Run the following:
+To download and install Google chrome, run:
 
 ```bash
 $ hlk setup wsl --chrome
 ```
 
-Close and re-open your terminal. Verify your `BROWSER` variable:
+Verify your installation:
 
 ```bash
-$ echo $BROWSER
-/mnt/c/program files (x86)/google/chrome/application/chrome.exe
+$ google-chrome-stable --version
 ```
 
-Now try again to open the webbrowser.
+Verify that you can open it as follows:
+
+```
+$ python3 -m webbrowser https://dsbowen.github.io
+```
+
+You should see chrome open to my github.io page.
 
 If you came here from the tutorial, you're now ready to return to it and get started with your first hemlock project. [Click here to go back to the First Project section of the tutorial](../tutorial/first_project.md).
 
-### Chromedriver
+## Chromedrover
 
-Hemlock's custom debugging tool and survey view functions use <a href="https://chromedriver.chromium.org/downloads" target="_blank">chromedriver</a>. To use these features locally, you'll need to download chromedriver:
+To download and install chromedriver, run:
 
 ```bash
 $ hlk setup wsl --chromedriver
 ```
 
-Close and re-open your terminal. Verify your chromedriver installation:
+Verify your installation
 
 ```bash
-$ which chromedriver
-/mnt/c/users/<my-windows-username>/webdrivers/chromedriver
+$ chromedriver --version
 ```
 
 #### Chrome and chromedriver compatibility
 
-As of 07/14/2020, `hlk setup wsl --chromedriver` installs chromedriver for chrome 83. While chrome updates automatically, chromedriver does not. This means that you will encounter compatibility issues when chrome updates to version 84+. To fix this:
-
-1. <a href="https://chromedriver.chromium.org/downloads" target="_blank">Download the latest chromedriver here</a>. Windows version, not Linux version.
-2. Put the chrome executable, `chromedriver.exe` in `C:\users\<my-windows-username>\webdrivers\`.
-3. Rename the executable from `chromedriver.exe` to `chromedriver`.
-
-Chromedriver should still be in your path, which you can verify:
-
-```bash
-$ which chromedriver
-/mnt/c/users/<my-windows-username>/webdrivers/chromedriver
-```
-
-If you came here from the Debug section of the tutorial, you're now ready to return to it and run the debugger. [Click here to go back to the Debug section of the tutorial](../tutorial/debug.md).
-
-## Google chrome and chromedriver for WSL 2
-
-Follow <a href="https://www.gregbrisebois.com/posts/chromedriver-in-wsl2/" target="_blank">these instructions</a> if using WSL 2. Make sure you allow X server to access public networks. If you don't, <a href="https://skeptric.com/wsl2-xserver/" target="_blank">here</a> and <a href="https://github.com/cascadium/wsl-windows-toolbar-launcher#firewall-rules" target="_blank">here</a> for troubleshooting.
+Google chrome will automatically update. Chromedriver will not. If you encounter a compatibility error in the future, simply repeat the above instructions.
 
 If you came here from the Debug section of the tutorial, you're now ready to return to it and run the debugger. [Click here to go back to the Debug section of the tutorial](../tutorial/debug.md).
 
