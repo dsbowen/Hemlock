@@ -2,6 +2,9 @@
 
 These instructions were written for Mac OS 10.9.
 
+!!! note
+    About 50% of the problems you encounter during setup can be fixed by closing and re-opening your terminal window. If you have any problems, this is the first thing to try.
+
 ## Open a terminal window
 
 Hemlock requires you to use a terminal window for setting up, editing, and deploying hemlock projects. To open a terminal window, enter 'terminal' in spotlight search. Terminal commands are written in bash:
@@ -34,13 +37,11 @@ Python is hemlock's primary language. Pip allows you to install python packages,
 
 **Read everything until STOP before downloading or installing anything.**
 
-You can [download the latest version of python here](https://www.python.org/downloads/). 
+You can <a href="https://www.python.org/downloads/" target="_blank">download python here</a>. If possible, download python3.6.
 
-However, I recommend an earlier version, python3.6. [Download python3.6 here](https://www.python.org/ftp/python/3.6.8/python-3.6.8-macosx10.9.pkg). 
+Why do I recommend 3.6 instead of the latest version of python? Because heroku, my recommended method of app deployment, uses python3.6, meaning that if you develop in python3.7+ and deploy in python3.6, you may encounter compatibility issues. Anecdotally, I've found downloading legacy version of python is a pain, so if you're having trouble, just download the latest python and make a mental note to double check that your survey works when you deploy it.
 
-Why do I recommend 3.6 instead of the latest version of python? Because heroku, my recommended method of app deployment, uses python3.6, meaning that if you develop in python3.7+ and deploy in python3.6, you may encounter compatibility issues.
-
-**When you start the python installer, you'll see an *Add Python to PATH* option on the first page. Make sure to select this option.**
+**When you start the python installer, you may see an *Add Python to PATH* option on the first page. Make sure to select this option.**
 
 **STOP.**
 
@@ -118,7 +119,7 @@ Finally, you will need a personal access token to initialize hemlock application
 
 ## Visual studio code
 
-I recommend visual studio code for editing python files. [Download VS code here](https://code.visualstudio.com/).
+I recommend visual studio code for editing python files. <a href="https://code.visualstudio.com/" target="_blank">Download VS code here</a>
 
 Close and re-open your terminal. Verify your VS code installation:
 
@@ -126,6 +127,15 @@ Close and re-open your terminal. Verify your VS code installation:
 $ code --version
 1.xx.x
 ```
+
+!!! error
+    If this doesn't work, it may be because VS code isn't in your `PATH`. Try this: 
+
+    1. Open the VS code application and press `Command` + `Shift` + `P` or `F1`.
+    2. Type `shell` in command palette. You should see an option like `shell command : Install code in PATH`. Click that.
+    3. Close and re-open your terminal and verify your installation.
+
+    <a href="https://stackoverflow.com/questions/29955500/code-not-working-in-command-line-for-visual-studio-code-on-osx-mac" target="_blank">See here for more details.</a>.
 
 ## Jupyter
 
@@ -206,6 +216,7 @@ $ heroku --version
 heroku/x.xx.x mac node-vxx.xx.x
 ```
 
-**Note.** See <a href="https://github.com/heroku/legacy-cli/issues/1969" target="_blank">this github issue</a> if you experience a 'EACCES' error. *Do not* simply use `sudo`; this only masks issues you'll encounter later.
+!!! error "EACCES error"
+    See <a href="https://github.com/heroku/legacy-cli/issues/1969" target="_blank">this github issue</a> if you experience a 'EACCES' error. *Do not* simply use `sudo`; this only masks issues you'll encounter later.
 
 [Click here to return to the Deploy section of the tutorial](../tutorial/deploy.md).

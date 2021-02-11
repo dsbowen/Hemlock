@@ -2,6 +2,9 @@
 
 These instructions were written for Ubuntu 20.04.
 
+!!! note
+    About 50% of the problems you encounter during setup can be fixed by closing and re-opening your terminal window. If you have any problems, this is the first thing to try.
+
 ## Python3 and pip3
 
 Python is hemlock's primary language. Pip allows you to install python packages, including hemlock and its command line interface, hemlock-CLI. Many linux distributions come with python3.

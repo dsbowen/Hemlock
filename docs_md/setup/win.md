@@ -2,6 +2,9 @@
 
 These instructions were written for Windows 10.
 
+!!! note
+    About 50% of the problems you encounter during setup can be fixed by closing and re-opening your terminal window. If you have any problems, this is the first thing to try.
+
 ## Git and github
 
 <a href="https://git-scm.com/" target="_blank">Git</a> is a version control system, and <a href="https://github.com/" target="_blank">github</a> hosts code repositories. Together, they allow you to share and collaborate on hemlock projects. You will also need git to initialize hemlock projects with the hemlock template.
@@ -61,11 +64,9 @@ Python is hemlock's primary language. Pip allows you to install python packages,
 
 **Read everything until STOP before downloading or installing anything.**
 
-You can <a href="https://www.python.org/downloads/" target="_blank">download the latest version of python here</a>. 
+You can <a href="https://www.python.org/downloads/" target="_blank">download python here</a>. If possible, download python3.6.
 
-However, I recommend an earlier version, python3.6. [Download python3.6 here](https://www.python.org/ftp/python/3.6.8/python-3.6.8.exe). Then, click on the file you just downloaded to install it. 
-
-Why do I recommend 3.6 instead of the latest version of python? Because heroku, my recommended method of app deployment, uses python3.6, meaning that if you develop in python3.7+ and deploy in python3.6, you may encounter compatibility issues.
+Why do I recommend 3.6 instead of the latest version of python? Because heroku, my recommended method of app deployment, uses python3.6, meaning that if you develop in python3.7+ and deploy in python3.6, you may encounter compatibility issues. Anecdotally, I've found downloading legacy version of python is a pain, so if you're having trouble, just download the latest python and make a mental note to double check that your survey works when you deploy it.
 
 **When you start the python installer, you'll see an *Add Python to PATH* option on the first page. Make sure to select this option.**
 
@@ -116,7 +117,13 @@ $ python3 --version
 Python 3.6.8
 ```
 
-It's okay if you have a different version of python.
+!!! error "Permission denied error"
+    If you get a "Permission denied" error here, try this:
+
+    1. Go to 'Manage app execution aliases' in system settings. You can get there by typing 'manage app execution aliases' in the Windows search bar.
+    2. Turn off 'App Installer python3.exe'.
+
+    <a href="https://stackoverflow.com/questions/56974927/permission-denied-trying-to-run-python-on-windows-10" target="_blank">See here for details.</a>
 
 Next, upgrade pip:
 
@@ -156,7 +163,7 @@ hlk, version x.x.xx
 
 ## Visual studio code
 
-I recommend visual studio code for editing python files. You can find <a href="https://code.visualstudio.com/" target="_blank">download and installation instructions for VS code here</a>.
+I recommend visual studio code for editing python files. <a href="https://code.visualstudio.com/" target="_blank">Download VS code here</a>
 
 Close and re-open your terminal. Verify your VS code installation:
 

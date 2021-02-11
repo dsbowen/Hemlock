@@ -6,6 +6,9 @@ Why WSL? The main reason I use WSL is that Windows OS doesn't have a fork (only 
 
 After you've installed WSL, open a terminal window (WIN + R, then enter e.g., 'ubuntu2004'. You may be prompted to create a username and password.
 
+!!! note
+    About 50% of the problems you encounter during setup can be fixed by closing and re-opening your terminal window. If you have any problems, this is the first thing to try.
+
 ## Update your package lists
 
 ```bash
@@ -16,9 +19,7 @@ $ sudo apt-get update
 
 **Read everything until STOP before downloading or installing anything.**
 
-I recommend visual studio code for editing python files.
-
-You can find <a href="https://code.visualstudio.com/" target="_blank">download and installation instructions for VS code here</a>. Make sure to download the Windows version, not the Linux version.
+I recommend visual studio code for editing python files. <a href="https://code.visualstudio.com/" target="_blank">Download VS code here</a> **Make sure to download the Windows version, not the Linux version.**
 
 **STOP**
 
