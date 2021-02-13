@@ -17,30 +17,37 @@ First, let's add a navigate function to the end of our ultimatum game branch to 
 ```python
 ...
 
-@N.register
-def ultimatum_game(start_branch=None):
+def ultimatum_game(start_branch):
     proposer = assigner.next()['Proposer']
     return Branch(
-        # PAGES HERE
-        navigate=N.proposer_branch() if proposer else N.responder_branch()
+        ...
+        navigate=proposer_branch if proposer else responder_branch
     )
 
 ...
 
-@N.register
-def responder_branch(ultimatum_game_branch=None):
+def responder_branch(ug_branch):
     branch = Branch()
     for round_ in range(N_ROUNDS):
         response_input = gen_response_input(round_+1)
-        branch.pages.append(Page(response_input))
-        branch.pages.append(Page(
-            Label(compile=C.responder_outcome(response_input)),
-            cache_compile=True
-        ))
-    branch.pages.append(Page(
-        Label('<p>Thank you for completing the hemlock tutorial!</p>'),
-        terminal=True        
-    ))
+        branch.pages.append(
+            Page(
+                response_input
+            )
+        )
+        branch.pages.append(
+            Page(
+                Label(
+                    compile=C.responder_outcome(response_input)
+                )
+            )
+        )
+    branch.pages.append(
+        Page(
+            Label('Thank you for completing the survey!'),
+            terminal=True      
+        )
+    )
     return branch
 ```
 
@@ -54,16 +61,18 @@ Just as the proposer's input was created with `gen_proposal_input`, the responde
 ...
 
 def gen_response_input(round_):
-    return Input(
-        '''
+    return Blank(
+        ('''
         <p><b>Round {} of {}</b></p>
-        <p>The proposer has ${} to split between him/herself and you. Complete
-        this sentence:</p>
-        <p>I will accept any proposal which gives me at least</p>
-        '''.format(round_, N_ROUNDS, POT),
-        prepend='$', append='.00', var='Response',
-        validate=V.range_val(0, POT),
-        submit=S.data_type(int)
+        
+        <p>The proposer has ${} to split between him/herself and you. Fill in 
+        the blank:</p>
+        
+        <p>I will accept any proposal which gives me at least
+        <b>$'''.format(round_, N_ROUNDS, POT), '.00</b>.</p>'),
+        prepend='$', append='.00', 
+        var='Response', blank_empty='__', 
+        type='number', min=0, max=POT, required=True
     )
 ```
 
@@ -77,21 +86,21 @@ We register a compile function to display the responder outcome.
 ...
 
 @C.register
-def responder_outcome(outcome_label, responder_input):
+def responder_outcome(outcome_label, response_input):
     # get the response
-    response = responder_input.data
-    # randomly select a proposal
-    proposal_inputs = Input.query.filter(
-        Input.var=='Proposal', Input.data!=None
+    response = response_input.data
+    #randomly select a proposal
+    proposal_inputs = Blank.query.filter(
+        Blank.var=='Proposal', Blank.data!=None
     ).all()
     if proposal_inputs:
         # randomly choose a proposal
-        n = random.choice(proposal_inputs).data
+        offer = random.choice(proposal_inputs).data
     else:
         # no proposals are available
         # e.g. if this is the first participant
-        n = randint(0, POT)
-    proposal = POT-n, n
+        offer = randint(0, POT)
+    proposal = POT-offer, offer
     # compute the payoff
     accept = response <= proposal[1]
     payoff = proposal if accept else (0, 0)
@@ -103,17 +112,26 @@ def responder_outcome(outcome_label, responder_input):
         Embedded('ResponderPayoff', payoff[1])
     ]
     # describe the outcome of the round
+    proposal_list = html_list(
+        'Proposer: ${}'.format(proposal[0]),
+        'You: ${}'.format(proposal[1]),
+        ordered=False
+    )
     outcome_label.label = '''
         <p>The proposer proposed the following split:</p>
-        <ul>
-            <li>Proposer: ${}</li>
-            <li>You: ${}</li>
-        </ul>
-        <p>You said you will accept any proposal which gives you at 
-        least ${}.</p>
-        <p><b>You {} the proposal, giving you a payoff of ${}.</b></p>
+        
+        {proposal_list}
+        
+        <p>You said you will accept any proposal which gives you at least 
+        ${response}.</p>
+        
+        <p><b>You {accept_reject} the proposal, giving you a payoff of 
+        ${payoff}.</b></p>
     '''.format(
-        *proposal, response, 'accepted' if accept else 'rejected', payoff[1]
+        proposal_list=proposal_list,
+        response=response,
+        accept_reject='accepted' if accept else 'rejected',
+        payoff=payoff[1]
     )
 ```
 

@@ -2,7 +2,7 @@
 
 These instructions were written for Mac OS 10.9.
 
-!!! note
+!!! tip
     About 50% of the problems you encounter during setup can be fixed by closing and re-opening your terminal window. If you have any problems, this is the first thing to try.
 
 ## Open a terminal window
@@ -13,13 +13,13 @@ Hemlock requires you to use a terminal window for setting up, editing, and deplo
 $ <my-bash-command>
 ```
 
-**Note 1.** You don't type `$`; it simply indicates the beginning of a bash command.
-
-**Note 2.** For this tutorial, always make sure to change to your home directory after you open your terminal. Do this by entering:
-
-```bash
-$ cd
-```
+!!! tip
+    1. You don't type `$`. This just indicates the beginning of a bash command.
+    2. For the tutorial, always change to your home directory after you open your terminal. Do this by entering:
+    
+    ```bash
+    $ cd
+    ```
 
 ## Xcode
 
@@ -64,6 +64,25 @@ Verify your pip installation:
 $ pip3 --version
 pip xx.x.x ...
 ```
+
+!!! tip "pip versus pip3"
+    You'll install several python packages using `pip`. Conventionally, the command to install these is written as:
+
+    ```bash
+    $ pip install <my-requested-package>
+    ```
+
+    You may need to repace this with:
+
+    ```bash
+    $ pip3 install <my-requested-package>
+    ```
+
+    Or even:
+
+    ```bash
+    $ python3 -m pip install <my-requested-package>
+    ```
 
 ## Hemlock-CLI
 
@@ -128,8 +147,8 @@ $ code --version
 1.xx.x
 ```
 
-!!! error
-    If this doesn't work, it may be because VS code isn't in your `PATH`. Try this: 
+??? error "code: command not found"
+    If you experience a "command not found" error, it's probably because VS code isn't in your `PATH`. Try this: 
 
     1. Open the VS code application and press `Command` + `Shift` + `P` or `F1`.
     2. Type `shell` in command palette. You should see an option like `shell command : Install code in PATH`. Click that.
@@ -193,9 +212,8 @@ $ chromedriver --version
 ChromeDriver x.xx.x
 ```
 
-#### Chrome and chromedriver compatibility
-
-Google Chrome will automatically update. Chromedriver will not. If you encounter a compatibility error in the future, simply repeat the above instructions.
+!!! warning "Chrome and chromedriver compatibility"
+    Google chrome will automatically update. Chromedriver will not. If you encounter a compatibility error in the future, simply repeat the above instructions.
 
 If you came here from the Debug section of the tutorial, you're now ready to return to it and run the debugger. [Click here to go back to the Debug section of the tutorial](../tutorial/debug.md).
 
@@ -216,7 +234,7 @@ $ heroku --version
 heroku/x.xx.x mac node-vxx.xx.x
 ```
 
-!!! error "EACCES error"
+??? error "EACCES error"
     See <a href="https://github.com/heroku/legacy-cli/issues/1969" target="_blank">this github issue</a> if you experience a 'EACCES' error. *Do not* simply use `sudo`; this only masks issues you'll encounter later.
 
 [Click here to return to the Deploy section of the tutorial](../tutorial/deploy.md).

@@ -668,7 +668,7 @@ class Page(BranchingBase, db.Model):
         if driver is None:
             webbrowser.open(uri)
         else:
-            driver.get(uri)
+            driver.get('file://'+uri)
         return self
 
     def view_nav(self, indent=0):

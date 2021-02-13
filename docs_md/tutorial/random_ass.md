@@ -14,28 +14,36 @@ Open your jupyter notebook and run the following:
 from hemlock import Participant
 from hemlock.tools import Assigner
 
+assigner = Assigner({
+    'Manipulation': ('happy', 'sad'),
+    'Level': ('low', 'medium', 'high')
+})
 part = Participant.gen_test_participant()
-conditions = {'Treatment': (0,1), 'Level': ('low','med','high')}
-assigner = Assigner(conditions)
 assigner.next()
 ```
 
 Out:
 
 ```
-{'Treatment': 0, 'Level': 'low'}
+{'Manipulation': 'happy', 'Level': 'low'}
 ```
 
-The `Assigner` randomly and evenly assigns participants to conditions, and easily handles factorial designs. It automatically records the assignment in the participant's embedded data:
+### Code explanation
+
+FIrst, we created an `Assigner` instance. It randomly and evenly assigns participants to conditions, and easily handles factorial designs. 
+
+The `Assigner`'s argument is a dictionary mapping treatment names to levels. In this example, we use a 2 (happy or sad manipulation) x 3 (low, medium, or high level) design.
+
+We assign a participant to conditions using `assigner.next()`. This returns the treatment assignment and automatically records the assignment in the participant's `meta` attribute:
 
 ```python
-[(e.var, e.data) for e in part.embedded]
+part.meta
 ```
 
 Out:
 
 ```
-[('Treatment', 0), ('Level', 'low')]
+{'Manipulation': 'happy', 'Level': 'low'}
 ```
 
 ## Random assignment in our app
@@ -44,10 +52,8 @@ In `survey.py`:
 
 ```python
 ...
-from hemlock.tools import Assigner, comprehension_check, join
-
-from datetime import datetime
-from random import randint
+from hemlock.tools import Assigner, comprehension_check, html_list, join
+...
 
 # the number of rounds participants play
 N_ROUNDS = 5
@@ -58,22 +64,29 @@ assigner = Assigner({'Proposer': (0, 1)})
 
 ...
 
-@N.register
-def ultimatum_game(start_branch=None):
+def ultimatum_game(start_branch):
     proposer = assigner.next()['Proposer']
     return Branch(
         *comprehension_check(
             # COMPREHENSION CHECK ARGUMENTS HERE
         ),
         Page(
+            Label('You passed the comprehension check!')
+        ),
+        Page(
             Label(
                 '''
-                <p>You are about to play an ultimatum game as a <b>{}</b>.</p>
+                You are about to play an ultimatum game as a <b>{}</b>.
                 '''.format('proposer' if proposer else 'responder')
-            ),
+            )
+        ),
+        Page(
+            Label('Thank you for completing this survey!'), 
             terminal=True
         )
     )
+
+...
 ```
 
 Run your app and pass the comprehenion check to see which condition you've been assigned to.

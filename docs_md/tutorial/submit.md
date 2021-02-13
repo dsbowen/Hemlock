@@ -6,11 +6,8 @@ By the end of this part of the tutorial, you'll be able to run functions to hand
 
 Click here to see what your <a href="https://github.com/dsbowen/hemlock-tutorial/blob/v0.4/blackboard.ipynb" target="_blank">`blackboard.ipynb`</a> and <a href="https://github.com/dsbowen/hemlock-tutorial/blob/v0.4/survey.py" target="_blank">`survey.py`</a> files should look like at the end of this part of the tutorial.
 
-## Why submit functions?
-
-Our demographics page asks participants to enter their date of birth. In addition to date of birth, we also want to record the participant's age.
-
-Submit functions run after a participant submits a page and their responses are validated. We're going to attach a submit function to our date of birth input question to record our participants' age as embedded data.
+??? note "Why submit functions?"
+    Submit functions run after a participant submits a page and their responses are validated. The most common use for submit functions is adding or transforming data based on a participant's responses. In our example, we're going to use a submit function to record a binary variable indicating whether the participant is female based on our gender question.
 
 ## Basic syntax
 
@@ -19,24 +16,27 @@ Open your jupyter notebook and run the following:
 ```python
 from hemlock import Input, Submit as S
 
-inpt = Input('<p>Enter "hello world"</p>', submit=S.match('hello world'))
+inpt = Input(
+    'Enter "hello world"', 
+    submit=S.match('hello world')
+)
 inpt.submit
 ```
 
 Out:
 
 ```
-[<Submit 1>]
+[<match('hello world')>]
 ```
 
 You can add submit functions to a page or question by settings its `submit` attribute or passing a `submit` argument to its constructor. Submit functions run when a participant successfully submits a page.
 
-The `match` submit function changes a question's data to 1 if the data matches a regex pattern, in this case `'hello world'`, and 0 if it does not.
+The `match` submit function sets a question's data to 1 if the response matches a regex pattern, in this case `'hello world'`, and 0 if it does not.
 
-Let's set the input question's data and watch our submit function work:
+Let's set the input question's response and watch our submit function work:
 
 ```python
-inpt.data = 'hello world'
+inpt.response = 'hello world'
 inpt._submit().data
 ```
 
@@ -46,8 +46,10 @@ Out:
 1
 ```
 
+Now let's set the question's response to something other than `'hello world'` and see what happens:
+
 ```python
-inpt.data = 'something other than hello world'
+inpt.response = 'something other than hello world'
 inpt._submit().data
 ```
 
@@ -57,46 +59,125 @@ Out:
 0
 ```
 
-**Notes.**
-
-1. You don't need to run `_submit` yourself in the survey; hemlock takes care of this automatically for you.
-2. `match` is just one of many [prebuilt submit functions](../submit_functions.md).
+!!! tip
+    You don't need to run `_submit` yourself in the survey. Hemlock takes care of this automatically for you.
+    
+!!! tip "More submit functions"
+    `match` is just one of many [native hemlock submit functions](../functions/submit.md).
 
 ## Custom submission
 
-We're going to use a custom submit function to record our participants' age. Let's see how to do this in our notebook.
+We're going to use a custom submit function to record the female indicator. Let's do this in our notebook first.
 
 ```python
-from hemlock import Embedded, Page
+from hemlock import Embedded, Page, Select
 
-from datetime import datetime
-
-@S.register
-def record_age(inpt):
-    # calculate age in years
-    date_of_birth = datetime.strptime(inpt.data, '%m/%d/%Y')
-    age = (datetime.utcnow() - date_of_birth).days / 365.25
-    # record age as embedded data
-    inpt.page.embedded = [Embedded('Age', age, data_rows=-1)]
+def record_female(gender):
+    gender.page.embedded = [
+        Embedded('Female', gender.response=='Female', data_rows=-1)
+    ]
 
 page = Page(
-    Input('<p>Enter your date of birth.</p>', submit=S.record_age())
+    Select(
+        '<p>What is your gender?</p>',
+        ['', 'Male', 'Female', 'Other'],
+        submit=record_female
+    )
 )
-inpt = page.questions[0]
-inpt.data = '10/26/1992'
-inpt._submit()
+select = page.questions[0]
+select.response = 'Female'
+select._submit()
 page.embedded[0].data
 ```
 
 Out:
 
 ```
-27.742642026009584
+True
+```
+
+In:
+
+```python
+select.response = 'Male'
+select._submit()
+page.embedded[0].data
+```
+
+Out:
+
+```
+False
 ```
 
 ### Code explanation
 
-We register a new submit function with the `@S.register` decorator. The submit function takes the input question as its argument. In general, submit functions take their parent as their first argument. `record_age` converts the input's data to a `datetime` object, computes the participant's age, and records it as embedded data.
+We created a custom submit function to add an embedded data element to the demographics page. The submit function takes the gender select question as its argument. In general, submit functions take their parent as their first argument.
+
+`gender.page` is the page to which the gender question belongs. `gender.page.embedded` is a list of embedded data elements belonging to that page. We set `embedded` to a list containing a single embedded data element. The embedded data element has a variable name `'Female'` and data which indicates whether the participant is female. As we did for the demographics questions, we pass `data_rows=-1`, meaning 'this value should appear on every row the participant contributes to the data frame'.
+
+Finally, we add the submit function to the gender select question by passing `submit=record_female` to the question's constructor. This creates a 'sticky note' reminding the select question to run the submit function at the appropriate time.
+
+## Function patterns
+
+In the previous part of the tutorial, we created a custom validate function by registering a new validate function with `@V.register`. We then added it to a question by passing `validate=V.my_function(my_argument)` to the question's constructor. Here, we added a submit function without registering it, simply by passing `submit=my_function` to the question's constructor. Why are validate and submit functions treated differently?
+
+The answer is that they aren't. You can add both validate and submit functions using one of two 'patterns'.
+
+Simple pattern:
+
+```python
+def my_validate_function(question):
+    # your amazing function here
+
+def my_submit_function(question):
+    # your amazing function here
+
+Input(
+    validate=my_validate_function,
+    submit=my_submit_function
+)
+```
+
+Decorator pattern:
+
+```python
+@V.register
+def my_validate_function(question, my_argument):
+    # your amazing function here
+
+@S.register
+def my_submit_function(question, my_argument):
+    # your amazing function here
+
+Input(
+    validate=V.my_validate_function(my_validate_argument),
+    submit=S.my_submit_function(my_submit_argument)
+)
+```
+
+The main advantage of the simple pattern is, well, its simplicity. The main advantage of the decorator pattern is that it allows you to pass additional arguments to validate and submit functions.
+
+To see the decorator pattern in action for submit functions, run the following in a jupyter notebook cell:
+
+```python
+@S.register
+def my_function(parent, my_argument):
+    print('My parent is', parent)
+    print('My argument is', my_argument)
+    
+select = Select(
+    submit=S.my_function('hello world')
+)
+select._submit()
+```
+
+Out:
+
+```
+My parent is <Select (transient 140423771774256)>
+My argument is hello world
+```
 
 ## Submission in our app
 
@@ -105,44 +186,44 @@ Now that we've seen how to add submit functions in our notebook, let's add it to
 In `survey.py`:
 
 ```python
-from hemlock import Branch, Check, Embedded, Input, Label, Page, Range, Select, Submit as S, Validate as V, route
-
-from datetime import datetime
+from hemlock import (
+    Binary, Branch, Check, Embedded, Input, Page, Label, RangeInput, Select, 
+    Submit as S, Validate as V, route
+)
 
 @route('/survey')
 def start():
     return Branch(
         Page(
             Input(
-                '<p>Enter your date of birth.</p>',
-                placeholder='mm/dd/yyyy',
-                var='DoB', data_rows=-1,
-                validate=[V.require(), V.date_format()],
-                submit=S.record_age()
+                '<p>Enter your month and year of birth.</p>',
+                type='month', var='DoB', data_rows=-1, required=True
             ),
-            # REST OF THE DEMOGRAPHICS PAGE HERE
+            Select(
+                '<p>What is your gender?</p>',
+                ['', 'Male', 'Female', 'Other'],
+                var='Gender', data_rows=-1,
+                validate=V.require(),
+                submit=record_female
+            ),
+            # REST OF THE DEMOGRAPHICS PAGE
         ),
         Page(
-            Label('<p>Thank you for completing the survey!</p>'),
+            Label('Thank you for completing this survey!'), 
             terminal=True
         )
     )
 
-...
-
-@S.register
-def record_age(inpt):
-    # calculate age in years
-    date_of_birth = datetime.strptime(inpt.data, '%m/%d/%Y')
-    age = (datetime.utcnow() - date_of_birth).days / 365.25
-    # record age as embedded data
-    inpt.page.embedded = [Embedded('Age', age, data_rows=-1)]
+def record_female(gender):
+    gender.page.embedded = [
+        Embedded('Female', gender.response=='Female', data_rows=-1)
+    ]
 ```
 
-Run the app again, fill in the demographics page, and download the data. You'll now see a variable 'Age' in the data frame.
+Run the app again, fill in the demographics page, and download the data. You'll now see a variable 'Female' in the data frame.
 
 ## Summary
 
 In this part of the tutorial, you learned how create and run submit functions.
 
-In the next part of the tutorial, you'll implement a confirmation page using compile functions.
+In the next part of the tutorial, you'll learn how to create an entire demographics page in one line of code using hemlock extensions.

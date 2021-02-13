@@ -6,75 +6,104 @@ In this part of the tutorial, you'll implement the proposer branch of the ultima
 
 Click here to see what your <a href="https://github.com/dsbowen/hemlock-tutorial/blob/v0.9/blackboard.ipynb" target="_blank">`blackboard.ipynb`</a> and <a href="https://github.com/dsbowen/hemlock-tutorial/blob/v0.9/survey.py" target="_blank">`survey.py`</a> files should look like at the end of this part of the tutorial.
 
+!!! note
+    This is the most difficult part of the tutorial. It uses advanced techniques that you'll rarely need.
+    
+    Don't sweat the details here. Try to get the gist of what's going on and feel free to 'cheat' by copying and pasting liberally.
+
+    Brace yourself. Deep breath... jump in.
+
+## Aside on fill-in-the-blank inputs
+
+We're going to ask proposers to make their proposals by filling in a blank. Open your notebook and run this:
+
+```python
+from hemlock import Blank, Page
+
+Page(
+    Blank(
+        ('Hello, ', '!'),
+        blank_empty='_____'
+    )
+).preview()
+```
+
+Note that the blank's first argument isn't a string like we're used to seeing. Instead, it's a tuple. Whatever the participant enters in the input field gets inserted in between the tuple entries.
+
+A key attribute of blanks is `blank_empty`. This is what fills in the blank when the participant's response is empty.
+
 ## The proposal input
 
 First, we'll write a function to generate an input question where the proposer will input the proposed split. Enter the following in your jupyter notebook:
 
 ```python
-from hemlock import Input, Label, Page, Submit as S, Validate as V
-
 N_ROUNDS = 5
 POT = 20
 
 def gen_proposal_input(round_):
-    return Input(
-        '''
+    return Blank(
+        ('''
         <p><b>Round {} of {}</b></p>
-        <p>You have ${} to split between you and the responder. How 
-        much money would you like to offer to the responder?</p>
-        '''.format(round_, N_ROUNDS, POT),
-        prepend='$', append='.00', var='Proposal',
-        validate=V.range_val(0, POT),
-        submit=S.data_type(int)
+
+        <p>You have ${} to split between you and the responder. Fill in the 
+        blank:</p>
+
+        <p>I would like to offer the responder 
+        <b>$'''.format(round_, N_ROUNDS, POT), '.00</b>.</p>'),
+        prepend='$', append='.00', 
+        var='Proposal', blank_empty='__', 
+        type='number', min=0, max=POT, required=True
     )
 
-Page(gen_proposal_input(1)).preview()
+Page(
+    gen_proposal_input(round_=1)
+).preview()
 ```
 
-This function generates an input which asks the proposer how much money they would like to offer to the responder. We record the data in a variable named `'Proposal'`.
-
-We add range validation so that the proposer inputs an integer between 0 and the size of the pot. We also add a submit function which converts the data type to an integer.
-
-**Note.** For input questions, the data are recorded as strings. We want to reference this question's data as an integer, so we use `S.data_type(int)` to convert it when the page is submitted.
+This function generates an fill-in-the-blank input which asks the proposer how much money they would like to offer to the responder. We record the data in a variable named `'Proposal'`.
 
 ## Finding a responder
 
-We can use the [SQLAlchemy Query API](https://docs.sqlalchemy.org/en/13/orm/query.html) to pair the proposer with a random responder this round. 
+We can use the <a href="https://docs.sqlalchemy.org/en/13/orm/query.html" target="_blank">SQLAlchemy Query API</a> to pair the proposer with a random responder this round. 
 
 First, we create an input with variable name `'Response'` and data `5`:
 
 ```python
-import random
+from hemlock import db
 
-response_input = Input(var='Response', data=5)
-response_input
+response = Blank(var='Response', data=5)
+db.session.add(response)
+db.session.flush([response])
+response
 ```
 
 Out:
 
 ```
-<Input 3>
+<Blank 1>
 ```
 
-Next, we get all `Input` objects in the database with the variable name `'Response'` whose data is not `None`:
+Next, we get all `Blank` objects in the database with the variable name `'Response'` whose data is not `None`:
 
 ```python
-response_inputs = Input.query.filter(
-    Input.var=='Response', Input.data!=None
+responses = Blank.query.filter(
+    Blank.var=='Response', Blank.data!=None
 ).all()
-response_inputs
+responses
 ```
 
 Out:
 
 ```
-[<Input 3>]
+[<Blank 1>]
 ```
 
 Finally, we choose one of these inputs randomly and get its data:
 
 ```python
-random.choice(response_inputs).data
+import random
+
+random.choice(responses).data
 ```
 
 Out:
@@ -89,6 +118,7 @@ Now we want to display the outcome of the round to the proposer. This calls for 
 
 ```python
 from hemlock import Compile as C, Embedded
+from hemlock.tools import html_list
 
 from random import randint
 
@@ -97,12 +127,12 @@ def proposer_outcome(outcome_label, proposal_input):
     # get the proposal
     proposal = POT-proposal_input.data, proposal_input.data
     # get all responses
-    response_inputs = Input.query.filter(
-        Input.var=='Response', Input.data!=None
+    responses = Blank.query.filter(
+        Blank.var=='Response', Blank.data!=None
     ).all()
-    if response_inputs:
+    if responses:
         # randomly choose a response
-        response = random.choice(response_inputs).data
+        response = random.choice(responses).data
     else:
         # no responses are available
         # e.g. if this is the first participant
@@ -118,25 +148,27 @@ def proposer_outcome(outcome_label, proposal_input):
         Embedded('ResponderPayoff', payoff[1])
     ]
     # describe the outcome of the round
+    proposal_list = html_list(
+        'You: ${}'.format(proposal[0]),
+        'Responder: ${}'.format(proposal[1]),
+        ordered=False
+    )
     outcome_label.label = '''
         <p>You proposed the following split:</p>
-        <ul>
-            <li>You: ${}</li>
-            <li>Responder: ${}</li>
-        </ul>
-        <p>The responder said they will accept any proposal which gives
-        them at least ${}.</p>
-        <p><b>Your proposal was {}, giving you a payoff of ${}.</b></p>
-    '''.format(
-        *proposal, response, 'accepted' if accept else 'rejected', payoff[0]
-    )
 
-proposal_outcome_page = Page(
-    Label(
-        compile=C.proposer_outcome(Input(data=10))
+        {proposal_list}
+
+        <p>The responder said they will accept any proposal which gives
+        them at least ${response}.</p>
+        
+        <p><b>Your proposal was {accept_reject}, giving you a payoff of 
+        ${payoff}.</b></p>
+    '''.format(
+        proposal_list=proposal_list, 
+        response=response, 
+        accept_reject='accepted' if accept else 'rejected', 
+        payoff=payoff[0]
     )
-)
-proposal_outcome_page._compile().preview()
 ```
 
 Let's go through this step by step.
@@ -148,6 +180,20 @@ Second, we use the Query API to randomly select a response input question. We mo
 Third, we compute the payoff and record the results of the round using embedded data.
 
 Finally, we set the outcome label's `label` attribute to display the outcome of the round.
+
+Let's see what the proposer outcome would have been if they had offered $10 to the responder:
+
+```python
+from hemlock import Label
+
+page = Page(
+    Label(
+        compile=C.proposer_outcome(Blank(data=10))
+    )
+)
+page._compile()
+page.preview()
+```
 
 Notice that the outcome of the round is recorded in the proposer's outcome page's embedded data:
 
@@ -164,29 +210,72 @@ Out:
  ('ResponderPayoff', 10)]
 ```
 
+What would the proposer outcome have been if they had offered $4 to the responder?
+
+```python
+page = Page(
+    Label(
+        compile=C.proposer_outcome(Blank(data=4))
+    )
+)
+page._compile()
+page.preview()
+```
+
+In:
+
+```python
+[(e.var, e.data) for e in page.embedded]
+```
+
+Out:
+
+```
+[('Response', 5), 
+ ('Accept', 0), 
+ ('ProposerPayoff', 0), 
+ ('ResponderPayoff', 0)]
+```
+
 ## Adding the proposer branch to our survey
+
+### Imports
+
+We'll begin by updating our imports:
+
+```python
+from hemlock import (
+    Blank, Branch, Compile as C, Embedded, Input, Label, Page, Validate as V, 
+    Submit as S, route
+)
+from hemlock.tools import Assigner, comprehension_check, html_list, join
+from hemlock_demographics import basic_demographics
+
+import random
+from random import randint
+
+...
+```
 
 ### Navigating to the proposer branch
 
-We'll begin by modifying the ultimatum game branch to navigate to the proposer branch if the participant was assigned to be a proposer. In `survey.py`:
+Next we'll modify the ultimatum game branch to navigate to the proposer branch if the participant was assigned to be a proposer. In `survey.py`:
 
 ```python
 ...
 
-@N.register
-def ultimatum_game(start_branch=None):
+def ultimatum_game(start_branch):
     proposer = assigner.next()['Proposer']
     return Branch(
-        # COMPREHENSION CHECK HERE
+        ...
         Page(
             Label(
                 '''
-                <p>You are about to play an ultimatum game as a <b>{}</b>.</p>
+                You are about to play an ultimatum game as a <b>{}</b>.
                 '''.format('proposer' if proposer else 'responder')
             )
-            # DELETE terminal=True
         ),
-        navigate=N.proposer_branch()
+        navigate=proposer_branch
     )
 
 ...
@@ -199,32 +288,32 @@ Next we'll add our proposer navigate function to the bottom of `survey.py`:
 ```python
 ...
 
-import random # ADD THIS IMPORT AT THE TOP OF THE FILE
-from datetime import datetime
-from random import randint
-
-...
-
-@N.register
-def proposer_branch(ultimatum_game_branch):
+def proposer_branch(ug_branch):
     branch = Branch()
     for round_ in range(N_ROUNDS):
         proposal_input = gen_proposal_input(round_+1)
-        branch.pages.append(Page(proposal_input))
-        branch.pages.append(Page(
-            Label(compile=C.proposer_outcome(proposal_input)),
-            cache_compile=True
-        ))
-    branch.pages.append(Page(
-        Label('<p>Thank you for completing the hemlock tutorial!</p>'),
-        terminal=True      
-    ))
+        branch.pages.append(
+            Page(
+                proposal_input
+            )
+        )
+        branch.pages.append(
+            Page(
+                Label(
+                    compile=C.proposer_outcome(proposal_input)
+                )
+            )
+        )
+    branch.pages.append(
+        Page(
+            Label('Thank you for completing the survey!'),
+            terminal=True      
+        )
+    )
     return branch
 ```
 
 This navigate function simply adds two pages to the proposer branch for each of `N_ROUNDS`. The first page asks the proposer to propose a split. The second page displays the outcome of the round.
-
-Notice that passed `cache_compile=True` to the second page. This caches the result of the compile functions; removing them so that they won't run again if the participant refreshed the page. Why do we want to do this? Suppose we set up our study so that participants are playing for real money. We don't want participants refreshing their screen over and over again to see if they can get a better outcome.
 
 ### Generating the proposal input and outcome label
 
@@ -245,6 +334,6 @@ Run the app and see what the survey looks like in the proposer condition.
 
 ## Summary
 
-In this part of the tutorial, you implemented the proposer branch.
+In this part of the tutorial, you implemented the proposer branch. Give yourself a giant pat on the back. You're officially a hemlock expert. The rest will smooth sailing.
 
 In the next part of the tutorial, you'll implement the responder branch.

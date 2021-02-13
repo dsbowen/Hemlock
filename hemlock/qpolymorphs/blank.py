@@ -2,14 +2,17 @@
 
 from .bases import InputBase
 from ..app import db, settings
-from ..functions.debug import send_keys
+from ..functions.debug import random_input
 from ..models import Question
 from ..tools import key
 
 from flask import render_template
 
 settings['Blank'] = {
-    'class': ['form-control'], 'type': 'text', 'blank_empty': '', 'debug': send_keys
+    'class': ['form-control'], 
+    'type': 'text', 
+    'blank_empty': '', 
+    'debug': random_input
 }
 
 

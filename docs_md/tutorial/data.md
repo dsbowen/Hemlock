@@ -53,38 +53,37 @@ This adds an `Embedded` data object to our participant. Embedded data are a type
 
 Looking at the data, we see that the participant has a new variable named `'MyVariable'` with data `['MyData']`.
 
-## Ordering
+??? warning "What happens when multiple data elements have the same variable name?"
+    **When you have multiple data elements contributing data to the same variable, hemlock automatically orders them in a sensible way. If you find that hemlock's default ordering algorithm isn't ordering your data the way you want, come back and reread this.**
 
-Tl;dr When you have multiple data elements contributing data to the same variable, hemlock automatically orders them in a sensible way. If you find that your data frame isn't ordering your data the way you want, come back and reread this.
+    The order in which data elements appear in the data frame is the order in which they were added to the database; not necessarily the order in which they appear to the participant. For example:
 
-The order in which data elements appear in the data frame is the order in which they were added to the database; not necessarily the order in which they appear to the participant. For example:
+    ```python
+    from hemlock import db
 
-```python
-from hemlock import db
+    embedded1 = Embedded('MyVariable', 1)
+    embedded0 = Embedded('MyVariable', 0)
+    db.session.add_all([embedded1, embedded0])
+    db.session.flush([embedded1, embedded0])
+    part.embedded = [embedded0, embedded1]
+    dict(part.get_data())
+    ```
 
-embedded1 = Embedded('MyVariable', 1)
-embedded0 = Embedded('MyVariable', 0)
-db.session.add_all([embedded1, embedded0])
-db.session.flush([embedded1, embedded0])
-part.embedded = [embedded0, embedded1]
-dict(part.get_data())
-```
+    Out:
 
-Out:
+    ```
+    {'ID': [1, 1],
+    'EndTime': ['2021-02-10 15:34:28.116156', '2021-02-10 15:34:28.116156'],
+    'StartTime': ['2021-02-10 15:34:28.116156', '2021-02-10 15:34:28.116156'],
+    'Status': ['InProgress', 'InProgress'],
+    'MyVariable': [1, 0]}
+    ```
 
-```
-{'ID': [1, 1],
- 'EndTime': ['2021-02-10 15:34:28.116156', '2021-02-10 15:34:28.116156'],
- 'StartTime': ['2021-02-10 15:34:28.116156', '2021-02-10 15:34:28.116156'],
- 'Status': ['InProgress', 'InProgress'],
- 'MyVariable': [1, 0]}
-```
+    Note that the data for `'MyVariable'` are `[1, 0]` because we added `embedded1` before to the database before `embedded0` using `db.session.add_all` and `db.session.flush`.
 
-Note that the data for `'MyVariable'` are `[1, 0]` because we added `embedded1` before to the database before `embedded0` using `db.session.add_all` and `db.session.flush`.
+    Again, hemlock automatically manages your database, so you you'll only need to use `db.session.add_all` and `db.session.flush` when you want to customize the order of your data elements.
 
-Again, hemlock automatically manages your database, so you you'll only need to use `db.session.add_all` and `db.session.flush` in rare cases.
-
-## Data rows
+## Data on multiple rows
 
 By default, data elements (embedded data and questions) contribute 1 row to the data frame. But we often want the same data to be repeated on multiple rows. We do this by setting the `data_rows` attribute:
 
@@ -107,7 +106,9 @@ Out:
  'MyVariable': ['MyData', 'MyData', 'MyData']}
 ```
 
-Additionally, we often want to 'fill in' rows of a variable to match the length of a data frame. For example, we may not know in advance how many rows a participant will contribute to the data frame, but we know that we want the participant's demographic information to appear on all rows. To do this, we set `data_rows` to a negative number. For example, `data_rows=-2` means 'fill in two rows with this data entry and, when you download the data, fill in any blank rows after this with the same data':
+## Filling in rows
+
+We often want to 'fill in' rows of a variable to match the length of a data frame. For example, we may not know in advance how many rows a participant will contribute to the data frame, but we know that we want the participant's demographic information to appear on all rows. To do this, we set `data_rows` to a negative number. For example, `data_rows=-2` means 'fill in two rows with this data entry and, when you download the data, fill in any blank rows after this with the same data':
 
 ```python
 part.embedded = [
@@ -133,6 +134,8 @@ Out:
  'MyVariable': ['MyData', 'MyData', 'MyData'],
  'MyFilledVariable': ['MyFilledData', 'MyFilledData', 'MyFilledData']}
 ```
+
+## Multiple data values
 
 Finally, a data element can contribute a list of values to the data frame:
 
@@ -181,7 +184,8 @@ def start():
             ...
 ```
 
-**Note.** When a participant submits a page, the questions' data are recorded in a `data` attribute. A question's data will be added to the data frame if and only if you set its `var` attribute. However, data will be stored in a question's `data` attribute whether or not the variable is set.
+!!! note
+    When a participant submits a page, the questions' data are recorded in a `data` attribute. A question's data will be added to the data frame if and only if you set its `var` attribute. However, data will be stored in a question's `data` attribute whether or not the variable is set, allowing you to access it later.
 
 ## Downloading data
 
@@ -189,7 +193,8 @@ Run your survey locally, fill in the demographics page, and continue to the end 
 
 To download your data, navigate to <http://localhost:5000/download> in your browser. Select 'Data frame', then click the download button. This will download a zip file containing your data in `.csv` format.
 
-Note that the data of questions for which you can select multiple choices are automatically one-hot encoded. For example, if `RaceWhite` and `RaceBlack` are both 1, and the rest of the race variables are 0, this means means the participant is part White and part Black.
+!!! note "Automatic one-hot encoding"
+    The data of questions for which you can select multiple choices are automatically one-hot encoded. For example, if `RaceWhite` and `RaceBlack` are both 1, and the rest of the race variables are 0, this means means the participant is part White and part Black.
 
 ## Summary
 

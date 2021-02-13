@@ -2,7 +2,7 @@
 
 These instructions were written for Windows 10.
 
-!!! note
+!!! tip
     About 50% of the problems you encounter during setup can be fixed by closing and re-opening your terminal window. If you have any problems, this is the first thing to try.
 
 ## Git and github
@@ -19,9 +19,13 @@ $ cd
 
 This moves you to your home directory. It's not important that you understand exactly what this means, but if you're dying to find out, <a href="https://towardsdatascience.com/basics-of-bash-for-beginners-92e53a4c117a" target="_blank">read this</a>.
 
-**Note 1.** You don't type `$`; it simply indicates the beginning of a bash command.
-
-**Note 2.** For this tutorial, always make sure to change to your home directory by entering `cd` after you open the git bash terminal.
+!!! tip
+    1. You don't type `$`. This just indicates the beginning of a bash command.
+    2. For the tutorial, always change to your home directory after you open your terminal. Do this by entering:
+    
+    ```bash
+    $ cd
+    ```
 
 Verify your git installation:
 
@@ -30,9 +34,8 @@ $ git --version
 git version 2.27.0.windows.1
 ```
 
-**Note 1.** The first line, `git --version`, is what you enter in the terminal. The second line, `git version 2.27.0.windows.1`, is the output. In general, lines that start with `$` are things you enter in your terminal; lines without `$` are the output of what you just entered.
-
-**Note 2.** It's okay if you have a slightly different version of git. For example, your second line may read `git version 2.28.0.windows.1`.
+!!! tip
+    `git --version` is the command you enter in your terminal. The line underneath it ('git version...') is the output.
 
 Then, create a <a href="https://github.com" target="_blank">github account here</a>. Configure your github command line interface:
 
@@ -102,7 +105,8 @@ In general, you would enter:
 $ cd <my-python-location>
 ```
 
-**Note.** The line that printed under `which python` was `<my-python-location>/python`; you'll then enter `cd <my-python-location>`, *not* `cd <my-python-location>/python`.
+!!! important
+    The line that printed under `which python` was `<my-python-location>/python`. You'll then enter `cd <my-python-location>`, *not* `cd <my-python-location>/python`.
 
 Copy `python.exe` to `python3.exe`:
 
@@ -117,7 +121,7 @@ $ python3 --version
 Python 3.6.8
 ```
 
-!!! error "Permission denied error"
+??? error "Permission denied error"
     If you get a "Permission denied" error here, try this:
 
     1. Go to 'Manage app execution aliases' in system settings. You can get there by typing 'manage app execution aliases' in the Windows search bar.
@@ -138,7 +142,24 @@ $ pip3 --version
 pip 20.1.1 from c:\users\dbspe\appdata\local\programs\python\python36-32\lib\site-packages\pip (python3.6)
 ```
 
-Again, it's okay to have a slightly different version of pip.
+!!! tip "pip versus pip3"
+    You'll install several python packages using `pip`. Conventionally, the command to install these is written as:
+
+    ```bash
+    $ pip install <my-requested-package>
+    ```
+
+    You may need to repace this with:
+
+    ```bash
+    $ pip3 install <my-requested-package>
+    ```
+
+    Or even:
+
+    ```bash
+    $ python3 -m pip install <my-requested-package>
+    ```
 
 Congratulations! You've installed python. Now return to your home directory:
 
@@ -229,9 +250,8 @@ $ chromedriver --version
 ChromeDriver x.xx.x
 ```
 
-#### Chrome and chromedriver compatibility
-
-Google Chrome will automatically update. Chromedriver will not. If you encounter a compatibility error in the future, simply repeat the above instructions.
+!!! warning "Chrome and chromedriver compatibility"
+    Google chrome will automatically update. Chromedriver will not. If you encounter a compatibility error in the future, simply repeat the above instructions.
 
 If you came here from the Debug section of the tutorial, you're now ready to return to it and run the debugger. [Click here to go back to the Debug section of the tutorial](../tutorial/debug.md).
 

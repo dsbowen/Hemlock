@@ -15,6 +15,7 @@ nav:
     - Data: tutorial/data.md
     - Validate: tutorial/validate.md
     - Submit: tutorial/submit.md
+    - Extensions: tutorial/extensions.md
     - Compile: tutorial/compile.md
     - Navigate: tutorial/navigate.md
     - Page logic: tutorial/page_logic.md

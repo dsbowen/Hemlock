@@ -4,13 +4,13 @@ In the previous part of the tutorial, you learned how to initialize a hemlock pr
 
 By the end of this part of the tutorial, you'll be able to initialize a hemlock application and run it locally.
 
-**Note.** Running an app 'locally' means that you can play with it on your own computer, but it won't be available on the internet. We'll cover deployment later.
-
 Click here to see what your <a href="https://github.com/dsbowen/hemlock-tutorial/blob/v0.0/blackboard.ipynb" target="_blank">`blackboard.ipynb`</a> and <a href="https://github.com/dsbowen/hemlock-tutorial/blob/v0.0/survey.py" target="_blank">`survey.py`</a> files should look like at the end of this part of the tutorial.
 
-## Why run locally?
+??? note "What does it mean to 'run locally'?"
+    Running an app 'locally' means that you can play with it on your own computer, but it won't be available on the internet. We'll cover deployment later.
 
-In the previous part of the tutorial, we created and previewed a page in a jupyter notebook. Hemlock + jupyter notebook is great for trying out ideas and iterating quickly, like working on a blackboard. However, it won't create a fully responsive application. The application itself derives from `survey.py`. To preview our survey as a fully responsive web application, we need to run our app locally.
+??? note "Why run locally?"
+    In the previous part of the tutorial, we created and previewed a page in a jupyter notebook. Hemlock + jupyter notebook is great for trying out ideas and iterating quickly, like working on a blackboard. However, it won't create a fully responsive application. The application itself derives from `survey.py`. To preview our survey as a fully responsive web application, we need to run our app locally.
 
 ## Open a second terminal window
 
@@ -121,13 +121,14 @@ As the name `blackboard.ipynb` suggests, I treat jupyter like a blackboard. Once
 2. Restart the kernel (Kernel >> Restart).
 3. Run the first cell to re-push the application context.
 
-#### Troubleshooting
+!!! tip "Troubleshooting"
+    During development, you may encounter a database error from which your app can't recover. Even after you've fixed your code, your database will still be broken. If this happens in your jupyter notebook, simply restart your kernel (Kernel >> Restart) and run your code cells again. If this happens while running your app locally:
 
-During development, you may encounter a database error from which your app can't recover. Even after you've fixed your code, your database will still be broken. If this happens in your jupyter notebook, simply restart your kernel (Kernel >> Restart) and run your code cells again. If this happens while running your app locally:
+    1. Exit with Ctrl + C.
+    2. Remove the database with `rm data.db`.
+    3. Run your app again with `hlk serve`.
 
-1. Exit with Ctrl + C.
-2. Remove the database with `rm data.db`.
-3. Run your app again with `hlk serve`.
+    When you run into an error and you're not sure what's going on, this is the first thing to try.
 
 ## Summary
 

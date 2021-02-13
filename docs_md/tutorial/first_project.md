@@ -52,14 +52,14 @@ $ ls
 !!! note
     You will only have to run `hlk init` once per project.
 
-!!! error
-    You may see an error message starting with *Cannot uninstall PyYAML*. To fix this, run:
+??? error "Cannot uninstall PyYAML"
+    To fix this, run:
 
     ```bash
     $ pip install --ignore-installed pyyaml
     ```
 
-!!! note "If using Windows git bash"
+??? note "If using Windows git bash"
     After changing into your project directory, set up your virtual environment:
 
     ```bash
@@ -124,9 +124,10 @@ p.questions = [
 ]
 ```
 
-The `Page`'s question is a `Label`, although this is in some sense a misnomer because label objects only contains text. The first argument to `Label` is a string, written in HTML, which the label object displays on its page.
+The page's question is a `Label`, although this is in some sense a misnomer because label objects only contains text. The first argument to `Label` is a string, written in HTML, which the label object displays on its page.
 
-**Note.** If you don't like writing HTML, you can easily find Word to HTML converters online.
+!!! note "Word to HTML"
+    If you don't like writing HTML, you can easily find Word to HTML converters online.
 
 ## Summary
 

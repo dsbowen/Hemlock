@@ -6,7 +6,7 @@ Why WSL? The main reason I use WSL is that Windows OS doesn't have a fork (only 
 
 After you've installed WSL, open a terminal window (WIN + R, then enter e.g., 'ubuntu2004'. You may be prompted to create a username and password.
 
-!!! note
+!!! tip
     About 50% of the problems you encounter during setup can be fixed by closing and re-opening your terminal window. If you have any problems, this is the first thing to try.
 
 ## Update your package lists
@@ -88,27 +88,30 @@ $ pip3 --version
 pip x.x.x from /usr/lib/python3/dist-packages (python 3.x)
 ```
 
+!!! tip "pip versus pip3"
+    You'll install several python packages using `pip`. Conventionally, the command to install these is written as:
+
+    ```bash
+    $ pip install <my-requested-package>
+    ```
+
+    You may need to repace this with:
+
+    ```bash
+    $ pip3 install <my-requested-package>
+    ```
+
+    Or even:
+
+    ```bash
+    $ python3 -m pip install <my-requested-package>
+    ```
+
 You'll also need the ability to create virtual environments:
 
 ```bash
 $ apt install -f -y python3-venv
 ```
-
-#### pip versus pip3
-
-You'll install several python packages using pip. Conventionally, the command to install these is:
-
-```bash
-$ pip install <my-requested-package>
-```
-
-You may need to replace this with:
-
-```bash
-$ pip3 install <my-requested-package>
-```
-
-Many hemlock-CLI commands assume you can pip install with `pip3`.
 
 ## Hemlock-CLI
 
@@ -210,9 +213,8 @@ Verify your installation
 $ chromedriver --version
 ```
 
-#### Chrome and chromedriver compatibility
-
-Google chrome will automatically update. Chromedriver will not. If you encounter a compatibility error in the future, simply repeat the above instructions.
+!!! warning "Chrome and chromedriver compatibility"
+    Google chrome will automatically update. Chromedriver will not. If you encounter a compatibility error in the future, simply repeat the above instructions.
 
 If you came here from the Debug section of the tutorial, you're now ready to return to it and run the debugger. [Click here to go back to the Debug section of the tutorial](../tutorial/debug.md).
 
@@ -235,6 +237,7 @@ $ heroku --version
 heroku/x.xx.x linux-x64 node-vxx.xx.x
 ```
 
-**Note.** See <a href="https://github.com/heroku/legacy-cli/issues/1969" target="_blank">this github issue</a> if you experience a 'EACCES' error. *Do not* simply use `sudo`; this only masks issues you'll encounter later.
+??? error "EACCES error"
+    See <a href="https://github.com/heroku/legacy-cli/issues/1969" target="_blank">this github issue</a> if you experience a 'EACCES' error. *Do not* simply use `sudo`; this only masks issues you'll encounter later.
 
 [Click here to return to the Deploy section of the tutorial](../tutorial/deploy.md).

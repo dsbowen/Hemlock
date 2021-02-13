@@ -2,7 +2,7 @@
 
 These instructions were written for Ubuntu 20.04.
 
-!!! note
+!!! tip
     About 50% of the problems you encounter during setup can be fixed by closing and re-opening your terminal window. If you have any problems, this is the first thing to try.
 
 ## Python3 and pip3
@@ -31,21 +31,24 @@ $ pip3 --version
 pip xx.x.x ...
 ```
 
-#### pip versus pip3
+!!! tip "pip versus pip3"
+    You'll install several python packages using `pip`. Conventionally, the command to install these is written as:
 
-You'll install several python packages using pip. Conventionally, the command to install these is:
+    ```bash
+    $ pip install <my-requested-package>
+    ```
 
-```bash
-$ pip install <my-requested-package>
-```
+    You may need to repace this with:
 
-You may need to replace this with:
+    ```bash
+    $ pip3 install <my-requested-package>
+    ```
 
-```bash
-$ pip3 install <my-requested-package>
-```
+    Or even:
 
-Many hemlock-CLI commands assume you can pip install with `pip3`.
+    ```bash
+    $ python3 -m pip install <my-requested-package>
+    ```
 
 ## Hemlock-CLI
 
@@ -151,9 +154,8 @@ $ chromedriver --version
 ChromeDriver xx.xxxx
 ```
 
-#### Chrome and chromedriver compatibility
-
-Google Chrome will automatically update. Chromedriver will not. If you encounter a compatibility error in the future, simply repeat the above instructions.
+!!! warning "Chrome and chromedriver compatibility"
+    Google chrome will automatically update. Chromedriver will not. If you encounter a compatibility error in the future, simply repeat the above instructions.
 
 If you came here from the Debug section of the tutorial, you're now ready to return to it and run the debugger. [Click here to go back to the Debug section of the tutorial](../tutorial/debug.md).
 
@@ -174,6 +176,7 @@ $ heroku --version
 heroku/x.xx.x linux-x64 node-vxx.xx.x
 ```
 
-**Note.** See <a href="https://github.com/heroku/legacy-cli/issues/1969" target="_blank">this github issue</a> if you experience a 'EACCES' error. *Do not* simply use `sudo`; this only masks issues you'll encounter later.
+??? error "EACCES error"
+    See <a href="https://github.com/heroku/legacy-cli/issues/1969" target="_blank">this github issue</a> if you experience a 'EACCES' error. *Do not* simply use `sudo`; this only masks issues you'll encounter later.
 
 [Click here to return to the Deploy section of the tutorial](../tutorial/deploy.md).
