@@ -571,19 +571,12 @@ Preview the page in a browser window.
 
 ####Notes
 
-If running in WSL, first specify the distribution as an environment
-variable. For example, if running in Ubuntu:
-
-```bash
-$ export WSL_DISTRIBUTION=Ubuntu
-```
-
 This method does not run the compile functions.
 
 
 
 <p class="func-header">
-    <i></i> <b>view_nav</b>(<i>self, indent=0</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L685">[source]</a>
+    <i></i> <b>view_nav</b>(<i>self, indent=0</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L674">[source]</a>
 </p>
 
 Print the navigation starting at this page for debugging purposes.

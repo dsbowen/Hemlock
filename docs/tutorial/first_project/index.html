@@ -53,6 +53,10 @@
                     </li>
                 </ul>
                 <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../manifesto/">Why hemlock?</a>
+                    </li>
+                </ul>
+                <ul>
                     <li class="toctree-l1"><a class="reference internal" href="../../contact/">Contact</a>
                     </li>
                 </ul>
@@ -87,6 +91,8 @@
                     <li class="toctree-l1"><a class="reference internal" href="../validate/">Validate</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../submit/">Submit</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../extensions/">Extensions</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../compile/">Compile</a>
                     </li>
@@ -292,18 +298,14 @@ $ ls
 <p class="admonition-title">Note</p>
 <p>You will only have to run <code>hlk init</code> once per project.</p>
 </div>
-<div class="admonition error">
-<p class="admonition-title">Error</p>
-<p>You may see an error message starting with <em>Cannot uninstall PyYAML</em>. To fix this, run:</p>
+<details class="error"><summary>Cannot uninstall PyYAML</summary><p>To fix this, run:</p>
 <div class="highlight"><pre><span></span><code>$ pip install --ignore-installed pyyaml
 </code></pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">If using Windows git bash</p>
-<p>After changing into your project directory, set up your virtual environment:</p>
+</details>
+<details class="note"><summary>If using Windows git bash</summary><p>After changing into your project directory, set up your virtual environment:</p>
 <div class="highlight"><pre><span></span><code>$ hlk setup-venv my-first-project
 </code></pre></div>
-</div>
+</details>
 <h2 id="preview-a-page-in-jupyter-notebook">Preview a page in jupyter notebook</h2>
 <p>Jupyter notebook is a great tool for iterating quickly on project designs. I recommend using it for most of your work. Open the jupyter dashboard with:</p>
 <div class="highlight"><pre><span></span><code>$ jupyter notebook
@@ -339,8 +341,11 @@ $ ls
     <span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Label 1&#39;</span><span class="p">)</span>
 <span class="p">]</span>
 </code></pre></div>
-<p>The <code>Page</code>'s question is a <code>Label</code>, although this is in some sense a misnomer because label objects only contains text. The first argument to <code>Label</code> is a string, written in HTML, which the label object displays on its page.</p>
-<p><strong>Note.</strong> If you don't like writing HTML, you can easily find Word to HTML converters online.</p>
+<p>The page's question is a <code>Label</code>, although this is in some sense a misnomer because label objects only contains text. The first argument to <code>Label</code> is a string, written in HTML, which the label object displays on its page.</p>
+<div class="admonition note">
+<p class="admonition-title">Word to HTML</p>
+<p>If you don't like writing HTML, you can easily find Word to HTML converters online.</p>
+</div>
 <h2 id="summary">Summary</h2>
 <p>In this part of the tutorial, you learned how to initialize a new hemlock project and create and preview a page.</p>
 <p>In the next part of the tutorial, you'll learn how to run a hemlock application locally.</p>

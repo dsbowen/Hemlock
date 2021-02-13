@@ -130,7 +130,7 @@ part.current_page.preview()
 
 
 <p class="func-header">
-    <i></i> <b>back</b>(<i>self, back_to=None</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/participant.py#L235">[source]</a>
+    <i></i> <b>back</b>(<i>self, back_to=None</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/participant.py#L236">[source]</a>
 </p>
 
 Navigate back for debugging purposes.
@@ -161,7 +161,7 @@ Navigate back for debugging purposes.
 
 
 <p class="func-header">
-    <i></i> <b>forward</b>(<i>self, forward_to=None</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/participant.py#L251">[source]</a>
+    <i></i> <b>forward</b>(<i>self, forward_to=None</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/participant.py#L252">[source]</a>
 </p>
 
 Navigate forward for debugging purposes.
@@ -192,7 +192,7 @@ Navigate forward for debugging purposes.
 
 
 <p class="func-header">
-    <i></i> <b>gen_test_participant</b>(<i>gen_root=None</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/participant.py#L268">[source]</a>
+    <i></i> <b>gen_test_participant</b>(<i>gen_root=None</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/participant.py#L269">[source]</a>
 </p>
 
 Generate a test participant for debugging purposes.
@@ -223,7 +223,7 @@ Generate a test participant for debugging purposes.
 
 
 <p class="func-header">
-    <i></i> <b>get_data</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/participant.py#L288">[source]</a>
+    <i></i> <b>get_data</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/participant.py#L291">[source]</a>
 </p>
 
 
@@ -255,7 +255,7 @@ they appeared to the Participant.
 
 
 <p class="func-header">
-    <i></i> <b>get_meta</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/participant.py#L354">[source]</a>
+    <i></i> <b>get_meta</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/participant.py#L357">[source]</a>
 </p>
 
 This is where it gets meta.
@@ -279,7 +279,7 @@ This is where it gets meta.
 
 
 <p class="func-header">
-    <i></i> <b>view_nav</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/participant.py#L373">[source]</a>
+    <i></i> <b>view_nav</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/participant.py#L376">[source]</a>
 </p>
 
 View participant's branch stack.

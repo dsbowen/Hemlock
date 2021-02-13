@@ -53,6 +53,10 @@
                     </li>
                 </ul>
                 <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../manifesto/">Why hemlock?</a>
+                    </li>
+                </ul>
+                <ul>
                     <li class="toctree-l1"><a class="reference internal" href="../../contact/">Contact</a>
                     </li>
                 </ul>
@@ -68,8 +72,6 @@
                     </li>
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">Running hemlock locally</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#why-run-locally">Why run locally?</a>
-    </li>
     <li class="toctree-l2"><a class="reference internal" href="#open-a-second-terminal-window">Open a second terminal window</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#run-your-application">Run your application</a>
@@ -77,10 +79,6 @@
     <li class="toctree-l2"><a class="reference internal" href="#code-explanation">Code explanation</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#workflow">Workflow</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
-    </li>
-        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a>
     </li>
@@ -93,6 +91,8 @@
                     <li class="toctree-l1"><a class="reference internal" href="../validate/">Validate</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../submit/">Submit</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../extensions/">Extensions</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../compile/">Compile</a>
                     </li>
@@ -263,10 +263,11 @@
                 <h1 id="running-hemlock-locally">Running hemlock locally</h1>
 <p>In the previous part of the tutorial, you learned how to initialize a hemlock project and create and preview a hemlock page.</p>
 <p>By the end of this part of the tutorial, you'll be able to initialize a hemlock application and run it locally.</p>
-<p><strong>Note.</strong> Running an app 'locally' means that you can play with it on your own computer, but it won't be available on the internet. We'll cover deployment later.</p>
 <p>Click here to see what your <a href="https://github.com/dsbowen/hemlock-tutorial/blob/v0.0/blackboard.ipynb" target="_blank"><code>blackboard.ipynb</code></a> and <a href="https://github.com/dsbowen/hemlock-tutorial/blob/v0.0/survey.py" target="_blank"><code>survey.py</code></a> files should look like at the end of this part of the tutorial.</p>
-<h2 id="why-run-locally">Why run locally?</h2>
-<p>In the previous part of the tutorial, we created and previewed a page in a jupyter notebook. Hemlock + jupyter notebook is great for trying out ideas and iterating quickly, like working on a blackboard. However, it won't create a fully responsive application. The application itself derives from <code>survey.py</code>. To preview our survey as a fully responsive web application, we need to run our app locally.</p>
+<details class="note"><summary>What does it mean to 'run locally'?</summary><p>Running an app 'locally' means that you can play with it on your own computer, but it won't be available on the internet. We'll cover deployment later.</p>
+</details>
+<details class="note"><summary>Why run locally?</summary><p>In the previous part of the tutorial, we created and previewed a page in a jupyter notebook. Hemlock + jupyter notebook is great for trying out ideas and iterating quickly, like working on a blackboard. However, it won't create a fully responsive application. The application itself derives from <code>survey.py</code>. To preview our survey as a fully responsive web application, we need to run our app locally.</p>
+</details>
 <h2 id="open-a-second-terminal-window">Open a second terminal window</h2>
 <p>You should have jupyter running in a terminal window from the previous part of the tutorial. Open a second terminal window. In general, I recommend having one terminal open for jupyter, and a second for editing python files and running your app. In the second terminal window, change to your project folder:</p>
 <div class="highlight"><pre><span></span><code>$ <span class="nb">cd</span>
@@ -350,13 +351,16 @@ Prepare to get served.
 <li>Restart the kernel (Kernel &gt;&gt; Restart).</li>
 <li>Run the first cell to re-push the application context.</li>
 </ol>
-<h4 id="troubleshooting">Troubleshooting</h4>
+<div class="admonition tip">
+<p class="admonition-title">Troubleshooting</p>
 <p>During development, you may encounter a database error from which your app can't recover. Even after you've fixed your code, your database will still be broken. If this happens in your jupyter notebook, simply restart your kernel (Kernel &gt;&gt; Restart) and run your code cells again. If this happens while running your app locally:</p>
 <ol>
 <li>Exit with Ctrl + C.</li>
 <li>Remove the database with <code>rm data.db</code>.</li>
 <li>Run your app again with <code>hlk serve</code>.</li>
 </ol>
+<p>When you run into an error and you're not sure what's going on, this is the first thing to try.</p>
+</div>
 <h2 id="summary">Summary</h2>
 <p>In this part of the tutorial, you learned how to initialize a hemlock application and run it locally.</p>
 <p>In the next part of the tutorial, you'll learn how to use question polymorphs to add a demographics questionnaire to your survey.</p>

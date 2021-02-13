@@ -53,6 +53,10 @@
                     </li>
                 </ul>
                 <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../manifesto/">Why hemlock?</a>
+                    </li>
+                </ul>
+                <ul>
                     <li class="toctree-l1"><a class="reference internal" href="../../contact/">Contact</a>
                     </li>
                 </ul>
@@ -76,15 +80,21 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../submit/">Submit</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../extensions/">Extensions</a>
+                    </li>
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">Compile</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#why-compile-functions">Why compile functions?</a>
-    </li>
     <li class="toctree-l2"><a class="reference internal" href="#basic-syntax">Basic syntax</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#an-aside-on-tools">An aside on tools</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#custom-compilation">Custom compilation</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#code-explanation">Code explanation</a>
+    <li class="toctree-l3"><a class="reference internal" href="#the-demographics-page-a-recap">The demographics page: a recap</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#the-compile-function">The compile function</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#our-compile-function-at-work">Our compile function at work</a>
     </li>
         </ul>
     </li>
@@ -259,130 +269,173 @@
             <div class="section">
               
                 <h1 id="compile">Compile</h1>
-<p>In the previous part of the tutorial, you learned how to run functions to handle form submission.</p>
+<p>In the previous part of the tutorial, you learned how to install and use extensions and third-party packages.</p>
 <p>In this part of the tutorial, you'll implement a confirmation page using compile functions.</p>
 <p>Click here to see what your <a href="https://github.com/dsbowen/hemlock-tutorial/blob/v0.5/blackboard.ipynb" target="_blank"><code>blackboard.ipynb</code></a> and <a href="https://github.com/dsbowen/hemlock-tutorial/blob/v0.5/survey.py" target="_blank"><code>survey.py</code></a> files should look like at the end of this part of the tutorial.</p>
-<h2 id="why-compile-functions">Why compile functions?</h2>
-<p>Compile functions run just before a page's html is compiled. This allows us to make our survey responsive to participants.</p>
+<details class="note"><summary>Why compile functions?</summary><p>Compile functions run just before a page's HTML is compiled. This allows us to make our survey responsive to participants. The most common use for compile functions is to 'pipe text' from a participant's previous responses onto a page.</p>
 <p>In our case, we're going to make a confirmation page for the participant's demographic information.</p>
+</details>
 <h2 id="basic-syntax">Basic syntax</h2>
 <p>Open your jupyter notebook and run the following:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Check</span><span class="p">,</span> <span class="n">Compile</span> <span class="k">as</span> <span class="n">C</span>
 
 <span class="n">check</span> <span class="o">=</span> <span class="n">Check</span><span class="p">(</span>
-    <span class="s1">&#39;&lt;p&gt;Select the correct answer.&lt;/p&gt;&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Choose the correct answer&#39;</span><span class="p">,</span>
     <span class="p">[</span><span class="s1">&#39;Correct&#39;</span><span class="p">,</span> <span class="s1">&#39;Incorrect&#39;</span><span class="p">,</span> <span class="s1">&#39;Also incorrect&#39;</span><span class="p">],</span>
     <span class="nb">compile</span><span class="o">=</span><span class="n">C</span><span class="o">.</span><span class="n">shuffle</span><span class="p">()</span>
 <span class="p">)</span>
 <span class="n">check</span><span class="o">.</span><span class="n">compile</span>
 </code></pre></div>
 <p>Out:</p>
-<div class="highlight"><pre><span></span><code>[&lt;Compile 1&gt;]
+<div class="highlight"><pre><span></span><code>[&lt;shuffle()&gt;]
 </code></pre></div>
-<p>You can add compile functions to a page or question by setting its <code>compile</code> attribute or passing a <code>compile</code> argument to its constructor. Compile functions run just before a page's html is compiled.</p>
+<p>You can add compile functions to a page or question by setting its <code>compile</code> attribute or passing a <code>compile</code> argument to its constructor. Compile functions run just before a page's HTML is compiled.</p>
 <p>The <code>shuffle</code> compile function shuffles a question's choices. (Or, if attached to a page, shuffles its page's questions).</p>
 <p>Let's watch our compile function at work:</p>
 <div class="highlight"><pre><span></span><code>check._compile()
-[choice.label for choice in check.choices]
+check.choices
 </code></pre></div>
 <p>Out:</p>
-<div class="highlight"><pre><span></span><code>[&#39;Incorrect&#39;, &#39;Also incorrect&#39;, &#39;Correct&#39;]
+<div class="highlight"><pre><span></span><code>[&lt;Choice &#39;Also incorrect&#39;&gt;, &lt;Choice &#39;Correct&#39;&gt;, &lt;Choice &#39;Incorrect&#39;&gt;]
 </code></pre></div>
 <p>Run this a few times and notice how the order of the choices changes. This behavior is useful for comprehension checks, as we'll see later.</p>
-<p><strong>Notes.</strong></p>
-<ol>
-<li>You don't need to run <code>_compile</code> yourself in the survey; hemlock takes care of this automatically for you.</li>
-<li><code>shuffle</code> is just one of many <a href="../compile_functions.md">prebuilt compile functions</a>.</li>
-</ol>
-<h2 id="custom-compilation">Custom compilation</h2>
-<p>We're going to take the participant's responses to the demographics page and display them on a new page. We'll ask the participant to correct any errors by going back to the demographics page.</p>
-<p>Let's see how to do this in our notebook:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Range</span><span class="p">,</span> <span class="n">Select</span>
-<span class="kn">from</span> <span class="nn">hemlock.tools</span> <span class="kn">import</span> <span class="n">join</span>
-
-<span class="nd">@C</span><span class="o">.</span><span class="n">register</span>
-<span class="k">def</span> <span class="nf">confirm</span><span class="p">(</span><span class="n">confirm_label</span><span class="p">,</span> <span class="n">demographics_page</span><span class="p">):</span>
-    <span class="c1"># get the participant&#39;s data from the demographics page</span>
-    <span class="n">demographics</span> <span class="o">=</span> <span class="p">[</span><span class="n">q</span><span class="o">.</span><span class="n">data</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">demographics_page</span><span class="o">.</span><span class="n">questions</span><span class="p">]</span>
-    <span class="c1"># re-format the race demographic data</span>
-    <span class="n">race</span> <span class="o">=</span> <span class="n">demographics_page</span><span class="o">.</span><span class="n">questions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-    <span class="n">race</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">race</span><span class="o">.</span><span class="n">data</span> <span class="k">if</span> <span class="n">race</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]))</span>
-    <span class="n">demographics</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">race</span>
-    <span class="c1"># set the label based on the participant&#39;s demographics data</span>
-    <span class="n">confirm_label</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
-<span class="s1">    &lt;p&gt;Confirm the following information:&lt;/p&gt;</span>
-<span class="s1">    &lt;ul&gt;</span>
-<span class="s1">        &lt;li&gt;Date of birth: </span><span class="si">{}</span><span class="s1">&lt;/li&gt;</span>
-<span class="s1">        &lt;li&gt;Gender: </span><span class="si">{}</span><span class="s1">&lt;/li&gt;</span>
-<span class="s1">        &lt;li&gt;Race/Ethnicity: </span><span class="si">{}</span><span class="s1">&lt;/li&gt;</span>
-<span class="s1">        &lt;li&gt;Marital status: </span><span class="si">{}</span><span class="s1">&lt;/li&gt;</span>
-<span class="s1">        &lt;li&gt;Subjective socio-economic status: </span><span class="si">{}</span><span class="s1">&lt;/li&gt;</span>
-<span class="s1">    &lt;/ul&gt;</span>
-<span class="s1">    &lt;p&gt;To correct this information, click &#39;&lt;&lt;&#39;.&lt;/p&gt;</span>
-<span class="s1">    &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">demographics</span><span class="p">)</span>
-
-<span class="n">demographics_page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span>
-    <span class="n">Input</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s1">&#39;10/26/1992&#39;</span><span class="p">),</span>
-    <span class="n">Check</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s1">&#39;Male&#39;</span><span class="p">),</span>
-    <span class="n">Check</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;White&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Black&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}),</span>
-    <span class="n">Select</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s1">&#39;Never married&#39;</span><span class="p">),</span>
-    <span class="n">Range</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s1">&#39;5&#39;</span><span class="p">)</span>
-<span class="p">)</span>
-<span class="n">confirm_page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span>
-    <span class="n">Label</span><span class="p">(</span><span class="nb">compile</span><span class="o">=</span><span class="n">C</span><span class="o">.</span><span class="n">confirm</span><span class="p">(</span><span class="n">demographics_page</span><span class="p">)),</span> 
-    <span class="n">back</span><span class="o">=</span><span class="kc">True</span>
-<span class="p">)</span>
-<span class="n">confirm_page</span><span class="o">.</span><span class="n">_compile</span><span class="p">()</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
-</code></pre></div>
-<h3 id="code-explanation">Code explanation</h3>
-<p>First, we register a new compile function with the <code>@C.register</code> decorator. The compile function takes the confirmation label as its first argument. In general, compile functions take their parent as their first argument. We also pass in the demographics page as the compile function's second argument.</p>
-<p>Next, we add a back button to the page with <code>back=True</code>.</p>
-<p>Then, we compile and preview the page.</p>
-<p><code>confirm</code> begins by gathering the demographics data from the demographics page. The data are well formatted to insert into our confirmation page except for race. For <code>Check</code> and <code>Select</code> questions, if the participant can select multiple choices, the data are stored as a dictionary mapping choice values (<code>'White'</code>, <code>'Black'</code>, etc.) to a 0-1 indicator that the participant selected that choice. We fix this with the following:</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You don't need to run <code>_compile</code> yourself in the survey. Hemlock takes care of this automatically for you.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">More compile functions</p>
+<p><code>shuffle</code> is just one of many <a href="../../functions/compile/">native hemlock compile functions</a>.</p>
+</div>
+<h2 id="an-aside-on-tools">An aside on tools</h2>
+<p>To make our confirmation page, we're going to need two tools.</p>
+<p>The first is <code>join</code>. This tool joins a list of items using a 'joiner' like 'and' or 'or'. We'll use this display the participant's race.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock.tools</span> <span class="kn">import</span> <span class="n">join</span>
 
-<span class="n">race_data</span> <span class="o">=</span> <span class="n">demographics_page</span><span class="o">.</span><span class="n">questions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
-<span class="n">race</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">race_data</span> <span class="k">if</span> <span class="n">race_data</span><span class="p">[</span><span class="n">key</span><span class="p">]))</span>
-<span class="n">demographics</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">race</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;White&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;White&#39;</span><span class="p">,</span> <span class="s1">&#39;Black&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;White&#39;</span><span class="p">,</span> <span class="s1">&#39;Black&#39;</span><span class="p">,</span> <span class="s1">&#39;South Asian&#39;</span><span class="p">))</span>
 </code></pre></div>
-<p>Note that <code>race_data[key]</code> evaluates to <code>True</code> if the <code>key</code> (<code>'White'</code>, <code>'Black'</code>, etc.) was selected. So the expression <code>(key for key in race_data if race_data[key])</code> means 'get all the keys (races) the participant selected'. The expression</p>
-<div class="highlight"><pre><span></span><code><span class="n">join</span><span class="p">(</span><span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">race_data</span> <span class="k">if</span> <span class="n">race_data</span><span class="p">[</span><span class="n">key</span><span class="p">]))</span>
+<p>Out:</p>
+<div class="highlight"><pre><span></span><code>White
+White and Black
+White, Black, and South Asian
 </code></pre></div>
-<p>means 'join all of the selected keys with "and", e.g. "White and Black"'.</p>
-<p>Finally, <code>confirm</code> adds the demographics to the confirmation label.</p>
+<p>The second tool is <code>html_list</code>. This tool joins a list of items in a bullet point (unordered) or enumerated (ordered) list.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Label</span>
+<span class="kn">from</span> <span class="nn">hemlock.tools</span> <span class="kn">import</span> <span class="n">html_list</span>
+
+<span class="n">Page</span><span class="p">(</span>
+    <span class="n">Label</span><span class="p">(</span>
+        <span class="n">html_list</span><span class="p">(</span>
+            <span class="s1">&#39;Item 1&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Item 2&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Item 3&#39;</span><span class="p">,</span>
+            <span class="n">ordered</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">More tools</p>
+<p><code>join</code> and <code>html_list</code> are just two of many native hemlock tools. Check out the 'Tools' heading in the navigation bar for more.</p>
+</div>
+<h2 id="custom-compilation">Custom compilation</h2>
+<p>We're going to take the participant's responses to the demographics page and display them on a new page. We'll ask the participant to correct any errors by going back to the demographics page.</p>
+<h3 id="the-demographics-page-a-recap">The demographics page: a recap</h3>
+<p>First, let's remind ourselves what's in the basic demographics page:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock_demographics</span> <span class="kn">import</span> <span class="n">basic_demographics</span>
+
+<span class="n">demographics_page</span> <span class="o">=</span> <span class="n">basic_demographics</span><span class="p">(</span><span class="n">page</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">label</span><span class="p">)</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">demographics_page</span><span class="o">.</span><span class="n">questions</span><span class="p">]</span>
+</code></pre></div>
+<p>Out:</p>
+<div class="highlight"><pre><span></span><code>&lt;p&gt;What is your gender?&lt;/p&gt;
+&lt;p&gt;Please specify your gender.&lt;/p&gt;
+&lt;p&gt;Enter your month and year of birth.&lt;/p&gt;
+
+        &lt;p&gt;Which race or ethnicity do you belong to?&lt;/p&gt;
+        &lt;p&gt;Check as many as apply.&lt;/p&gt;
+
+&lt;p&gt;Please specify your race or ethnicity.&lt;/p&gt;
+</code></pre></div>
+<p>The 0th question asks for gender, the 2nd for month and year of birth, and the 3rd for race. (The 1st and 4th questions ask participants to specify gender and race if they choose 'Other').</p>
+<p>Let's enter hypothetical responses for these questions.</p>
+<div class="highlight"><pre><span></span><code><span class="n">gender</span> <span class="o">=</span> <span class="n">demographics_page</span><span class="o">.</span><span class="n">questions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">gender</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="s1">&#39;Male&#39;</span>
+<span class="n">dob</span> <span class="o">=</span> <span class="n">demographics_page</span><span class="o">.</span><span class="n">questions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">dob</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="s1">&#39;1992-10&#39;</span>
+<span class="n">race</span> <span class="o">=</span> <span class="n">demographics_page</span><span class="o">.</span><span class="n">questions</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+<span class="n">race</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;White&#39;</span><span class="p">]</span>
+</code></pre></div>
+<h3 id="the-compile-function">The compile function</h3>
+<p>It's time to write our custom compile function.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Compile</span> <span class="k">as</span> <span class="n">C</span>
+
+<span class="nd">@C</span><span class="o">.</span><span class="n">register</span>
+<span class="k">def</span> <span class="nf">confirm_demographics</span><span class="p">(</span><span class="n">confirm_label</span><span class="p">,</span> <span class="n">demographics_page</span><span class="p">):</span>
+    <span class="n">gender</span> <span class="o">=</span> <span class="n">demographics_page</span><span class="o">.</span><span class="n">questions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">response</span>
+    <span class="n">dob</span> <span class="o">=</span> <span class="n">demographics_page</span><span class="o">.</span><span class="n">questions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">response</span>
+    <span class="n">race</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">demographics_page</span><span class="o">.</span><span class="n">questions</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">response</span><span class="p">)</span>
+    <span class="n">demographics_list</span> <span class="o">=</span> <span class="n">html_list</span><span class="p">(</span>
+        <span class="s1">&#39;Gender: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gender</span><span class="p">),</span>
+        <span class="s1">&#39;Year and month of birth: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dob</span><span class="p">),</span>
+        <span class="s1">&#39;Race: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">race</span><span class="p">),</span>
+        <span class="n">ordered</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">confirm_label</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        &lt;p&gt;Confirm the following information:&lt;/p&gt;</span>
+<span class="s1">        </span><span class="si">{}</span><span class="s1"></span>
+<span class="s1">        To correct this information, click &#39;&amp;lt;&amp;lt;&#39;.</span>
+<span class="s1">    &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">demographics_list</span><span class="p">)</span>
+</code></pre></div>
+<p>First, we register a new compile function with the <code>@C.register</code> decorator. The compile function takes the confirmation label as its first argument. In general, compile functions take their parent as their first argument. We also pass in the demographics page as the compile function's second argument.</p>
+<p><code>confirm_demographics</code> begins by gathering the demographics data (gender, date of birth, and race) from the demographics page. We use the <code>join</code> tool to join the participant's races.</p>
+<p>Finally, we create a list of the participant's demographic information using <code>html_list</code>, and add this to the confirmation label.</p>
+<details class="note"><summary>What's <code>'&amp;lt;'</code>?</summary><p>The <code>label</code> attribute contains an HTML string. In HTML, <code>'&lt;'</code> has a specific meaning, so we can't say <code>'click &lt;&lt;'</code>. The HTML encoding of <code>'&lt;'</code> is <code>'&amp;lt;'</code>, so we use that instead.</p>
+<p>Tl;dr Use a Word to HTML converter.</p>
+</details>
+<details class="warning"><summary><code>Label</code> object vs. <code>label</code> attribute</summary><p>Note that we set the confirmation label with <code>confirm_label.label='my awesome label'</code>. <code>confirm_label</code> is a <code>Label</code> object. <code>confirm_label.label</code> is the attribute which contains the HTML. Don't confuse the <code>Label</code> object with the <code>label</code> attribute!</p>
+</details>
+<h3 id="our-compile-function-at-work">Our compile function at work</h3>
+<p>Finally, let's see our compile function at work.</p>
+<div class="highlight"><pre><span></span><code><span class="n">confirm_page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span>
+    <span class="n">Label</span><span class="p">(</span>
+        <span class="nb">compile</span><span class="o">=</span><span class="n">C</span><span class="o">.</span><span class="n">confirm_demographics</span><span class="p">(</span><span class="n">demographics_page</span><span class="p">)</span>
+    <span class="p">),</span>
+    <span class="n">back</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="n">confirm_page</span><span class="o">.</span><span class="n">_compile</span><span class="p">()</span>
+<span class="n">confirm_page</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
+</code></pre></div>
+<p>Note that we add a back button by passing <code>back=True</code> to the label's constructor.</p>
 <h2 id="compilation-in-our-app">Compilation in our app</h2>
 <p>Now that we've seen how to add compile functions in our notebook, let's add it to our app.</p>
 <p>In <code>survey.py</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Branch</span><span class="p">,</span> <span class="n">Check</span><span class="p">,</span> <span class="n">Compile</span> <span class="k">as</span> <span class="n">C</span><span class="p">,</span> <span class="n">Embedded</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Range</span><span class="p">,</span> <span class="n">Select</span><span class="p">,</span> <span class="n">Submit</span> <span class="k">as</span> <span class="n">S</span><span class="p">,</span> <span class="n">Validate</span> <span class="k">as</span> <span class="n">V</span><span class="p">,</span> <span class="n">route</span>
-<span class="kn">from</span> <span class="nn">hemlock.tools</span> <span class="kn">import</span> <span class="n">join</span>
-
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Branch</span><span class="p">,</span> <span class="n">Compile</span> <span class="k">as</span> <span class="n">C</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">route</span>
+<span class="kn">from</span> <span class="nn">hemlock.tools</span> <span class="kn">import</span> <span class="n">join</span><span class="p">,</span> <span class="n">html_list</span>
+<span class="kn">from</span> <span class="nn">hemlock_demographics</span> <span class="kn">import</span> <span class="n">basic_demographics</span>
 
 <span class="nd">@route</span><span class="p">(</span><span class="s1">&#39;/survey&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
-    <span class="n">demographics_page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span>
-        <span class="n">Input</span><span class="p">(</span>
-            <span class="s1">&#39;&lt;p&gt;Enter your date of birth.&lt;/p&gt;&#39;</span><span class="p">,</span>
-            <span class="n">placeholder</span><span class="o">=</span><span class="s1">&#39;mm/dd/yyyy&#39;</span><span class="p">,</span>
-            <span class="n">var</span><span class="o">=</span><span class="s1">&#39;DoB&#39;</span><span class="p">,</span> <span class="n">data_rows</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
-            <span class="n">validate</span><span class="o">=</span><span class="p">[</span><span class="n">V</span><span class="o">.</span><span class="n">require</span><span class="p">(),</span> <span class="n">V</span><span class="o">.</span><span class="n">date_format</span><span class="p">()],</span>
-            <span class="n">submit</span><span class="o">=</span><span class="n">S</span><span class="o">.</span><span class="n">record_age</span><span class="p">()</span>
-        <span class="p">),</span>
-        <span class="c1"># REST OF THE DEMOGRAPHICS PAGE HERE</span>
-    <span class="p">)</span>
+    <span class="n">demographics_page</span> <span class="o">=</span> <span class="n">basic_demographics</span><span class="p">(</span><span class="n">page</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">require</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span>
         <span class="n">demographics_page</span><span class="p">,</span>
         <span class="n">Page</span><span class="p">(</span>
-            <span class="n">Label</span><span class="p">(</span><span class="nb">compile</span><span class="o">=</span><span class="n">C</span><span class="o">.</span><span class="n">confirm</span><span class="p">(</span><span class="n">demographics_page</span><span class="p">)),</span>
-            <span class="n">back</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">terminal</span><span class="o">=</span><span class="kc">True</span>
+            <span class="n">Label</span><span class="p">(</span>
+                <span class="nb">compile</span><span class="o">=</span><span class="n">C</span><span class="o">.</span><span class="n">confirm_demographics</span><span class="p">(</span><span class="n">demographics_page</span><span class="p">)</span>
+            <span class="p">),</span>
+            <span class="n">back</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">),</span>
+        <span class="n">Page</span><span class="p">(</span>
+            <span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Thank you for completing this survey!&#39;</span><span class="p">),</span> 
+            <span class="n">terminal</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
     <span class="p">)</span>
 
-<span class="o">...</span>
-
 <span class="nd">@C</span><span class="o">.</span><span class="n">register</span>
-<span class="k">def</span> <span class="nf">confirm</span><span class="p">(</span><span class="n">confirm_label</span><span class="p">,</span> <span class="n">demographics_page</span><span class="p">):</span>
-    <span class="c1"># PUT YOUR COMPILE FUNCTION HERE</span>
+<span class="k">def</span> <span class="nf">confirm_demographics</span><span class="p">(</span><span class="n">confirm_label</span><span class="p">,</span> <span class="n">demographics_page</span><span class="p">):</span>
+    <span class="c1"># COPY AND PASTE YOUR CONFIRM DEMOGRAPHICS FUNCTION HERE</span>
 </code></pre></div>
 <p>Run the app again to see your confirmation page.</p>
 <h2 id="summary">Summary</h2>
@@ -398,7 +451,7 @@
         <a href="../navigate/" class="btn btn-neutral float-right" title="Navigate">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../submit/" class="btn btn-neutral" title="Submit"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../extensions/" class="btn btn-neutral" title="Extensions"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -426,7 +479,7 @@
           <a href="https://github.com/dsbowen/hemlock/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../submit/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../extensions/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
         <span style="margin-left: 15px"><a href="../navigate/" style="color: #fcfcfc">Next &raquo;</a></span>

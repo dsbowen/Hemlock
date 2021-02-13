@@ -31,40 +31,10 @@
 
 
 
-##hemlock.**random_input**
-
-<p class="func-header">
-    <i>def</i> hemlock.<b>random_input</b>(<i>driver, question</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/input.py#L18">[source]</a>
-</p>
-
-Default debug function for input questions. This function sends a random
-string or number if the input takes text, or a random `datetime.datetime`
-object if the input takes dates or times.
-
-<table class="docutils field-list field-table" frame="void" rules="none">
-    <col class="field-name" />
-    <col class="field-body" />
-    <tbody valign="top">
-        <tr class="field">
-    <th class="field-name"><b>Parameters:</b></td>
-    <td class="field-body" width="100%"><b>driver : <i>selenium.webdriver.chrome.webdriver.WebDriver</i></b>
-<p class="attr">
-    
-</p>
-<b>question : <i>hemlock.Input</i></b>
-<p class="attr">
-    
-</p></td>
-</tr>
-    </tbody>
-</table>
-
-
-
 ##hemlock.**Input**
 
 <p class="func-header">
-    <i>class</i> hemlock.<b>Input</b>(<i>label=None, template='hemlock/input.html', **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/input.py#L40">[source]</a>
+    <i>class</i> hemlock.<b>Input</b>(<i>label=None, template='hemlock/input.html', **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/input.py#L13">[source]</a>
 </p>
 
 Inputs take text input by default, or other types of html inputs.

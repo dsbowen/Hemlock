@@ -18,21 +18,33 @@ Welcome to the 21st century
 
 # Why Hemlock?
 
+**I invented Hemlock to increase the speed and quality of social science research.**
+
+During the first year of my Ph.D., I spent hundreds of hours creating behavior experiments in Qualtrics. I remember the tediousness of copying and pasting blocks of questions, the struggle of implementing branching logic, and the frustration of updating hundreds of nearly-identical questions whenever my advisor wanted to modify the phrasing.
+
+My experience wasn't unique. Every social science Ph.D. student, research assistant, and professor spends hundreds of hours, year after year, mired in a monotonous struggle with a GUI that looks like it's from the 1970s.
+
+Throughout my Ph.D., I've worked with dozens of intelligent, hard-working colleagues, research assistants, and professors. They have better things to do with their time than shuffle question blocks or implement conditional logic using a drop-down menu. So do you. Qualtrics is an unacceptable waste of your time. Hemlock is the solution.
+
+Another lesson I learned as a first-year Ph.D. student is that most social science research today is dull and useless. Social science researchers picked 98% of the low-hanging fruit between 1970 and 1990. Because there's almost nothing left on the lowest branches, it takes a combination of exceptional skill and luck to discover something new and worthwhile.
+
+Why don't we reach beyond the lowest branches of our discipline? The answer, in part, is antiquated technology. It breaks my heart to see my colleagues imagine an exciting research idea, only to dilute it beyond recognition so they can implement it in Qualtrics. If the technology you're using limits your imagination and ambition, you need to use better technology. Hemlock is the solution.
+
 ## The 3 day challenge
 
-It's March 2019, and I'm sitting at my computer furiously hacking away at the next great Hemlock feature. Next door, I can hear one of my fellow PhD candidates on the phone with Qualtrics support, trying to figure out how to add this one simple feature to her survey. She's spent all day yesterday by herself, and all morning today with a Qualtrics tech, trying to figure this out.
+**Set aside three days to learn python and Hemlock. Expect to struggle but resolve to push through.**
 
-My ears perk up. I walk over and knock on her door and ask her what she wants her survey to do. In 10 minutes, I code her survey exactly as specified and send her a link. She's excited.
+In March 2019, I was sitting at my computer, furiously hacking away at the next great Hemlock feature. Next door, I heard my colleague talking to Qualtrics support, trying to implement a new survey design. She had spent the last two days on the phone with Qualtrics, desperately trying to fix what should have been a simple problem.
 
-*How did you do that?* she asks. I invite her over to my computer and open up my python file. Her face drops. *Ugh, I have to learn how to code?* she says, audibly, then turns around and re-dials Qualtrics support.
+I knocked on her door and asked what she was trying to do. In 10 minutes, I coded her survey as specified and sent her a link. She was excited.
 
-Coding is scary. I get it. As an undergrad, I had to take computer science 101 three times because I failed out of it twice. (And I never did get that comp sci major). But after wasting hundreds of hours wrestling with Qualtrics in the first year of my PhD, I decided learn how to code because coding gives you more power and flexibility than a GUI ever will.
+"How did you do that?" she asked. I invited her to my computer and proudly displayed my python file. "Ugh, I have to learn how to code?" she said audibly, then walked away and redialed Qualtrics support.
 
-Because I get how scary coding can be when you're starting out, I've done everything I can think of to make Hemlock as easy as possible for you. But it's not going to be a walk in the park. You have to learn basic python, and you have to learn the Hemlock package. Expect to struggle. Hemlock isn't a product for your convenience; it's a tool for your craft.
+Coding is scary. I get it. As an undergrad, I retook computer science 101 three times because I failed it twice and gave up majoring in computer science as a Sophomore. But I decided to overcome my fear of coding as a Ph.D. student because I was tired of Qualtrics wasting my time and stifling my imagination.
 
-If you're an intermediate-level programmer (e.g. comfortable with R, new to python), expect 3 full days to get up to speed. 3 days sounds like a lot. But if you can invest that time right now, Hemlock will save you hundreds of hours over the course of your career, and allow you to shatter boundaries in your field.
+If you're an intermediate-level programmer (e.g., comfortable with R, new to python), I estimate it will take you three full days to learn the basics of python and Hemlock. Three days sounds like a long time. But if you set aside the time now and put in the effort, Hemlock will save you hundreds of hours throughout your career and enable you to shatter boundaries in your field.
 
-## Hemlock saves you time
+<!-- ## Hemlock saves you time
 
 A few weeks ago, my colleague from Cornell and I are shooting the breeze. He tells me his collaborator made a study that required some relatively simple (but still too complicated for Qualtrics) loop logic. So, the collaborator spent a full 40-hour work week copying and pasting blocks and adding convoluted branching logic in the Qualtrics GUI and QSF.
 
@@ -54,13 +66,13 @@ Let me address an ostensible contraditiction:
 
 ## Common objections
 
-#### If I *can* do it it Qualtrics, I *will* do it in Qualtrics
+#### If I *can* do it it Qualtrics, I *will* do it in Qualtrics -->
 
 <!-- It's time for the big unveiling. I've been working on Hemlock for the last 6 months - largely from a remote village in Guatemala - and I'm finally ready to demo my shiny, beautiful new software. I send out an invite to the whole department and book the conference room for not one but two time slots to accommodate my audience.
 
 I put on my best shirt, throw open the door at precisely 12 noon and... the conference room is empty. No problem; I'm sure there'll be an extra large crowd for the second time slot. I take my lunch, tuck my shirt back in, throw open the door at precisely 1PM and... my three favorite colleagues are eagerly awaiting my demo. Score. -->
 
-I'm giving a Hemlock demo in my department when one of my colleagues asks, *Can you give me an example of when I would want to use Hemlock instead of Qualtrics?*. 
+<!-- I'm giving a Hemlock demo in my department when one of my colleagues asks, *Can you give me an example of when I would want to use Hemlock instead of Qualtrics?*. 
 
 No problem. Prof. Bob Axelrod from Michigan is running forecasting studies in which participants predict AI players' actions in a game theoretic setting. He's got the python code written to simulate the AI players. The players play a game, and after each of 40 rounds, the participant predicts what the players will do next. But it's not integrated into the survey. So, he displays the game in a terminal window, which looks something like this:
 
@@ -78,4 +90,4 @@ Let's take these suggestions one at a time. First, my colleague suggests running
 
 Second, my colleague suggests writing python code to write QSF code. But then, why not just use Hemlock and write python code? That's like saying you should first write your paper in Norwegian and then translate it into English instead of just writing it in English to begin with.
 
-This reaction is an example of a common objection: *If I* can *do it in Qualtrics, I* will *do it in Qualtrics.* Sure, maybe it's not literally impossible to do your research in Qualtrics. But is it *easier* to do your research in Qualtrics? Put differently, which scares you more: spending 3 days learning python and Hemlock, or copying and pasting dozens of blocks and hundreds of HTML tables for study after study in paper after paper for your entire career?
+This reaction is an example of a common objection: *If I* can *do it in Qualtrics, I* will *do it in Qualtrics.* Sure, maybe it's not literally impossible to do your research in Qualtrics. But is it *easier* to do your research in Qualtrics? Put differently, which scares you more: spending 3 days learning python and Hemlock, or copying and pasting dozens of blocks and hundreds of HTML tables for study after study in paper after paper for your entire career? -->

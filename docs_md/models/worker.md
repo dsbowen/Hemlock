@@ -52,13 +52,7 @@ Worker inherits from
     <col class="field-name" />
     <col class="field-body" />
     <tbody valign="top">
-        <tr class="field">
-    <th class="field-name"><b>Notes:</b></td>
-    <td class="field-body" width="100%"><b>I recommend redis version 5, rather than the latest version 6. Why? Heroku required you to manually set up TLS authentication for redis 6, which is a complicated process, whereas you can bypass TLS authentication using redis 5. : <i></i></b>
-<p class="attr">
-    
-</p></td>
-</tr>
+        
     </tbody>
 </table>
 
@@ -71,7 +65,7 @@ To run redis in production on heroku:
 In the root directory of your project, open `Procfile`. Add the line `worker: rq worker -u $REDIS_URL hemlock-task-queue`. Your `Procfile` should look like:
 
 ```
-web: gunicorn -k eventlet app:app
+web: gunicorn -k eventlet -w 1 app:app
 worker: rq worker -u $REDIS_URL hemlock-task-queue
 ```
 
@@ -85,7 +79,7 @@ To create a Redis addon, add `{"plan": "heroku-redis:hobby-dev", "options": {"ve
 {
     "addons": [
         "heroku-postgresql:hobby-dev",
-        {"plan": "heroku-redis:hobby-dev", "options": {"version": 5}}
+        {"plan": "heroku-redis:hobby-dev"}
     ],
     "formation": {
         "web": {"quantity": 1, "size": "hobby"},
@@ -109,6 +103,9 @@ quantity 5, size standard-1x. So `app.json` will look like:
     },
 ...
 ```
+
+??? note "Why redis 5?"
+    I recommend redis version 5, rather than the latest version 6. Heroku requires you to manually set up TLS authentication for redis 6, which is a complicated process, whereas you can bypass TLS authentication using redis 5.
 
 ####Examples
 
@@ -150,6 +147,9 @@ navigate workers.
 Our `app.py` is standard:
 
 ```python
+import eventlet
+eventlet.monkey_patch()
+
 import survey
 
 from hemlock import create_app
@@ -164,8 +164,8 @@ if __name__ == '__main__':
 To run the app locally, you will need to set the `REDIS_URL` environment
 variable and run a redis queue from your project's root directory.
 
-**Note.** Windows cannot run redis natively. To run redis on Windows, use
-[Windows Subsystem for Linux](../setup/wsl.md).
+??? warning "Redis on Windows"
+    Windows cannot run redis natively. To run redis on Windows, use [Windows Subsystem for Linux](../setup/wsl.md).
 
 If using the hemlock template and hemlock-CLI:
 

@@ -11,16 +11,9 @@ $ hlk init <my-project-name> <my-github-username> <my-github-token>
 $ cd <my-project-name>
 ```
 
-!!! note "Additional steps for Windows git bash"
+??? note "Additional step for Windows git bash"
     ```bash
     hlk setup-venv <my-project-name>
-    ```
-
-!!! note "Additional steps for WSL"
-    Open `env.yaml` and add the following line:
-
-    ```yaml
-    WSL_DISTRIBUTION: Ubuntu-20.04 # or other WSL distribution
     ```
 
 ## Edit
@@ -51,18 +44,16 @@ $ hlk debug
 
 ## Deploy
 
-Deploy to and debug in staging:
+Deploy and test using free resources:
 
 ```bash
-$ hlk deploy # make sure to set the PASSWORD and URL_ROOT environment variables
-$ heroku git:remote -a <my-app-name>
-$ hlk debug --staging
+$ hlk deploy # make sure to set the PASSWORD environment variable
 ```
 
-Destroy the staging app:
+Destroy the test app:
 
 ```bash
-$ heroku apps:destroy
+$ heroku apps:destroy -a <my-app-name>
 ```
 
 Change `app.json` from:
@@ -87,8 +78,8 @@ to:
     ...
 ```
 
-Deploy in production:
+Deploy 'for real':
 
 ```bash
-hlk deploy # set PASSWORD, URL_ROOT, and DEBUG_FUNCTIONS
+hlk deploy # set PASSWORD
 ```

@@ -53,6 +53,10 @@
                     </li>
                 </ul>
                 <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../manifesto/">Why hemlock?</a>
+                    </li>
+                </ul>
+                <ul>
                     <li class="toctree-l1"><a class="reference internal" href="../../contact/">Contact</a>
                     </li>
                 </ul>
@@ -75,6 +79,8 @@
                     <li class="toctree-l1"><a class="reference internal" href="../../tutorial/validate/">Validate</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../tutorial/submit/">Submit</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/extensions/">Extensions</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../tutorial/compile/">Compile</a>
                     </li>
@@ -122,10 +128,6 @@
     <li class="toctree-l2"><a class="reference internal" href="#google-chrome">Google chrome</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#chromedriver">Chromedriver</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#chrome-and-chromedriver-compatibility">Chrome and chromedriver compatibility</a>
-    </li>
-        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#heroku">Heroku</a>
     </li>
@@ -270,14 +272,23 @@
               
                 <h1 id="mac-setup">Mac setup</h1>
 <p>These instructions were written for Mac OS 10.9.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>About 50% of the problems you encounter during setup can be fixed by closing and re-opening your terminal window. If you have any problems, this is the first thing to try.</p>
+</div>
 <h2 id="open-a-terminal-window">Open a terminal window</h2>
 <p>Hemlock requires you to use a terminal window for setting up, editing, and deploying hemlock projects. To open a terminal window, enter 'terminal' in spotlight search. Terminal commands are written in bash:</p>
 <div class="highlight"><pre><span></span><code>$ &lt;my-bash-command&gt;
 </code></pre></div>
-<p><strong>Note 1.</strong> You don't type <code>$</code>; it simply indicates the beginning of a bash command.</p>
-<p><strong>Note 2.</strong> For this tutorial, always make sure to change to your home directory after you open your terminal. Do this by entering:</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<ol>
+<li>You don't type <code>$</code>. This just indicates the beginning of a bash command.</li>
+<li>For the tutorial, always change to your home directory after you open your terminal. Do this by entering:</li>
+</ol>
 <div class="highlight"><pre><span></span><code>$ <span class="nb">cd</span>
 </code></pre></div>
+</div>
 <h2 id="xcode">Xcode</h2>
 <p>Mac OS typically requires Xcode Command-line Tools. Install in your terminal:</p>
 <div class="highlight"><pre><span></span><code>$ xcode-select --install
@@ -286,10 +297,9 @@
 <h2 id="python3-and-pip3">Python3 and pip3</h2>
 <p>Python is hemlock's primary language. Pip allows you to install python packages, including hemlock and its command line interface, hemlock-CLI.</p>
 <p><strong>Read everything until STOP before downloading or installing anything.</strong></p>
-<p>You can <a href="https://www.python.org/downloads/">download the latest version of python here</a>. </p>
-<p>However, I recommend an earlier version, python3.6. <a href="https://www.python.org/ftp/python/3.6.8/python-3.6.8-macosx10.9.pkg">Download python3.6 here</a>. </p>
-<p>Why do I recommend 3.6 instead of the latest version of python? Because heroku, my recommended method of app deployment, uses python3.6, meaning that if you develop in python3.7+ and deploy in python3.6, you may encounter compatibility issues.</p>
-<p><strong>When you start the python installer, you'll see an <em>Add Python to PATH</em> option on the first page. Make sure to select this option.</strong></p>
+<p>You can <a href="https://www.python.org/downloads/" target="_blank">download python here</a>. If possible, download python3.6.</p>
+<p>Why do I recommend 3.6 instead of the latest version of python? Because heroku, my recommended method of app deployment, uses python3.6, meaning that if you develop in python3.7+ and deploy in python3.6, you may encounter compatibility issues. Anecdotally, I've found downloading legacy version of python is a pain, so if you're having trouble, just download the latest python and make a mental note to double check that your survey works when you deploy it.</p>
+<p><strong>When you start the python installer, you may see an <em>Add Python to PATH</em> option on the first page. Make sure to select this option.</strong></p>
 <p><strong>STOP.</strong></p>
 <p>Close and re-open your terminal window. Verify your python installation.</p>
 <div class="highlight"><pre><span></span><code>$ python3 --version
@@ -302,6 +312,18 @@ Python <span class="m">3</span>.6.8
 <div class="highlight"><pre><span></span><code>$ pip3 --version
 pip xx.x.x ...
 </code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">pip versus pip3</p>
+<p>You'll install several python packages using <code>pip</code>. Conventionally, the command to install these is written as:</p>
+<div class="highlight"><pre><span></span><code>$ pip install &lt;my-requested-package&gt;
+</code></pre></div>
+<p>You may need to repace this with:</p>
+<div class="highlight"><pre><span></span><code>$ pip3 install &lt;my-requested-package&gt;
+</code></pre></div>
+<p>Or even:</p>
+<div class="highlight"><pre><span></span><code>$ python3 -m pip install &lt;my-requested-package&gt;
+</code></pre></div>
+</div>
 <h2 id="hemlock-cli">Hemlock-CLI</h2>
 <p>Hemlock's command line interface, hemlock-CLI, defines many useful commands for initializing, editing, and deploying hemlock projects. Install with:</p>
 <div class="highlight"><pre><span></span><code>$ pip install -U hemlock-cli
@@ -334,11 +356,19 @@ $ git config --global user.email dsbowen@wharton.upenn.edu
 </ol>
 <p><strong>STOP.</strong></p>
 <h2 id="visual-studio-code">Visual studio code</h2>
-<p>I recommend visual studio code for editing python files. <a href="https://code.visualstudio.com/">Download VS code here</a>.</p>
+<p>I recommend visual studio code for editing python files. <a href="https://code.visualstudio.com/" target="_blank">Download VS code here</a></p>
 <p>Close and re-open your terminal. Verify your VS code installation:</p>
 <div class="highlight"><pre><span></span><code>$ code --version
 <span class="m">1</span>.xx.x
 </code></pre></div>
+<details class="error"><summary>code: command not found</summary><p>If you experience a "command not found" error, it's probably because VS code isn't in your <code>PATH</code>. Try this: </p>
+<ol>
+<li>Open the VS code application and press <code>Command</code> + <code>Shift</code> + <code>P</code> or <code>F1</code>.</li>
+<li>Type <code>shell</code> in command palette. You should see an option like <code>shell command : Install code in PATH</code>. Click that.</li>
+<li>Close and re-open your terminal and verify your installation.</li>
+</ol>
+<p><a href="https://stackoverflow.com/questions/29955500/code-not-working-in-command-line-for-visual-studio-code-on-osx-mac" target="_blank">See here for more details.</a>.</p>
+</details>
 <h2 id="jupyter">Jupyter</h2>
 <p><a href="https://jupyter.org/" target="_blank">Jupyter</a> allows you to quickly iterate on project designs. Install jupyter notebook with pip:</p>
 <div class="highlight"><pre><span></span><code>$ pip install -U notebook
@@ -373,8 +403,10 @@ traitlets        : <span class="m">4</span>.3.3
 <div class="highlight"><pre><span></span><code>$ chromedriver --version
 ChromeDriver x.xx.x
 </code></pre></div>
-<h4 id="chrome-and-chromedriver-compatibility">Chrome and chromedriver compatibility</h4>
-<p>Google Chrome will automatically update. Chromedriver will not. If you encounter a compatibility error in the future, simply repeat the above instructions.</p>
+<div class="admonition warning">
+<p class="admonition-title">Chrome and chromedriver compatibility</p>
+<p>Google chrome will automatically update. Chromedriver will not. If you encounter a compatibility error in the future, simply repeat the above instructions.</p>
+</div>
 <p>If you came here from the Debug section of the tutorial, you're now ready to return to it and run the debugger. <a href="../../tutorial/debug/">Click here to go back to the Debug section of the tutorial</a>.</p>
 <h2 id="heroku">Heroku</h2>
 <p>Heroku is an easy and inexpensive service for deploying web applications (i.e. putting them online), including hemlock applications. <a href="https://signup.heroku.com/" target="_blank">Sign up for heroku here</a>.</p>
@@ -385,7 +417,8 @@ ChromeDriver x.xx.x
 <div class="highlight"><pre><span></span><code>$ heroku --version
 heroku/x.xx.x mac node-vxx.xx.x
 </code></pre></div>
-<p><strong>Note.</strong> See <a href="https://github.com/heroku/legacy-cli/issues/1969" target="_blank">this github issue</a> if you experience a 'EACCES' error. <em>Do not</em> simply use <code>sudo</code>; this only masks issues you'll encounter later.</p>
+<details class="error"><summary>EACCES error</summary><p>See <a href="https://github.com/heroku/legacy-cli/issues/1969" target="_blank">this github issue</a> if you experience a 'EACCES' error. <em>Do not</em> simply use <code>sudo</code>; this only masks issues you'll encounter later.</p>
+</details>
 <p><a href="../../tutorial/deploy/">Click here to return to the Deploy section of the tutorial</a>.</p>
               
             </div>

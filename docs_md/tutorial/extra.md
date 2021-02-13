@@ -1,10 +1,10 @@
 # Bells and whistles
 
-You already know most of the important stuff. Here are some tips and tricks to make your life easier.
+You already know the important stuff. Here are some tips and tricks to make your life easier.
 
 ## Redis
 
-One of hemlock's most impressive features is seamless integration with Redis for running complex background processes during surveys. [Read more here](../worker.md).
+One of hemlock's most impressive features is seamless integration with Redis for running complex background processes during surveys. [Read more here](../models/worker.md).
 
 ## Settings
 
@@ -14,7 +14,7 @@ We can use settings to change the default values of most attributes of most heml
 from hemlock import Page, settings
 
 settings['Page'].update({'back': True})
-path = Page().preview()
+Page().preview()
 ```
 
 ## Duplicates
@@ -41,16 +41,6 @@ from hemlock import settings
 settings.update({'screenout_keys': ['IPv4', 'workerId']})
 ```
 
-## Validation off
-
-During development and testing, we often want to be able to click through a survey quickly, ignoring validation. We can turn all validation off as follows:
-
-```python
-from hemlock import settings
-
-settings.update({'validate': False})
-```
-
 <!-- ## Google cloud buckets
 
 Hook up a Google cloud bucket to your app with:
@@ -70,19 +60,3 @@ Additionally, install the google cloud storage python API with:
 ```bash
 $ pip3 install google-cloud-storage # or hlk install google-cloud-storage (see below)
 ``` -->
-
-## Installing 3rd party packages
-
-We ordinarily install 3rd party packages with:
-
-```bash
-$ pip install <requested-package> # or pip3 install <requested-package>
-```
-
-If you're using heroku, you need to include these in a `requirements.txt` file. If you're sharing your hemlock project with collaborators, I recommend additionally adding these to a `local-requirements.txt` file. 
-
-Hemlock-CLI has a shortcut for 1) installing 3rd party packages, 2) adding them to `requirements.txt`, and 3) adding them to `local-requirements.txt`:
-
-```bash
-$ hlk install <requested-package>
-```

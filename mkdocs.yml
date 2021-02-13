@@ -5,6 +5,7 @@ repo_url: https://github.com/dsbowen/hemlock
 edit_uri: edit/master/docs_md
 nav:
   - Home: index.md
+  - Why hemlock?: manifesto.md
   - Contact: contact.md
   - Checklist: checklist.md
   - Tutorial:

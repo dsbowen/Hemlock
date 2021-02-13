@@ -53,6 +53,10 @@
                     </li>
                 </ul>
                 <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../manifesto/">Why hemlock?</a>
+                    </li>
+                </ul>
+                <ul>
                     <li class="toctree-l1"><a class="reference internal" href="../../contact/">Contact</a>
                     </li>
                 </ul>
@@ -76,8 +80,6 @@
                     </li>
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">Submit</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#why-submit-functions">Why submit functions?</a>
-    </li>
     <li class="toctree-l2"><a class="reference internal" href="#basic-syntax">Basic syntax</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#custom-submission">Custom submission</a>
@@ -86,11 +88,15 @@
     </li>
         </ul>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#function-patterns">Function patterns</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#submission-in-our-app">Submission in our app</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a>
     </li>
     </ul>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../extensions/">Extensions</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../compile/">Compile</a>
                     </li>
@@ -262,106 +268,166 @@
 <p>In the previous part of the tutorial, you learned how to validate participant responses.</p>
 <p>By the end of this part of the tutorial, you'll be able to run functions to handle form submission.</p>
 <p>Click here to see what your <a href="https://github.com/dsbowen/hemlock-tutorial/blob/v0.4/blackboard.ipynb" target="_blank"><code>blackboard.ipynb</code></a> and <a href="https://github.com/dsbowen/hemlock-tutorial/blob/v0.4/survey.py" target="_blank"><code>survey.py</code></a> files should look like at the end of this part of the tutorial.</p>
-<h2 id="why-submit-functions">Why submit functions?</h2>
-<p>Our demographics page asks participants to enter their date of birth. In addition to date of birth, we also want to record the participant's age.</p>
-<p>Submit functions run after a participant submits a page and their responses are validated. We're going to attach a submit function to our date of birth input question to record our participants' age as embedded data.</p>
+<details class="note"><summary>Why submit functions?</summary><p>Submit functions run after a participant submits a page and their responses are validated. The most common use for submit functions is adding or transforming data based on a participant's responses. In our example, we're going to use a submit function to record a binary variable indicating whether the participant is female based on our gender question.</p>
+</details>
 <h2 id="basic-syntax">Basic syntax</h2>
 <p>Open your jupyter notebook and run the following:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Submit</span> <span class="k">as</span> <span class="n">S</span>
 
-<span class="n">inpt</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;Enter &quot;hello world&quot;&lt;/p&gt;&#39;</span><span class="p">,</span> <span class="n">submit</span><span class="o">=</span><span class="n">S</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;hello world&#39;</span><span class="p">))</span>
+<span class="n">inpt</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span>
+    <span class="s1">&#39;Enter &quot;hello world&quot;&#39;</span><span class="p">,</span> 
+    <span class="n">submit</span><span class="o">=</span><span class="n">S</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;hello world&#39;</span><span class="p">)</span>
+<span class="p">)</span>
 <span class="n">inpt</span><span class="o">.</span><span class="n">submit</span>
 </code></pre></div>
 <p>Out:</p>
-<div class="highlight"><pre><span></span><code>[&lt;Submit 1&gt;]
+<div class="highlight"><pre><span></span><code>[&lt;match(&#39;hello world&#39;)&gt;]
 </code></pre></div>
 <p>You can add submit functions to a page or question by settings its <code>submit</code> attribute or passing a <code>submit</code> argument to its constructor. Submit functions run when a participant successfully submits a page.</p>
-<p>The <code>match</code> submit function changes a question's data to 1 if the data matches a regex pattern, in this case <code>'hello world'</code>, and 0 if it does not.</p>
-<p>Let's set the input question's data and watch our submit function work:</p>
-<div class="highlight"><pre><span></span><code><span class="n">inpt</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="s1">&#39;hello world&#39;</span>
+<p>The <code>match</code> submit function sets a question's data to 1 if the response matches a regex pattern, in this case <code>'hello world'</code>, and 0 if it does not.</p>
+<p>Let's set the input question's response and watch our submit function work:</p>
+<div class="highlight"><pre><span></span><code><span class="n">inpt</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="s1">&#39;hello world&#39;</span>
 <span class="n">inpt</span><span class="o">.</span><span class="n">_submit</span><span class="p">()</span><span class="o">.</span><span class="n">data</span>
 </code></pre></div>
 <p>Out:</p>
 <div class="highlight"><pre><span></span><code>1
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">inpt</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="s1">&#39;something other than hello world&#39;</span>
+<p>Now let's set the question's response to something other than <code>'hello world'</code> and see what happens:</p>
+<div class="highlight"><pre><span></span><code><span class="n">inpt</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="s1">&#39;something other than hello world&#39;</span>
 <span class="n">inpt</span><span class="o">.</span><span class="n">_submit</span><span class="p">()</span><span class="o">.</span><span class="n">data</span>
 </code></pre></div>
 <p>Out:</p>
 <div class="highlight"><pre><span></span><code>0
 </code></pre></div>
-<p><strong>Notes.</strong></p>
-<ol>
-<li>You don't need to run <code>_submit</code> yourself in the survey; hemlock takes care of this automatically for you.</li>
-<li><code>match</code> is just one of many <a href="../submit_functions.md">prebuilt submit functions</a>.</li>
-</ol>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You don't need to run <code>_submit</code> yourself in the survey. Hemlock takes care of this automatically for you.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">More submit functions</p>
+<p><code>match</code> is just one of many <a href="../../functions/submit/">native hemlock submit functions</a>.</p>
+</div>
 <h2 id="custom-submission">Custom submission</h2>
-<p>We're going to use a custom submit function to record our participants' age. Let's see how to do this in our notebook.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Embedded</span><span class="p">,</span> <span class="n">Page</span>
+<p>We're going to use a custom submit function to record the female indicator. Let's do this in our notebook first.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Embedded</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Select</span>
 
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-
-<span class="nd">@S</span><span class="o">.</span><span class="n">register</span>
-<span class="k">def</span> <span class="nf">record_age</span><span class="p">(</span><span class="n">inpt</span><span class="p">):</span>
-    <span class="c1"># calculate age in years</span>
-    <span class="n">date_of_birth</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">inpt</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="s1">&#39;%m/</span><span class="si">%d</span><span class="s1">/%Y&#39;</span><span class="p">)</span>
-    <span class="n">age</span> <span class="o">=</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">-</span> <span class="n">date_of_birth</span><span class="p">)</span><span class="o">.</span><span class="n">days</span> <span class="o">/</span> <span class="mf">365.25</span>
-    <span class="c1"># record age as embedded data</span>
-    <span class="n">inpt</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">embedded</span> <span class="o">=</span> <span class="p">[</span><span class="n">Embedded</span><span class="p">(</span><span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="n">age</span><span class="p">,</span> <span class="n">data_rows</span><span class="o">=-</span><span class="mi">1</span><span class="p">)]</span>
+<span class="k">def</span> <span class="nf">record_female</span><span class="p">(</span><span class="n">gender</span><span class="p">):</span>
+    <span class="n">gender</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">embedded</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">Embedded</span><span class="p">(</span><span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="n">gender</span><span class="o">.</span><span class="n">response</span><span class="o">==</span><span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="n">data_rows</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">]</span>
 
 <span class="n">page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span>
-    <span class="n">Input</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;Enter your date of birth.&lt;/p&gt;&#39;</span><span class="p">,</span> <span class="n">submit</span><span class="o">=</span><span class="n">S</span><span class="o">.</span><span class="n">record_age</span><span class="p">())</span>
+    <span class="n">Select</span><span class="p">(</span>
+        <span class="s1">&#39;&lt;p&gt;What is your gender?&lt;/p&gt;&#39;</span><span class="p">,</span>
+        <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="s1">&#39;Other&#39;</span><span class="p">],</span>
+        <span class="n">submit</span><span class="o">=</span><span class="n">record_female</span>
+    <span class="p">)</span>
 <span class="p">)</span>
-<span class="n">inpt</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">questions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">inpt</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="s1">&#39;10/26/1992&#39;</span>
-<span class="n">inpt</span><span class="o">.</span><span class="n">_submit</span><span class="p">()</span>
+<span class="n">select</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">questions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">select</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="s1">&#39;Female&#39;</span>
+<span class="n">select</span><span class="o">.</span><span class="n">_submit</span><span class="p">()</span>
 <span class="n">page</span><span class="o">.</span><span class="n">embedded</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
 </code></pre></div>
 <p>Out:</p>
-<div class="highlight"><pre><span></span><code>27.742642026009584
+<div class="highlight"><pre><span></span><code>True
+</code></pre></div>
+<p>In:</p>
+<div class="highlight"><pre><span></span><code><span class="n">select</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="s1">&#39;Male&#39;</span>
+<span class="n">select</span><span class="o">.</span><span class="n">_submit</span><span class="p">()</span>
+<span class="n">page</span><span class="o">.</span><span class="n">embedded</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+</code></pre></div>
+<p>Out:</p>
+<div class="highlight"><pre><span></span><code>False
 </code></pre></div>
 <h3 id="code-explanation">Code explanation</h3>
-<p>We register a new submit function with the <code>@S.register</code> decorator. The submit function takes the input question as its argument. In general, submit functions take their parent as their first argument. <code>record_age</code> converts the input's data to a <code>datetime</code> object, computes the participant's age, and records it as embedded data.</p>
+<p>We created a custom submit function to add an embedded data element to the demographics page. The submit function takes the gender select question as its argument. In general, submit functions take their parent as their first argument.</p>
+<p><code>gender.page</code> is the page to which the gender question belongs. <code>gender.page.embedded</code> is a list of embedded data elements belonging to that page. We set <code>embedded</code> to a list containing a single embedded data element. The embedded data element has a variable name <code>'Female'</code> and data which indicates whether the participant is female. As we did for the demographics questions, we pass <code>data_rows=-1</code>, meaning 'this value should appear on every row the participant contributes to the data frame'.</p>
+<p>Finally, we add the submit function to the gender select question by passing <code>submit=record_female</code> to the question's constructor. This creates a 'sticky note' reminding the select question to run the submit function at the appropriate time.</p>
+<h2 id="function-patterns">Function patterns</h2>
+<p>In the previous part of the tutorial, we created a custom validate function by registering a new validate function with <code>@V.register</code>. We then added it to a question by passing <code>validate=V.my_function(my_argument)</code> to the question's constructor. Here, we added a submit function without registering it, simply by passing <code>submit=my_function</code> to the question's constructor. Why are validate and submit functions treated differently?</p>
+<p>The answer is that they aren't. You can add both validate and submit functions using one of two 'patterns'.</p>
+<p>Simple pattern:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">my_validate_function</span><span class="p">(</span><span class="n">question</span><span class="p">):</span>
+    <span class="c1"># your amazing function here</span>
+
+<span class="k">def</span> <span class="nf">my_submit_function</span><span class="p">(</span><span class="n">question</span><span class="p">):</span>
+    <span class="c1"># your amazing function here</span>
+
+<span class="n">Input</span><span class="p">(</span>
+    <span class="n">validate</span><span class="o">=</span><span class="n">my_validate_function</span><span class="p">,</span>
+    <span class="n">submit</span><span class="o">=</span><span class="n">my_submit_function</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>Decorator pattern:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@V</span><span class="o">.</span><span class="n">register</span>
+<span class="k">def</span> <span class="nf">my_validate_function</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">my_argument</span><span class="p">):</span>
+    <span class="c1"># your amazing function here</span>
+
+<span class="nd">@S</span><span class="o">.</span><span class="n">register</span>
+<span class="k">def</span> <span class="nf">my_submit_function</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">my_argument</span><span class="p">):</span>
+    <span class="c1"># your amazing function here</span>
+
+<span class="n">Input</span><span class="p">(</span>
+    <span class="n">validate</span><span class="o">=</span><span class="n">V</span><span class="o">.</span><span class="n">my_validate_function</span><span class="p">(</span><span class="n">my_validate_argument</span><span class="p">),</span>
+    <span class="n">submit</span><span class="o">=</span><span class="n">S</span><span class="o">.</span><span class="n">my_submit_function</span><span class="p">(</span><span class="n">my_submit_argument</span><span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>The main advantage of the simple pattern is, well, its simplicity. The main advantage of the decorator pattern is that it allows you to pass additional arguments to validate and submit functions.</p>
+<p>To see the decorator pattern in action for submit functions, run the following in a jupyter notebook cell:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@S</span><span class="o">.</span><span class="n">register</span>
+<span class="k">def</span> <span class="nf">my_function</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">my_argument</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;My parent is&#39;</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;My argument is&#39;</span><span class="p">,</span> <span class="n">my_argument</span><span class="p">)</span>
+
+<span class="n">select</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span>
+    <span class="n">submit</span><span class="o">=</span><span class="n">S</span><span class="o">.</span><span class="n">my_function</span><span class="p">(</span><span class="s1">&#39;hello world&#39;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">select</span><span class="o">.</span><span class="n">_submit</span><span class="p">()</span>
+</code></pre></div>
+<p>Out:</p>
+<div class="highlight"><pre><span></span><code>My parent is &lt;Select (transient 140423771774256)&gt;
+My argument is hello world
+</code></pre></div>
 <h2 id="submission-in-our-app">Submission in our app</h2>
 <p>Now that we've seen how to add submit functions in our notebook, let's add it to our app.</p>
 <p>In <code>survey.py</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Branch</span><span class="p">,</span> <span class="n">Check</span><span class="p">,</span> <span class="n">Embedded</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Range</span><span class="p">,</span> <span class="n">Select</span><span class="p">,</span> <span class="n">Submit</span> <span class="k">as</span> <span class="n">S</span><span class="p">,</span> <span class="n">Validate</span> <span class="k">as</span> <span class="n">V</span><span class="p">,</span> <span class="n">route</span>
-
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Binary</span><span class="p">,</span> <span class="n">Branch</span><span class="p">,</span> <span class="n">Check</span><span class="p">,</span> <span class="n">Embedded</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">RangeInput</span><span class="p">,</span> <span class="n">Select</span><span class="p">,</span> 
+    <span class="n">Submit</span> <span class="k">as</span> <span class="n">S</span><span class="p">,</span> <span class="n">Validate</span> <span class="k">as</span> <span class="n">V</span><span class="p">,</span> <span class="n">route</span>
+<span class="p">)</span>
 
 <span class="nd">@route</span><span class="p">(</span><span class="s1">&#39;/survey&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
     <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span>
         <span class="n">Page</span><span class="p">(</span>
             <span class="n">Input</span><span class="p">(</span>
-                <span class="s1">&#39;&lt;p&gt;Enter your date of birth.&lt;/p&gt;&#39;</span><span class="p">,</span>
-                <span class="n">placeholder</span><span class="o">=</span><span class="s1">&#39;mm/dd/yyyy&#39;</span><span class="p">,</span>
-                <span class="n">var</span><span class="o">=</span><span class="s1">&#39;DoB&#39;</span><span class="p">,</span> <span class="n">data_rows</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
-                <span class="n">validate</span><span class="o">=</span><span class="p">[</span><span class="n">V</span><span class="o">.</span><span class="n">require</span><span class="p">(),</span> <span class="n">V</span><span class="o">.</span><span class="n">date_format</span><span class="p">()],</span>
-                <span class="n">submit</span><span class="o">=</span><span class="n">S</span><span class="o">.</span><span class="n">record_age</span><span class="p">()</span>
+                <span class="s1">&#39;&lt;p&gt;Enter your month and year of birth.&lt;/p&gt;&#39;</span><span class="p">,</span>
+                <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;month&#39;</span><span class="p">,</span> <span class="n">var</span><span class="o">=</span><span class="s1">&#39;DoB&#39;</span><span class="p">,</span> <span class="n">data_rows</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">),</span>
-            <span class="c1"># REST OF THE DEMOGRAPHICS PAGE HERE</span>
+            <span class="n">Select</span><span class="p">(</span>
+                <span class="s1">&#39;&lt;p&gt;What is your gender?&lt;/p&gt;&#39;</span><span class="p">,</span>
+                <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="s1">&#39;Other&#39;</span><span class="p">],</span>
+                <span class="n">var</span><span class="o">=</span><span class="s1">&#39;Gender&#39;</span><span class="p">,</span> <span class="n">data_rows</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">validate</span><span class="o">=</span><span class="n">V</span><span class="o">.</span><span class="n">require</span><span class="p">(),</span>
+                <span class="n">submit</span><span class="o">=</span><span class="n">record_female</span>
+            <span class="p">),</span>
+            <span class="c1"># REST OF THE DEMOGRAPHICS PAGE</span>
         <span class="p">),</span>
         <span class="n">Page</span><span class="p">(</span>
-            <span class="n">Label</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;Thank you for completing the survey!&lt;/p&gt;&#39;</span><span class="p">),</span>
+            <span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Thank you for completing this survey!&#39;</span><span class="p">),</span> 
             <span class="n">terminal</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
     <span class="p">)</span>
 
-<span class="o">...</span>
-
-<span class="nd">@S</span><span class="o">.</span><span class="n">register</span>
-<span class="k">def</span> <span class="nf">record_age</span><span class="p">(</span><span class="n">inpt</span><span class="p">):</span>
-    <span class="c1"># calculate age in years</span>
-    <span class="n">date_of_birth</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">inpt</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="s1">&#39;%m/</span><span class="si">%d</span><span class="s1">/%Y&#39;</span><span class="p">)</span>
-    <span class="n">age</span> <span class="o">=</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">-</span> <span class="n">date_of_birth</span><span class="p">)</span><span class="o">.</span><span class="n">days</span> <span class="o">/</span> <span class="mf">365.25</span>
-    <span class="c1"># record age as embedded data</span>
-    <span class="n">inpt</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">embedded</span> <span class="o">=</span> <span class="p">[</span><span class="n">Embedded</span><span class="p">(</span><span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="n">age</span><span class="p">,</span> <span class="n">data_rows</span><span class="o">=-</span><span class="mi">1</span><span class="p">)]</span>
+<span class="k">def</span> <span class="nf">record_female</span><span class="p">(</span><span class="n">gender</span><span class="p">):</span>
+    <span class="n">gender</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">embedded</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">Embedded</span><span class="p">(</span><span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="n">gender</span><span class="o">.</span><span class="n">response</span><span class="o">==</span><span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="n">data_rows</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">]</span>
 </code></pre></div>
-<p>Run the app again, fill in the demographics page, and download the data. You'll now see a variable 'Age' in the data frame.</p>
+<p>Run the app again, fill in the demographics page, and download the data. You'll now see a variable 'Female' in the data frame.</p>
 <h2 id="summary">Summary</h2>
 <p>In this part of the tutorial, you learned how create and run submit functions.</p>
-<p>In the next part of the tutorial, you'll implement a confirmation page using compile functions.</p>
+<p>In the next part of the tutorial, you'll learn how to create an entire demographics page in one line of code using hemlock extensions.</p>
               
             </div>
           </div>
@@ -369,7 +435,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../compile/" class="btn btn-neutral float-right" title="Compile">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../extensions/" class="btn btn-neutral float-right" title="Extensions">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="../validate/" class="btn btn-neutral" title="Validate"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -403,7 +469,7 @@
         <span><a href="../validate/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../compile/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../extensions/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

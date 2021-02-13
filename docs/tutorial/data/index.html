@@ -53,6 +53,10 @@
                     </li>
                 </ul>
                 <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../manifesto/">Why hemlock?</a>
+                    </li>
+                </ul>
+                <ul>
                     <li class="toctree-l1"><a class="reference internal" href="../../contact/">Contact</a>
                     </li>
                 </ul>
@@ -74,9 +78,11 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#previewing-data-from-a-single-participant">Previewing data from a single participant</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#ordering">Ordering</a>
+    <li class="toctree-l2"><a class="reference internal" href="#data-on-multiple-rows">Data on multiple rows</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#data-rows">Data rows</a>
+    <li class="toctree-l2"><a class="reference internal" href="#filling-in-rows">Filling in rows</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#multiple-data-values">Multiple data values</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#adding-data-to-our-survey">Adding data to our survey</a>
     </li>
@@ -89,6 +95,8 @@
                     <li class="toctree-l1"><a class="reference internal" href="../validate/">Validate</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../submit/">Submit</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../extensions/">Extensions</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../compile/">Compile</a>
                     </li>
@@ -290,8 +298,7 @@
 </code></pre></div>
 <p>This adds an <code>Embedded</code> data object to our participant. Embedded data are a type of data element, like questions, but unlike questions, are not displayed to participants. We can add embedded data to a participant, branch, or page.</p>
 <p>Looking at the data, we see that the participant has a new variable named <code>'MyVariable'</code> with data <code>['MyData']</code>.</p>
-<h2 id="ordering">Ordering</h2>
-<p>Tl;dr When you have multiple data elements contributing data to the same variable, hemlock automatically orders them in a sensible way. If you find that your data frame isn't ordering your data the way you want, come back and reread this.</p>
+<details class="warning"><summary>What happens when multiple data elements have the same variable name?</summary><p><strong>When you have multiple data elements contributing data to the same variable, hemlock automatically orders them in a sensible way. If you find that hemlock's default ordering algorithm isn't ordering your data the way you want, come back and reread this.</strong></p>
 <p>The order in which data elements appear in the data frame is the order in which they were added to the database; not necessarily the order in which they appear to the participant. For example:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">db</span>
 
@@ -304,14 +311,15 @@
 </code></pre></div>
 <p>Out:</p>
 <div class="highlight"><pre><span></span><code>{&#39;ID&#39;: [1, 1],
- &#39;EndTime&#39;: [&#39;2021-02-10 15:34:28.116156&#39;, &#39;2021-02-10 15:34:28.116156&#39;],
- &#39;StartTime&#39;: [&#39;2021-02-10 15:34:28.116156&#39;, &#39;2021-02-10 15:34:28.116156&#39;],
- &#39;Status&#39;: [&#39;InProgress&#39;, &#39;InProgress&#39;],
- &#39;MyVariable&#39;: [1, 0]}
+&#39;EndTime&#39;: [&#39;2021-02-10 15:34:28.116156&#39;, &#39;2021-02-10 15:34:28.116156&#39;],
+&#39;StartTime&#39;: [&#39;2021-02-10 15:34:28.116156&#39;, &#39;2021-02-10 15:34:28.116156&#39;],
+&#39;Status&#39;: [&#39;InProgress&#39;, &#39;InProgress&#39;],
+&#39;MyVariable&#39;: [1, 0]}
 </code></pre></div>
 <p>Note that the data for <code>'MyVariable'</code> are <code>[1, 0]</code> because we added <code>embedded1</code> before to the database before <code>embedded0</code> using <code>db.session.add_all</code> and <code>db.session.flush</code>.</p>
-<p>Again, hemlock automatically manages your database, so you you'll only need to use <code>db.session.add_all</code> and <code>db.session.flush</code> in rare cases.</p>
-<h2 id="data-rows">Data rows</h2>
+<p>Again, hemlock automatically manages your database, so you you'll only need to use <code>db.session.add_all</code> and <code>db.session.flush</code> when you want to customize the order of your data elements.</p>
+</details>
+<h2 id="data-on-multiple-rows">Data on multiple rows</h2>
 <p>By default, data elements (embedded data and questions) contribute 1 row to the data frame. But we often want the same data to be repeated on multiple rows. We do this by setting the <code>data_rows</code> attribute:</p>
 <div class="highlight"><pre><span></span><code><span class="n">part</span><span class="o">.</span><span class="n">embedded</span> <span class="o">=</span> <span class="p">[</span><span class="n">Embedded</span><span class="p">(</span><span class="s1">&#39;MyVariable&#39;</span><span class="p">,</span> <span class="s1">&#39;MyData&#39;</span><span class="p">,</span> <span class="n">data_rows</span><span class="o">=</span><span class="mi">3</span><span class="p">)]</span>
 <span class="nb">dict</span><span class="p">(</span><span class="n">part</span><span class="o">.</span><span class="n">get_data</span><span class="p">())</span>
@@ -327,7 +335,8 @@
  &#39;Status&#39;: [&#39;InProgress&#39;, &#39;InProgress&#39;, &#39;InProgress&#39;],
  &#39;MyVariable&#39;: [&#39;MyData&#39;, &#39;MyData&#39;, &#39;MyData&#39;]}
 </code></pre></div>
-<p>Additionally, we often want to 'fill in' rows of a variable to match the length of a data frame. For example, we may not know in advance how many rows a participant will contribute to the data frame, but we know that we want the participant's demographic information to appear on all rows. To do this, we set <code>data_rows</code> to a negative number. For example, <code>data_rows=-2</code> means 'fill in two rows with this data entry and, when you download the data, fill in any blank rows after this with the same data':</p>
+<h2 id="filling-in-rows">Filling in rows</h2>
+<p>We often want to 'fill in' rows of a variable to match the length of a data frame. For example, we may not know in advance how many rows a participant will contribute to the data frame, but we know that we want the participant's demographic information to appear on all rows. To do this, we set <code>data_rows</code> to a negative number. For example, <code>data_rows=-2</code> means 'fill in two rows with this data entry and, when you download the data, fill in any blank rows after this with the same data':</p>
 <div class="highlight"><pre><span></span><code><span class="n">part</span><span class="o">.</span><span class="n">embedded</span> <span class="o">=</span> <span class="p">[</span>
     <span class="c1"># these data will appear on three rows of the data frame</span>
     <span class="n">Embedded</span><span class="p">(</span><span class="s1">&#39;MyVariable&#39;</span><span class="p">,</span> <span class="s1">&#39;MyData&#39;</span><span class="p">,</span> <span class="n">data_rows</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span>
@@ -348,6 +357,7 @@
  &#39;MyVariable&#39;: [&#39;MyData&#39;, &#39;MyData&#39;, &#39;MyData&#39;],
  &#39;MyFilledVariable&#39;: [&#39;MyFilledData&#39;, &#39;MyFilledData&#39;, &#39;MyFilledData&#39;]}
 </code></pre></div>
+<h2 id="multiple-data-values">Multiple data values</h2>
 <p>Finally, a data element can contribute a list of values to the data frame:</p>
 <div class="highlight"><pre><span></span><code><span class="n">part</span><span class="o">.</span><span class="n">embedded</span> <span class="o">=</span> <span class="p">[</span><span class="n">Embedded</span><span class="p">(</span><span class="s1">&#39;var&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])]</span>
 <span class="nb">dict</span><span class="p">(</span><span class="n">part</span><span class="o">.</span><span class="n">get_data</span><span class="p">())</span>
@@ -384,11 +394,17 @@
             <span class="c1"># SET THE `var` AND `data_rows` ATTRIBUTES FOR THE REST OF THE QUESTIONS</span>
             <span class="o">...</span>
 </code></pre></div>
-<p><strong>Note.</strong> When a participant submits a page, the questions' data are recorded in a <code>data</code> attribute. A question's data will be added to the data frame if and only if you set its <code>var</code> attribute. However, data will be stored in a question's <code>data</code> attribute whether or not the variable is set.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When a participant submits a page, the questions' data are recorded in a <code>data</code> attribute. A question's data will be added to the data frame if and only if you set its <code>var</code> attribute. However, data will be stored in a question's <code>data</code> attribute whether or not the variable is set, allowing you to access it later.</p>
+</div>
 <h2 id="downloading-data">Downloading data</h2>
 <p>Run your survey locally, fill in the demographics page, and continue to the end of the survey. Your data will be recorded in the database.</p>
 <p>To download your data, navigate to <a href="http://localhost:5000/download">http://localhost:5000/download</a> in your browser. Select 'Data frame', then click the download button. This will download a zip file containing your data in <code>.csv</code> format.</p>
-<p>Note that the data of questions for which you can select multiple choices are automatically one-hot encoded. For example, if <code>RaceWhite</code> and <code>RaceBlack</code> are both 1, and the rest of the race variables are 0, this means means the participant is part White and part Black.</p>
+<div class="admonition note">
+<p class="admonition-title">Automatic one-hot encoding</p>
+<p>The data of questions for which you can select multiple choices are automatically one-hot encoded. For example, if <code>RaceWhite</code> and <code>RaceBlack</code> are both 1, and the rest of the race variables are 0, this means means the participant is part White and part Black.</p>
+</div>
 <h2 id="summary">Summary</h2>
 <p>In this part of the tutorial, you learned how to store and download data.</p>
 <p>In the next part of the tutorial, you'll implement validation for participant responses.</p>

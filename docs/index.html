@@ -67,6 +67,10 @@
                     </li>
                 </ul>
                 <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="manifesto/">Why hemlock?</a>
+                    </li>
+                </ul>
+                <ul>
                     <li class="toctree-l1"><a class="reference internal" href="contact/">Contact</a>
                     </li>
                 </ul>
@@ -89,6 +93,8 @@
                     <li class="toctree-l1"><a class="reference internal" href="tutorial/validate/">Validate</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="tutorial/submit/">Submit</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="tutorial/extensions/">Extensions</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="tutorial/compile/">Compile</a>
                     </li>
@@ -257,17 +263,27 @@
 <p>If the installation and quickstart instructions don't make sense to you, check out the <a href="tutorial/intro/">tutorial</a>.</p>
 <h2 id="contact">Contact</h2>
 <p>If you're a marketing, political advertising, or other for-profit company, see my <a href="contact/#for-profit-and-political-research">contact page</a> for details on hiring me as a consultant and purchasing a commercial license.</p>
-<p>If you're an academic or non-profit researcher interested in using hemlock, <strong>for a limited time I am offering to make studies for you free of charge</strong>. See my <a href="contact/#non-profit-and-academic-research">contact page</a> for contact details and collaboration policy.</p>
+<p>If you're an academic or non-profit researcher interested in using hemlock, see my <a href="contact/#non-profit-and-academic-research">contact page</a> for contact details and collaboration policy.</p>
 <h2 id="why-hemlock">Why hemlock?</h2>
 <p>If you're an academic researcher interested in using hemlock, but aren't sure if it's worth your time to learn it, <a href="manifesto/">read this</a>.</p>
 <h2 id="installation">Installation</h2>
 <div class="highlight"><pre><span></span><code>$ pip install hemlock-survey
 </code></pre></div>
 <h2 id="quickstart">Quickstart</h2>
-<p>First, create a file <code>app.py</code> in the root directory of your project:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">survey</span>
+<p>Create a file <code>app.py</code> in the root directory of your project:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">eventlet</span>
+<span class="n">eventlet</span><span class="o">.</span><span class="n">monkey_patch</span><span class="p">()</span>
 
-<span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">create_app</span>
+<span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Branch</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">create_app</span><span class="p">,</span> <span class="n">route</span>
+
+<span class="nd">@route</span><span class="p">(</span><span class="s1">&#39;/survey&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span>
+        <span class="n">Page</span><span class="p">(</span>
+            <span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Hello, World!&#39;</span><span class="p">),</span>
+            <span class="n">terminal</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">create_app</span><span class="p">()</span>
 
@@ -275,23 +291,16 @@
     <span class="kn">from</span> <span class="nn">hemlock.app</span> <span class="kn">import</span> <span class="n">socketio</span>
     <span class="n">socketio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
-<p>Create another file <code>survey.py</code> in the same directory:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Branch</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">route</span>
-
-<span class="nd">@route</span><span class="p">(</span><span class="s1">&#39;/survey&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
-    <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span><span class="n">Page</span><span class="p">(</span><span class="n">Label</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;Hello, World!&lt;/p&gt;&#39;</span><span class="p">),</span> <span class="n">terminal</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-</code></pre></div>
 <p>Run your app:</p>
 <div class="highlight"><pre><span></span><code>$ python3 app.py
 </code></pre></div>
 <p>And navigate to <a href="http://localhost:5000/">http://localhost:5000/</a> in your browser.</p>
 <h2 id="citation">Citation</h2>
-<div class="highlight"><pre><span></span><code>@software{bowen2020hemlock,
+<div class="highlight"><pre><span></span><code>@software{bowen2021hemlock,
   author = {Dillon Bowen},
   title = {Hemlock},
   url = {https://dsbowen.github.io/hemlock/},
-  date = {2020-07-10},
+  date = {2021-02-13},
 }
 </code></pre></div>
 <h2 id="license">License</h2>
@@ -304,7 +313,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="contact/" class="btn btn-neutral float-right" title="Contact">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="manifesto/" class="btn btn-neutral float-right" title="Why hemlock?">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
     </div>
@@ -334,7 +343,7 @@
       
       
       
-        <span style="margin-left: 15px"><a href="contact/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="manifesto/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
@@ -353,5 +362,5 @@
 
 <!--
 MkDocs version : 1.1.2
-Build Date UTC : 2021-02-10 16:22:56.211285+00:00
+Build Date UTC : 2021-02-13 19:36:29.869459+00:00
 -->

@@ -1,44 +1,7 @@
-import setuptools
+# NOTE flask-socketio 5.0.0 and later is giving a strange error message
+# check back for resolution https://github.com/miguelgrinberg/Flask-SocketIO/issues/1432
 
-with open("README.md", "r") as fh:
-    long_description = fh.read()
+from setuptools import setup
 
-setuptools.setup(
-    name="hemlock-survey",
-    version="0.0.45",
-    author="Dillon Bowen",
-    author_email="dsbowen@wharton.upenn.edu",
-    description="A package for creating and deploying surveys",
-    long_description=long_description,
-    long_description_content_type="text/markdown",
-    url="https://dsbowen.github.io/hemlock",
-    packages=setuptools.find_packages(),
-    include_package_data=True,
-    install_requires=[
-        'bs4>=0.0.1',
-        'convert-list>=0.0.1',
-        'cssutils>=1.0.2',
-        'eventlet>=0.25.1',
-        'flask>=1.1.1',
-        'flask-download-btn>=0.0.22',
-        'flask-login>=0.4.1',
-        'flask-socketio==4.3.2', # 5.0.0 and later is giving a strange error message; check back for resolution https://github.com/miguelgrinberg/Flask-SocketIO/issues/1432
-        'flask-sqlalchemy>=2.4.1',
-        'flask-talisman>=0.7.0',
-        'flask-worker>=0.0.14',
-        'pandas>=1.0.1',
-        'python-docx>=0.8.10',
-        'redis>=3.3.11',
-        'rq>=1.2.0',
-        'selenium>=3.141.0',
-        'selenium-tools>=0.0.1',
-        'sqlalchemy>=1.3.12',
-        'sqlalchemy-modelid>=0.0.3',
-        'sqlalchemy-mutable>=0.0.11',
-    ],
-    classifiers=[
-        "Programming Language :: Python :: 3",
-        "Operating System :: OS Independent",
-    ],
-    python_requires='>=3.6',
-)
+if __name__ == "__main__":
+    setup()

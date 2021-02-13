@@ -3,6 +3,7 @@
 from ..app import db
 from ..models import Question
 
+from selenium_tools import get_datetime
 from sqlalchemy_mutable import HTMLAttrsType
 
 
@@ -74,3 +75,26 @@ class InputBase():
         """
         selector = 'label[for={}]'.format(self.key)
         return driver.find_element_by_css_selector(selector)
+
+    def _record_data(self):
+        html_datetime_types = (
+            'date',
+            'datetime-local',
+            'month',
+            'time',
+            'week',
+        )
+        if self.type in html_datetime_types:
+            self.data = get_datetime(self.type, self.response) or None
+        elif self.type == 'number' and self.response:
+            if (
+                hasattr(self, 'step') 
+                and (self.step is None or isinstance(self.step, int))
+            ):
+                type_ = int
+            else:
+                type_ = float
+            self.data = type_(self.response)
+        else:
+            super()._record_data()
+        return self

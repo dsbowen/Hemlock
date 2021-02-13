@@ -53,6 +53,10 @@
                     </li>
                 </ul>
                 <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../manifesto/">Why hemlock?</a>
+                    </li>
+                </ul>
+                <ul>
                     <li class="toctree-l1"><a class="reference internal" href="../contact/">Contact</a>
                     </li>
                 </ul>
@@ -83,6 +87,8 @@
                     <li class="toctree-l1"><a class="reference internal" href="../tutorial/validate/">Validate</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../tutorial/submit/">Submit</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../tutorial/extensions/">Extensions</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../tutorial/compile/">Compile</a>
                     </li>
@@ -253,17 +259,9 @@
 <div class="highlight"><pre><span></span><code>$ hlk init &lt;my-project-name&gt; &lt;my-github-username&gt; &lt;my-github-token&gt;
 $ <span class="nb">cd</span> &lt;my-project-name&gt;
 </code></pre></div>
-<div class="admonition note">
-<p class="admonition-title">Additional steps for Windows git bash</p>
-<div class="highlight"><pre><span></span><code>hlk setup-venv &lt;my-project-name&gt;
+<details class="note"><summary>Additional step for Windows git bash</summary><div class="highlight"><pre><span></span><code>hlk setup-venv &lt;my-project-name&gt;
 </code></pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Additional steps for WSL</p>
-<p>Open <code>env.yaml</code> and add the following line:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">WSL_DISTRIBUTION</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Ubuntu-20.04</span> <span class="c1"># or other WSL distribution</span>
-</code></pre></div>
-</div>
+</details>
 <h2 id="edit">Edit</h2>
 <p>Iterate quickly on the blackboard:</p>
 <div class="highlight"><pre><span></span><code>$ jupyter notebook <span class="c1"># open blackboard.ipynb, Kernel &gt;&gt; Change kernel &gt;&gt; &lt;my-project-name&gt;</span>
@@ -278,13 +276,11 @@ $ <span class="nb">cd</span> &lt;my-project-name&gt;
 <div class="highlight"><pre><span></span><code>$ hlk debug
 </code></pre></div>
 <h2 id="deploy">Deploy</h2>
-<p>Deploy to and debug in staging:</p>
-<div class="highlight"><pre><span></span><code>$ hlk deploy <span class="c1"># make sure to set the PASSWORD and URL_ROOT environment variables</span>
-$ heroku git:remote -a &lt;my-app-name&gt;
-$ hlk debug --staging
+<p>Deploy and test using free resources:</p>
+<div class="highlight"><pre><span></span><code>$ hlk deploy <span class="c1"># make sure to set the PASSWORD environment variable</span>
 </code></pre></div>
-<p>Destroy the staging app:</p>
-<div class="highlight"><pre><span></span><code>$ heroku apps:destroy
+<p>Destroy the test app:</p>
+<div class="highlight"><pre><span></span><code>$ heroku apps:destroy -a &lt;my-app-name&gt;
 </code></pre></div>
 <p>Change <code>app.json</code> from:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -302,8 +298,8 @@ $ hlk debug --staging
     <span class="p">},</span>
     <span class="err">...</span>
 </code></pre></div>
-<p>Deploy in production:</p>
-<div class="highlight"><pre><span></span><code>hlk deploy <span class="c1"># set PASSWORD, URL_ROOT, and DEBUG_FUNCTIONS</span>
+<p>Deploy 'for real':</p>
+<div class="highlight"><pre><span></span><code>hlk deploy <span class="c1"># set PASSWORD</span>
 </code></pre></div>
               
             </div>

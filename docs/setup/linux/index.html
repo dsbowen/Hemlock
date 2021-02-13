@@ -53,6 +53,10 @@
                     </li>
                 </ul>
                 <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../manifesto/">Why hemlock?</a>
+                    </li>
+                </ul>
+                <ul>
                     <li class="toctree-l1"><a class="reference internal" href="../../contact/">Contact</a>
                     </li>
                 </ul>
@@ -75,6 +79,8 @@
                     <li class="toctree-l1"><a class="reference internal" href="../../tutorial/validate/">Validate</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../tutorial/submit/">Submit</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tutorial/extensions/">Extensions</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../tutorial/compile/">Compile</a>
                     </li>
@@ -108,10 +114,6 @@
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">Linux</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#python3-and-pip3">Python3 and pip3</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#pip-versus-pip3">pip versus pip3</a>
-    </li>
-        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#hemlock-cli">Hemlock-CLI</a>
     </li>
@@ -124,10 +126,6 @@
     <li class="toctree-l2"><a class="reference internal" href="#google-chrome">Google chrome</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#chromedriver">Chromedriver</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#chrome-and-chromedriver-compatibility">Chrome and chromedriver compatibility</a>
-    </li>
-        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#heroku">Heroku</a>
     </li>
@@ -270,6 +268,10 @@
               
                 <h1 id="linux-setup">Linux setup</h1>
 <p>These instructions were written for Ubuntu 20.04.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>About 50% of the problems you encounter during setup can be fixed by closing and re-opening your terminal window. If you have any problems, this is the first thing to try.</p>
+</div>
 <h2 id="python3-and-pip3">Python3 and pip3</h2>
 <p>Python is hemlock's primary language. Pip allows you to install python packages, including hemlock and its command line interface, hemlock-CLI. Many linux distributions come with python3.</p>
 <p>Verify your python3 installation:</p>
@@ -284,14 +286,18 @@ Python <span class="m">3</span>.x.x
 <div class="highlight"><pre><span></span><code>$ pip3 --version
 pip xx.x.x ...
 </code></pre></div>
-<h4 id="pip-versus-pip3">pip versus pip3</h4>
-<p>You'll install several python packages using pip. Conventionally, the command to install these is:</p>
+<div class="admonition tip">
+<p class="admonition-title">pip versus pip3</p>
+<p>You'll install several python packages using <code>pip</code>. Conventionally, the command to install these is written as:</p>
 <div class="highlight"><pre><span></span><code>$ pip install &lt;my-requested-package&gt;
 </code></pre></div>
-<p>You may need to replace this with:</p>
+<p>You may need to repace this with:</p>
 <div class="highlight"><pre><span></span><code>$ pip3 install &lt;my-requested-package&gt;
 </code></pre></div>
-<p>Many hemlock-CLI commands assume you can pip install with <code>pip3</code>.</p>
+<p>Or even:</p>
+<div class="highlight"><pre><span></span><code>$ python3 -m pip install &lt;my-requested-package&gt;
+</code></pre></div>
+</div>
 <h2 id="hemlock-cli">Hemlock-CLI</h2>
 <p>Hemlock's command line interface, hemlock-CLI, defines many useful commands for initializing, editing, and deploying hemlock projects. Download with:</p>
 <div class="highlight"><pre><span></span><code>$ pip install -U hemlock-cli
@@ -351,8 +357,10 @@ jupyter-notebook : x.x.x
 <div class="highlight"><pre><span></span><code>$ chromedriver --version
 ChromeDriver xx.xxxx
 </code></pre></div>
-<h4 id="chrome-and-chromedriver-compatibility">Chrome and chromedriver compatibility</h4>
-<p>Google Chrome will automatically update. Chromedriver will not. If you encounter a compatibility error in the future, simply repeat the above instructions.</p>
+<div class="admonition warning">
+<p class="admonition-title">Chrome and chromedriver compatibility</p>
+<p>Google chrome will automatically update. Chromedriver will not. If you encounter a compatibility error in the future, simply repeat the above instructions.</p>
+</div>
 <p>If you came here from the Debug section of the tutorial, you're now ready to return to it and run the debugger. <a href="../../tutorial/debug/">Click here to go back to the Debug section of the tutorial</a>.</p>
 <h2 id="heroku">Heroku</h2>
 <p>Heroku is an easy and inexpensive service for deploying web applications (i.e. putting them online), including hemlock applications. <a href="https://signup.heroku.com/" target="_blank">Sign up for heroku here</a>.</p>
@@ -363,7 +371,8 @@ ChromeDriver xx.xxxx
 <div class="highlight"><pre><span></span><code>$ heroku --version
 heroku/x.xx.x linux-x64 node-vxx.xx.x
 </code></pre></div>
-<p><strong>Note.</strong> See <a href="https://github.com/heroku/legacy-cli/issues/1969" target="_blank">this github issue</a> if you experience a 'EACCES' error. <em>Do not</em> simply use <code>sudo</code>; this only masks issues you'll encounter later.</p>
+<details class="error"><summary>EACCES error</summary><p>See <a href="https://github.com/heroku/legacy-cli/issues/1969" target="_blank">this github issue</a> if you experience a 'EACCES' error. <em>Do not</em> simply use <code>sudo</code>; this only masks issues you'll encounter later.</p>
+</details>
 <p><a href="../../tutorial/deploy/">Click here to return to the Deploy section of the tutorial</a>.</p>
               
             </div>

@@ -52,7 +52,7 @@ class Variable(MutableList):
         if isinstance(entry, list):
             self += [convert(item) for item in entry]
         else:
-            self += [convert(entry)]
+            self += abs(rows) * [convert(entry)]
         self.fill_rows = rows < 0
         return self
     

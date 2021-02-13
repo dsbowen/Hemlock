@@ -9,7 +9,7 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Deployment - Hemlock</title>
+  <title>Extensions - Hemlock</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../../css/theme.css" />
@@ -19,8 +19,8 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Deployment";
-    var mkdocs_page_input_path = "tutorial/deploy.md";
+    var mkdocs_page_name = "Extensions";
+    var mkdocs_page_input_path = "tutorial/extensions.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -80,7 +80,17 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../submit/">Submit</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../extensions/">Extensions</a>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Extensions</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#a-demographics-page-in-one-line-of-code">A demographics page in one line of code</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#demographics-in-our-survey">Demographics in our survey</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a>
+    </li>
+    </ul>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../compile/">Compile</a>
                     </li>
@@ -98,17 +108,7 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../debug/">Debugging</a>
                     </li>
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Deployment</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#setup">Setup</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#deploy-using-free-resources-for-testing">Deploy using free resources for testing</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#deploy-for-real">Deploy for real</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a>
-    </li>
-    </ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../deploy/">Deployment</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../extra/">Bells and whistles</a>
                     </li>
@@ -244,10 +244,10 @@
         
       
     
-    <li>Deployment</li>
+    <li>Extensions</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/dsbowen/hemlock/edit/master/docs_md/tutorial/deploy.md"
+        <a href="https://github.com/dsbowen/hemlock/edit/master/docs_md/tutorial/extensions.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -258,79 +258,68 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="deployment">Deployment</h1>
-<p>In the previous part of the tutorial, you learned how to debug your app with hemlock's custom debugging tool.</p>
-<p>In this part of the tutorial, you'll learn how to deploy your application (i.e., put it into production or put it on the web).</p>
-<h2 id="setup">Setup</h2>
-<p>The easiest way to deploy web apps is with <a href="https://heroku.com/" target="_blank">heroku</a.>. Hemlock-CLI builds on the <a href="https://devcenter.heroku.com/articles/heroku-cli/" target="_blank">heroku-CLI</a> for deployment. Find the setup page for your OS for specific instructions:</p>
-<ul>
-<li><a href="../../setup/win/">Windows</a></li>
-<li><a href="../../setup/wsl/">Windows Subsystem for Linux</a></li>
-<li><a href="../../setup/mac/">Mac</a></li>
-<li><a href="../../setup/linux/">Linux</a></li>
-</ul>
-<h2 id="deploy-using-free-resources-for-testing">Deploy using free resources for testing</h2>
-<p>Before deploying your app 'for real', I recommend deploying it using free resources and going through the survey once or twice to make sure everything's working.</p>
-<details class="note"><summary>If it works on my computer, why wouldn't it work online?</summary><p>You'll deploy your app with cloud computing resources (a server, database, etc.). The goal is for the cloud computing environment to match the environment on your computer (your local environment).</p>
-<p>Unfortunately, the cloud computing environment occasionally differs from your local environment. For example, you might have a python package installed on your computer which isn't in your <code>requirements.txt</code> file, so the cloud computing environment won't know to download it. This is why I recommend testing your app with free or cheap cloud computing resources before scaling it up.</p>
+                <h1 id="extensions">Extensions</h1>
+<p>In the previous part of the tutorial, you learned how to add submit functions to pages and questions.</p>
+<p>In this part of the tutorial, you'll learn how to install and use hemlock extensions and other python packages.</p>
+<p>Click here to see what your <a href="https://github.com/dsbowen/hemlock-tutorial/blob/v0.4.5/blackboard.ipynb" target="_blank"><code>blackboard.ipynb</code></a> and <a href="https://github.com/dsbowen/hemlock-tutorial/blob/v0.4.5/survey.py" target="_blank"><code>survey.py</code></a> files should look like at the end of this part of the tutorial.</p>
+<details class="note"><summary>What are extensions and why should I use them?</summary><p>Building the demographics page took a while, didn't it? Now imagine making a new demographics page every time you make a survey for the rest of your life. Not fun.</p>
+<p>Instead, what if you could install a package to create a demographics page in one line of code? That's what hemlock extensions are for. Extensions package up commonly used questions, psychological scales, and other tools so you can download and use them simply and easily.</p>
 </details>
-<p>Deploying your application is as easy as:</p>
-<div class="highlight"><pre><span></span><code>$ hlk deploy
+<h2 id="installation">Installation</h2>
+<p>Install the <code>hemlock-demographics</code> extension like so:</p>
+<div class="highlight"><pre><span></span><code>$ hlk install hemlock-demographics
 </code></pre></div>
-<p>This opens a web page with the deployment information. Give your application an awesome name and click 'Deploy app' at the bottom of the page.</p>
-<p>Heroku needs about 2-4 minutes to set up your cloud computing environment. Use this time to reflect on the meaning of life. When it's done, head to https://my-awesome-app-name.herokuapp.com/ (replace 'my-awesome-app-name' with the name you gave to your application) to see your study online.</p>
-<p>Give it a few test runs and, when you're satisfied it's working, destroy it:</p>
-<div class="highlight"><pre><span></span><code>$ heroku apps:destroy -a &lt;your-awesome-app-name&gt;
+<p>In general, you'll install hemlock extensions and other python packages with:</p>
+<div class="highlight"><pre><span></span><code>$ hlk install &lt;my-requested-package&gt;
 </code></pre></div>
-<p>You'll be prompted to confirm by re-typing the app name.</p>
-<h2 id="deploy-for-real">Deploy for real</h2>
-<p>We're finally ready to deploy our application <em>for real</em>. This is similar to what we just did, with a few small changes.</p>
-<p>First, open <code>app.json</code>:</p>
-<div class="highlight"><pre><span></span><code>$ code app.json
-</code></pre></div>
-<p>We're going to modify this to give us more powerful compute resources. At the top of the file, we'll change our addons and formation from:</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-    <span class="nt">&quot;addons&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;heroku-postgresql:hobby-dev&quot;</span><span class="p">],</span>
-    <span class="nt">&quot;formation&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="nt">&quot;web&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;quantity&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="s2">&quot;free&quot;</span><span class="p">}</span>
-    <span class="p">},</span>
-    <span class="err">...</span>
-</code></pre></div>
-<p>to:</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-    <span class="nt">&quot;addons&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;heroku-postgresql:standard-0&quot;</span><span class="p">],</span>
-    <span class="nt">&quot;formation&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="nt">&quot;web&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;quantity&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="s2">&quot;standard-1x&quot;</span><span class="p">}</span>
-    <span class="p">},</span>
-    <span class="err">...</span>
-</code></pre></div>
-<p>Save <code>app.json</code>.</p>
-<details class="note"><summary>What just happened?</summary><p><code>app.json</code> specifies the cloud computing resources we want to rent from heroku. The original file (the one you used to deploy your app the first time) used a free database (<code>"heroku-postgresql:hobby-dev"</code>) and a free web server (<code>"size": "free"</code>). The new file uses a more powerful database (<code>"heroku-postgresql:standard-0"</code>) and 10 more powerful web servers (<code>"quantity": 10, "size": "standard-1x"</code>).</p>
-<p><a href="https://devcenter.heroku.com/articles/heroku-postgres-plans" target="_blank">See here</a> for more on heroku database (postgres) plans.</p>
-<p><a href="https://devcenter.heroku.com/articles/dyno-types" target="_blank">See here</a> for more on heroku servers (dynos).</p>
-</details>
-<p>Let's deploy our app and set our configuration variables like we did before:</p>
-<div class="highlight"><pre><span></span><code>$ hlk deploy
-</code></pre></div>
+<details class="tip"><summary>Why use <code>hlk install</code> instead of <code>pip install</code>?</summary><p>We've already installed python packages with <code>pip install</code>. Why use <code>hlk install</code> instead?</p>
 <ol>
-<li>Enter a name for your application.</li>
-<li>Set your <code>PASSWORD</code>.</li>
+<li>It's good practice to use <a href="https://docs.python.org/3/tutorial/venv.html" target="_blank">virtual environments</a> for all your coding projects. <code>hlk install</code> automatically installs your new package in the correct virtual environment for your hemlock project. </li>
+<li>Deployment services like heroku (my recommended method) often need a <code>requirements.txt</code> file to know what packages to install to run your application. <code>hlk install</code> automatically updates your requirements files.</li>
 </ol>
-<p>Like before, click 'Deploy app' at the bottom of the page.</p>
-<p>Congratulations! Your app is now online. Send it to your friends and family to show off your wizardly programming skills.</p>
-<p>Don't forget to download your data and destroy your application when you're finished:</p>
-<div class="highlight"><pre><span></span><code>$ heroku apps:destroy -a &lt;my-app-name&gt;
+</details>
+<h2 id="a-demographics-page-in-one-line-of-code">A demographics page in one line of code</h2>
+<p>Restart your jupyter notebook. In general, you need to restart jupyter notebook after installing new packages for the notebook to recognize them.</p>
+<p>Run the first cell to push the application context, then run:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock_demographics</span> <span class="kn">import</span> <span class="n">basic_demographics</span>
+
+<span class="n">basic_demographics</span><span class="p">(</span><span class="n">page</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
 </code></pre></div>
-<details class="note"><summary>How much does this cost?</summary><p>How much will it cost me to play with my app for 15 min? Answer: $0.10. </p>
-<p>Calculation: This formation gives us a standard-0 database ($50/mo) and 10 standard-1x 'dynos' (like servers, $25/mo/dyno * 10 dynos = $250/mo). That's $300/mo total. Heroku prorates by the second, meaning that if you mess around with the app for 15 minutes, you'll be charged $300/mo * 1 mo/30 days * 1 day/24 hours * 1 hour/60 min * 15 min = $0.10. </p>
-<p>How much will it cost me to run a study? Answer: $5. Do the same math, but assume your study is online for half a day. </p>
-<p>The exact amount of compute power you need depends on the application. My recommendation for a standard-0 database and 10 standard-1x web dynos is a rough recommendation that will work well for most academic studies.</p>
-</details>
-<details class="note"><summary>Altnernative deployment options</summary><p>Hemlock uses a <a href="https://flask.palletsprojects.com/en/1.1.x/" target="_blank">Flask</a> backend, which means you can deploy it as you would any other Flask app. The <a href="https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world" target="_blank">Flask Mega-Tutorial</a> is, imho, the best resource for learning Flask, including deployment.</p>
-</details>
+<p>Voila! A demographics page in one import and one line of code.</p>
+<p>The demographics package comes with several default groups of demographics questions. <code>basic_demographics</code> is one group. You can include the entire World Values Survey demographics questionnaire just as easily:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock_demographics</span> <span class="kn">import</span> <span class="n">comprehensive_demographics</span>
+
+<span class="n">comprehensive_demographics</span><span class="p">(</span><span class="n">page</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
+</code></pre></div>
+<p>You can also customize your demographics page:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock_demographics</span> <span class="kn">import</span> <span class="n">demographics</span>
+
+<span class="n">demographics</span><span class="p">(</span>
+    <span class="s1">&#39;gender&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;race&#39;</span><span class="p">,</span> <span class="s1">&#39;children&#39;</span><span class="p">,</span> <span class="s1">&#39;primary_wage_earner&#39;</span><span class="p">,</span> <span class="s1">&#39;income_group&#39;</span><span class="p">,</span> 
+    <span class="n">page</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">require</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
+</code></pre></div>
+<p>This time we also passed <code>require=True</code>, which requires participants to respond to every demographics question.</p>
+<p>You can read more about the demographics extension <a href="https://dsbowen.github.io/hemlock-demographics/" target="_blank">here</a>.</p>
+<h2 id="demographics-in-our-survey">Demographics in our survey</h2>
+<p>Here's your entire survey file:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Branch</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">route</span>
+<span class="kn">from</span> <span class="nn">hemlock_demographics</span> <span class="kn">import</span> <span class="n">basic_demographics</span>
+
+<span class="nd">@route</span><span class="p">(</span><span class="s1">&#39;/survey&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span>
+        <span class="n">basic_demographics</span><span class="p">(</span><span class="n">page</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">require</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+        <span class="n">Page</span><span class="p">(</span>
+            <span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Thank you for completing this survey!&#39;</span><span class="p">),</span> 
+            <span class="n">terminal</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+</code></pre></div>
+<p>Run your app again to see what it looks like.</p>
 <h2 id="summary">Summary</h2>
-<p>Congratulations! You've made it through the hemlock tutorial. You can now initialize, modify, and deploy hemlock projects.</p>
-<p>On the next page, I talk about some extra bells and whistles you'll likely find helpful.</p>
+<p>In this part of the tutorial, you created a demographics page using a hemlock extension.</p>
+<p>In the next part of the tutorial, you'll implement a confirmation page using compile functions.</p>
               
             </div>
           </div>
@@ -338,10 +327,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../extra/" class="btn btn-neutral float-right" title="Bells and whistles">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../compile/" class="btn btn-neutral float-right" title="Compile">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../debug/" class="btn btn-neutral" title="Debugging"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../submit/" class="btn btn-neutral" title="Submit"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -369,10 +358,10 @@
           <a href="https://github.com/dsbowen/hemlock/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../debug/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../submit/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../extra/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../compile/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

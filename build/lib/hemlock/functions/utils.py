@@ -114,7 +114,12 @@ def random_num(inpt, min=-1000, max=1000, step=.001, p_int=.5):
     stop = inpt.get_attribute('max')
     stop = max if stop in (None, '') else float(stop)
     step_ = inpt.get_attribute('step')
-    step_ = step if step_ in (None, '') or step_ == 'any' else float(step_)
+    if step_ in (None, ''):
+        step_ = 1
+    elif step_ == 'any':
+        step_ = step
+    else:
+        step_ = float(step_)
     x = start + random() * (stop - start)
     x = round(x / step_) * step_
     inpt.send_keys(str(int(x) if random() < p_int else x))

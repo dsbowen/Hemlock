@@ -220,6 +220,31 @@ def send_datetime(driver, question, datetime_=None):
         inpt.clear()
         random_datetime(inpt)
 
+@Debug.register
+def random_input(driver, question):
+    """
+    Default debug function for input questions. This function sends a random 
+    string or number if the input takes text, or a random `datetime.datetime` 
+    object if the input takes dates or times.
+
+    Parameters
+    ----------
+    driver : selenium.webdriver.chrome.webdriver.WebDriver
+
+    question : hemlock.Input
+    """
+    html_datetime_types = (
+        'date',
+        'datetime-local',
+        'month',
+        'time',
+        'week',
+    )
+    if question.type in html_datetime_types:
+        send_datetime(driver, question)
+    else:
+        send_keys(driver, question)
+
 # Range debugger
 
 @Debug.register

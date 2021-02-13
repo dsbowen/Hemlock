@@ -53,6 +53,10 @@
                     </li>
                 </ul>
                 <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../manifesto/">Why hemlock?</a>
+                    </li>
+                </ul>
+                <ul>
                     <li class="toctree-l1"><a class="reference internal" href="../../contact/">Contact</a>
                     </li>
                 </ul>
@@ -85,6 +89,8 @@
                     <li class="toctree-l1"><a class="reference internal" href="../validate/">Validate</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../submit/">Submit</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../extensions/">Extensions</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../compile/">Compile</a>
                     </li>
@@ -256,6 +262,8 @@
 <p>In the previous part of the tutorial, you learned how to initialize a hemlock application and run it locally.</p>
 <p>By the end of this part of the tutorial, you'll be able to add a variety of question polymorphs to your survey pages.</p>
 <p>Click here to see what your <a href="https://github.com/dsbowen/hemlock-tutorial/blob/v0.1/blackboard.ipynb" target="_blank"><code>blackboard.ipynb</code></a> and <a href="https://github.com/dsbowen/hemlock-tutorial/blob/v0.1/survey.py" target="_blank"><code>survey.py</code></a> files should look like at the end of this part of the tutorial.</p>
+<details class="note"><summary>What are 'question polymorphs'?</summary><p>Question polymorphs are basically different types of questions. They're called 'polymorphs' because they're polymorphic with the <code>Question</code> table in your database. There's no reason you should know this, other than to sound sophisticated at dinner parties. You'll be a hit. Trust me.</p>
+</details>
 <h2 id="creating-a-demographics-page">Creating a demographics page</h2>
 <p>We'll use jupyter notebook as a blackboard to iterate on our demographics page design. After pushing the application context, we'll create a demographics page based on the World Values Survey:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Binary</span><span class="p">,</span> <span class="n">Check</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">RangeInput</span><span class="p">,</span> <span class="n">Select</span>
@@ -304,14 +312,14 @@
 <p>As usual, use <code>p.preview()</code> to preview the page and <code>[os.remove(f) for f in app.tmpfiles if os.path.exists(f)]</code> when you're done.</p>
 <h2 id="code-explanation">Code explanation</h2>
 <p>Here we add several 'question polymorphs' (i.e., types of questions) to our page. </p>
-<p>The first is an input. The first argument is the question label (<code>'Enter your month and year of birth.'</code>). We also specify the type of input by passing <code>type='month'</code> to the <code>Input</code> constructor. Without the <code>type</code> argument, participants can enter any text they want into the input. You can checkout other HTML input types <a href="https://www.w3schools.com/html/html_form_input_types.asp">here</a>.</p>
+<p>The first is an input. The first argument is the question label (<code>'Enter your month and year of birth.'</code>). We also specify the type of input by passing <code>type='month'</code> to the <code>Input</code> constructor. Without the <code>type</code> argument, participants can enter any text they want into the input. You can check out other HTML input types <a href="https://www.w3schools.com/html/html_form_input_types.asp" target="_blank">here</a>.</p>
 <p>The next question is a select, or dropdown, question. Again, the first argument is the question label. The second argument is a list of choices the participant can select.</p>
 <p>The third question is a check question. Like a select question, this allows participants to select from a list of choices. The first argument is the question label, and the second argument is a list of choices. Notice that some of the choices are strings (<code>'White'</code>, <code>'Black'</code>) while some are tuples (<code>('South Asian (Indian, Pakistani, etc.)', 'SouthAsian')</code>). Passing the choice as a tuple tells hemlock to 'recode' the value when you download the data. Participants taking the survey see 'South Asian (Indian, Pakistani, etc.)' as one of the choices, but when you download the data, the corresponding column is named <code>SouthAsian</code>.</p>
 <p>Also notice that we pass <code>multiple=True</code> to the <code>Check</code> constructor. This allows participants to select multiple choices. By default, <code>multiple</code> is <code>False</code>, meaning participants can only select one choice. We can also pass <code>multiple=True</code> to <code>Select</code> questions to allow participants to select multiple choices from a dropdown menu.</p>
-<p>The fourth question is another input, this time requiring a <code>number</code>. We also specify <code>min=0</code> because you can't have negative children.</p>
+<p>The fourth question is another input, this time requiring a <code>number</code>. We specify <code>min=0</code> because you can't have negative children.</p>
 <p>The fifth question is a binary, which is like a check but for exactly two choices. By default, the choices are <code>'Yes'</code> and <code>'No'</code>, and their values are recoded as <code>1</code> and <code>0</code> when you download the data.</p>
-<p>The last question is a <code>RangeInput</code>, which is what you get when a range slider and an input give each other a special hug. By default, range inputs go from 0 to 100, but we change it from 0 to 10 by specifying the min and max values.</p>
-<p>These are just some of the many question types hemlock offers. Check out more under the 'Question Polymorphs' header on in the navigation bar for more.</p>
+<p>The last question is a <code>RangeInput</code>, which is what you get when a range slider and an input give each other a special hug. By default, range inputs go from 0 to 100, but we change it from 0 to 10 by specifying the <code>min</code> and <code>max</code> values.</p>
+<p>These are just some of the many question types hemlock offers. Check out the 'Question Polymorphs' header in the navigation bar for more.</p>
 <h2 id="adding-the-page-to-the-survey">Adding the page to the survey</h2>
 <p>Once we're satisfied with the preview, we incorporate the page into our survey. Our <code>survey.py</code> file should be:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Branch</span><span class="p">,</span> <span class="n">Check</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Range</span><span class="p">,</span> <span class="n">Select</span><span class="p">,</span> <span class="n">route</span>

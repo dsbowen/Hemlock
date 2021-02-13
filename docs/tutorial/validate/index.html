@@ -53,6 +53,10 @@
                     </li>
                 </ul>
                 <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../manifesto/">Why hemlock?</a>
+                    </li>
+                </ul>
+                <ul>
                     <li class="toctree-l1"><a class="reference internal" href="../../contact/">Contact</a>
                     </li>
                 </ul>
@@ -74,23 +78,25 @@
                     </li>
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">Validate</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#why-validation">Why validation?</a>
+    <li class="toctree-l2"><a class="reference internal" href="#native-html-validation">Native HTML validation</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#basic-syntax">Basic syntax</a>
+    <li class="toctree-l2"><a class="reference internal" href="#native-hemlock-validation">Native hemlock validation</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#custom-validation">Custom validation</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#code-explanation">Code explanation</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#code-explanation">Code explanation</a>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#validation-in-our-app">Validation in our app</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#multiple-validate-functions">Multiple validate functions</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a>
     </li>
     </ul>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../submit/">Submit</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../extensions/">Extensions</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../compile/">Compile</a>
                     </li>
@@ -262,112 +268,163 @@
 <p>In the previous part of the tutorial, you learned how to store and download data.</p>
 <p>By the end of this part of the tutorial, you'll be able to validate participant responses.</p>
 <p>Click here to see what your <a href="https://github.com/dsbowen/hemlock-tutorial/blob/v0.3/blackboard.ipynb" target="_blank"><code>blackboard.ipynb</code></a> and <a href="https://github.com/dsbowen/hemlock-tutorial/blob/v0.3/survey.py" target="_blank"><code>survey.py</code></a> files should look like at the end of this part of the tutorial.</p>
-<h2 id="why-validation">Why validation?</h2>
-<p>I often run studies where I elicit numerical estimates. Early on, I noticed that a small but annoying faction of participants, rather than entering actual numbers (e.g. 50), answered the question in full sentences:</p>
+<details class="note"><summary>Why validation?</summary><p>I often run studies where I elicit numerical estimates. Early on, I noticed that a small but annoying faction of participants, rather than entering actual numbers (e.g., 50), answered the question in full sentences:</p>
 <blockquote>
 <p>I believe the answer is fifty.</p>
 </blockquote>
 <p>We often need to make sure participants are entering the right kind of answer, whether it's typing the same password twice, answering a comprehension check by clicking on the correct choice, or entering a number instead of a word.</p>
-<h2 id="basic-syntax">Basic syntax</h2>
-<p>Open your jupyter notebook and run the following:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Validate</span> <span class="k">as</span> <span class="n">V</span>
+</details>
+<h2 id="native-html-validation">Native HTML validation</h2>
+<p>You've already seen native HTML validation when you specified the type of input participants could enter (e.g., <code>type='number'</code>) or restricted the numerical range of their responses (e.g., <code>min=0</code>, <code>max=10</code>).</p>
+<p>You'll often want to require participants to respond to certain questions. For <code>Input</code> questions, you can do this using native HTML validation. Open jupyter notebook and run the following:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Input</span>
 
-<span class="n">inpt</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">validate</span><span class="o">=</span><span class="n">V</span><span class="o">.</span><span class="n">require</span><span class="p">())</span>
-<span class="n">inpt</span><span class="o">.</span><span class="n">validate</span>
+<span class="n">Page</span><span class="p">(</span>
+    <span class="n">Input</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
+</code></pre></div>
+<p>This opens a page with a blank input. Click '&gt;&gt;' without filling it in. Notice that you get an error message. Fill in the input, click '&gt;&gt;' again, and notice that you don't get the error message this time.</p>
+<details class="note"><summary>Learn more about native HTML attributes</summary><p>You can set the HTML attributes of most question polymorphs by passing arguments to the constructor or by setting their attributes. Enter the following in a cell and run it.</p>
+<div class="highlight"><pre><span></span><code><span class="n">Input</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">input_attrs</span>
 </code></pre></div>
 <p>Out:</p>
-<div class="highlight"><pre><span></span><code>[&lt;Validate 1&gt;]
+<div class="highlight"><pre><span></span><code>{&#39;class&#39;: [&#39;form-control&#39;], &#39;type&#39;: &#39;text&#39;, &#39;required&#39;: True}
 </code></pre></div>
-<p>You can add validate functions to a page or question by setting its <code>validate</code> attribute or passing a <code>validate</code> argument to its constructor. Validate functions run when a participant attempts to submit a page. If the participant's response is valid, the function returns <code>None</code>, allowing the participant to continue the survey. If the participant's response is invalid, the function returns an error message.</p>
-<p>As its name indicates, the validate function requires the participant to respond to the input question. By default, the input question has no response. It also has no error message. We can see this as follows:</p>
-<div class="highlight"><pre><span></span><code><span class="p">(</span>
-    <span class="s1">&#39;The input has no response or error message&#39;</span><span class="p">,</span> 
-    <span class="ow">not</span> <span class="n">inpt</span><span class="o">.</span><span class="n">response</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">inpt</span><span class="o">.</span><span class="n">error</span>
+<p>This is a dictionary of attributes for the HTML input tag. Check out <a href="https://www.w3schools.com/html/html_form_attributes.asp" target="_blank">this resourse</a> for a full list of input tag attributes.</p>
+</details>
+<h2 id="native-hemlock-validation">Native hemlock validation</h2>
+<p>Hemlock provides an extensive library of validation functions beyond those of standard HTML.</p>
+<p>To see the limitations of native HTML validation, preview this page:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Check</span>
+
+<span class="n">Page</span><span class="p">(</span>
+    <span class="n">Check</span><span class="p">(</span>
+        <span class="s1">&#39;Pick one&#39;</span><span class="p">,</span>
+        <span class="p">[</span><span class="s1">&#39;World&#39;</span><span class="p">,</span> <span class="s1">&#39;Moon&#39;</span><span class="p">,</span> <span class="s1">&#39;Sun&#39;</span><span class="p">],</span>
+        <span class="n">required</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
+</code></pre></div>
+<p>Click '&gt;&gt;' without checking any of the choices. Notice that there's no error message. Native HTML would have let you continue the survey without responding.</p>
+<p>Hemlock's validation functions overcome problems like this. You can add validation functions to a page or question by passing a <code>validate</code> argument to its constructor or by setting its <code>validate</code> attribute. Validate functions run when a participant attempts to submit a page. If the participant's response is valid, the function returns <code>None</code>, allowing the participant to continue the survey. If the participant's response is invalid, the function returns an error message.</p>
+<p>Let's use hemlock's validation to require a response to the check question from above:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Validate</span> <span class="k">as</span> <span class="n">V</span>
+
+<span class="n">check</span> <span class="o">=</span> <span class="n">Check</span><span class="p">(</span>
+    <span class="s1">&#39;Pick one!&#39;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s1">&#39;World&#39;</span><span class="p">,</span> <span class="s1">&#39;Moon&#39;</span><span class="p">,</span> <span class="s1">&#39;Star&#39;</span><span class="p">],</span>
+    <span class="n">validate</span><span class="o">=</span><span class="n">V</span><span class="o">.</span><span class="n">require</span><span class="p">()</span>
 <span class="p">)</span>
+<span class="n">check</span><span class="o">.</span><span class="n">validate</span>
 </code></pre></div>
 <p>Out:</p>
-<div class="highlight"><pre><span></span><code>(&#39;The input has no response or error message&#39;, True)
+<div class="highlight"><pre><span></span><code>[&lt;require()&gt;]
 </code></pre></div>
-<p>Now, let's run the validate function. Because the input question has no response, the validate function will return an error message. This error message is stored in the input question's <code>error</code> attribute:</p>
-<div class="highlight"><pre><span></span><code><span class="n">inpt</span><span class="o">.</span><span class="n">_validate</span><span class="p">()</span>
-<span class="n">inpt</span><span class="o">.</span><span class="n">error</span>
+<p>We can verify that the check question doesn't have a response or an error message yet.</p>
+<div class="highlight"><pre><span></span><code><span class="n">check</span><span class="o">.</span><span class="n">response</span><span class="p">,</span> <span class="n">check</span><span class="o">.</span><span class="n">error</span>
+</code></pre></div>
+<p>Out:</p>
+<div class="highlight"><pre><span></span><code>(None, None)
+</code></pre></div>
+<p>Let's run the validate function. Because the check has no response, the validate function will return an error message. The check stores the error message in its <code>error</code> attribute.</p>
+<div class="highlight"><pre><span></span><code><span class="n">check</span><span class="o">.</span><span class="n">_validate</span><span class="p">()</span>
+<span class="n">check</span><span class="o">.</span><span class="n">error</span>
 </code></pre></div>
 <p>Out:</p>
 <div class="highlight"><pre><span></span><code>&#39;Please respond to this question.&#39;
 </code></pre></div>
-<p><strong>Notes:</strong></p>
-<ol>
-<li>You don't need to run <code>_validate</code> yourself in the survey; hemlock takes care of this automatically for you.</li>
-<li><code>require</code> is just one of many <a href="../validate_functions.md">prebuilt validate functions</a>.</li>
-</ol>
+<p>Now suppose the participant's response was <code>'World'</code> (i.e., the participant clicked 'World'), and re-run the validate function.</p>
+<div class="highlight"><pre><span></span><code><span class="n">check</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="s1">&#39;World&#39;</span>
+<span class="n">check</span><span class="o">.</span><span class="n">_validate</span><span class="p">()</span>
+<span class="n">check</span><span class="o">.</span><span class="n">error</span>
+</code></pre></div>
+<p>No error message this time!</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You don't need to run <code>_validate</code> yourself in the survey. Hemlock takes care of this automatically for you.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">More validate functions</p>
+<p><code>require</code> is just one of many <a href="../../functions/validate/">native hemlock validate functions</a>.</p>
+</div>
 <h2 id="custom-validation">Custom validation</h2>
-<p>This is a good start, but what happens when someone enters a nonsense response for date of birth?</p>
-<p>For this, we're going to need a custom validate function. Let's see how to do this in our notebook:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<p>Hemlock also allows you to easily write custom validation functions.</p>
+<p>For example, some of my early research involved asking participants to make two different estimates of the same quantity (don't ask, long story). I needed to validate that their second estimate was different from their first. Here's how I did it:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@V</span><span class="o">.</span><span class="n">register</span>
+<span class="k">def</span> <span class="nf">different_second_estimate</span><span class="p">(</span><span class="n">second_estimate</span><span class="p">,</span> <span class="n">first_estimate</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">second_estimate</span><span class="o">.</span><span class="n">response</span> <span class="o">==</span> <span class="n">first_estimate</span><span class="o">.</span><span class="n">response</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;Make sure your second estimate is different from your first&#39;</span>
 
-<span class="nd">@V</span><span class="o">.</span><span class="n">register</span>
-<span class="k">def</span> <span class="nf">date_format</span><span class="p">(</span><span class="n">inpt</span><span class="p">):</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="c1"># try to convert to a datetime object</span>
-        <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">inpt</span><span class="o">.</span><span class="n">response</span><span class="p">,</span> <span class="s1">&#39;%m/</span><span class="si">%d</span><span class="s1">/%Y&#39;</span><span class="p">)</span>
-    <span class="k">except</span><span class="p">:</span>
-        <span class="c1"># if this fails, the participant entered an invalid response</span>
-        <span class="k">return</span> <span class="s1">&#39;&lt;p&gt;Format your date of birth as mm/dd/yyyy.&lt;/p&gt;&#39;</span>
-
-<span class="n">inpt</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">validate</span><span class="o">=</span><span class="n">V</span><span class="o">.</span><span class="n">date_format</span><span class="p">())</span>
-<span class="n">inpt</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
-<span class="s1">I, George Thaddeus Thatch the Third, was born in the first fortnight of August 1792.</span>
-<span class="s1">&#39;&#39;&#39;</span>
-<span class="n">inpt</span><span class="o">.</span><span class="n">_validate</span><span class="p">()</span>
-<span class="n">inpt</span><span class="o">.</span><span class="n">error</span>
+<span class="n">first_estimate</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span>
+    <span class="s1">&#39;Enter your first esimate&#39;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;number&#39;</span>
+<span class="p">)</span>
+<span class="n">second_estimate</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span>
+    <span class="s1">&#39;Enter a second estimate which is different from your first&#39;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;number&#39;</span><span class="p">,</span>
+    <span class="n">validate</span><span class="o">=</span><span class="n">V</span><span class="o">.</span><span class="n">different_second_estimate</span><span class="p">(</span><span class="n">first_estimate</span><span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>If the responses to the first and second estimate inputs are the same, the validate function returns an error message:</p>
+<div class="highlight"><pre><span></span><code><span class="n">first_estimate</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">second_estimate</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">second_estimate</span><span class="o">.</span><span class="n">_validate</span><span class="p">()</span>
+<span class="n">second_estimate</span><span class="o">.</span><span class="n">error</span>
 </code></pre></div>
 <p>Out:</p>
-<div class="highlight"><pre><span></span><code>Format your date of birth as mm/dd/yyyy.
+<div class="highlight"><pre><span></span><code>&#39;Make sure your second estimate is different from your first&#39;
 </code></pre></div>
-<h2 id="code-explanation">Code explanation</h2>
-<p>First, we import <code>datetime</code>, a native python package for handling dates and times.</p>
-<p>Next, we register a new validate function with the <code>@V.register</code> decorator. The validate function tries to convert the input question's response to a <code>datetime</code> object and returns an error message if this fails.</p>
-<p>It's worth re-emphasizing that <code>V.my_function</code> does <em>not</em> return the result of <code>my_function</code>. <code>V.my_function</code> returns <code>&lt;Validate x&gt;</code>, which will call <code>my_function</code> later, when the participant attempts to submit the page.</p>
-<p>Note that <code>date_format</code> takes an input question as its argument. In general, validate functions take their 'parent' (the branch, page, or question to which they belong) as their first argument. The arguments passed to <code>V.my_function</code> will be passed to <code>my_function</code> <em>after</em> the parent. For example:</p>
+<p>Let's see what happens when the participant's responses to the first and second estimate question are different:</p>
+<div class="highlight"><pre><span></span><code><span class="n">first_estimate</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">second_estimate</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">second_estimate</span><span class="o">.</span><span class="n">_validate</span><span class="p">()</span>
+<span class="n">second_estimate</span><span class="o">.</span><span class="n">error</span>
+</code></pre></div>
+<p>No error message this time!</p>
+<h3 id="code-explanation">Code explanation</h3>
+<p>First, we register a new validate function with the <code>@V.register</code> decorator. The validate function takes two arguments: the second and first estimate <code>Input</code> objects. The function checks if the responses to these inputs are the same and, if they are, returns an error message.</p>
+<p>Next, we create two inputs for the first and second estimate. We attach the validate function to the second estimate by passing <code>validate=V.different_second_estimate(first_estimate)</code> to its constructor.</p>
+<p>Importantly, <code>V.my_function</code> does <em>not</em> return the result of <code>my_function</code>. <code>V.my_function</code> returns an object which evaluates <code>my_function</code> when a participant submits a page. <code>V.my_function</code> basically returns a sticky note reminding the survey to run <code>my_function</code> at the appropriate time. Pages and questions store these sticky notes in their <code>validate</code> attribute.</p>
+<p>Note that <code>different_second_estimate</code> takes two arguments (the second and first estimate) but <code>V.different_second_estimate</code> only takes one (the first estimate). What's going on? In general, validate functions take their 'parent' (the page or question to which they belong) as their first argument. The arguments passed to <code>V.my_function</code> will be passed to <code>my_function</code> <em>after</em> the parent. For example:</p>
 <div class="highlight"><pre><span></span><code><span class="nd">@V</span><span class="o">.</span><span class="n">register</span>
 <span class="k">def</span> <span class="nf">my_function</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">my_argument</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;My parent is:&#39;</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;My argument is:&#39;</span><span class="p">,</span> <span class="n">my_argument</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;My parent is&#39;</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;My argument is&#39;</span><span class="p">,</span> <span class="n">my_argument</span><span class="p">)</span>
 
 <span class="n">inpt</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">validate</span><span class="o">=</span><span class="n">V</span><span class="o">.</span><span class="n">my_function</span><span class="p">(</span><span class="s1">&#39;hello world&#39;</span><span class="p">))</span>
 <span class="n">inpt</span>
 </code></pre></div>
 <p>Out:</p>
-<div class="highlight"><pre><span></span><code>&lt;Input 1&gt;
+<div class="highlight"><pre><span></span><code>&lt;Input (transient 139890227379456)&gt;
 </code></pre></div>
 <p>In:</p>
 <div class="highlight"><pre><span></span><code><span class="n">inpt</span><span class="o">.</span><span class="n">_validate</span><span class="p">()</span>
 </code></pre></div>
 <p>Out:</p>
-<div class="highlight"><pre><span></span><code>My parent is: &lt;Input 1&gt;
-My argument is: hello world
+<div class="highlight"><pre><span></span><code>My parent is &lt;Input (transient 139890227379456)&gt;
+My argument is hello world
 </code></pre></div>
+<p>Notice that the 'parent' is the input associated with the validation function (look at the digits after 'transient').</p>
 <p>The same pattern holds for the other function models (submit, compile, and navigate functions) we will see in the coming sections.</p>
 <h2 id="validation-in-our-app">Validation in our app</h2>
-<p>Now that we've seen how to add validation in our notebook, let's add it to our app.</p>
+<p>Now that we've seen how to add validation in our notebook, let's add it to our app. Your goal is to require responses to each of the demographics questions.</p>
 <p>In <code>survey.py</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Branch</span><span class="p">,</span> <span class="n">Check</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Range</span><span class="p">,</span> <span class="n">Select</span><span class="p">,</span> <span class="n">Validate</span> <span class="k">as</span> <span class="n">V</span><span class="p">,</span> <span class="n">route</span>
-
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Binary</span><span class="p">,</span> <span class="n">Branch</span><span class="p">,</span> <span class="n">Check</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">RangeInput</span><span class="p">,</span> <span class="n">Select</span><span class="p">,</span> 
+    <span class="n">Validate</span> <span class="k">as</span> <span class="n">V</span><span class="p">,</span> <span class="n">route</span>
+<span class="p">)</span>
 
 <span class="nd">@route</span><span class="p">(</span><span class="s1">&#39;/survey&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
     <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span>
         <span class="n">Page</span><span class="p">(</span>
             <span class="n">Input</span><span class="p">(</span>
-                <span class="s1">&#39;&lt;p&gt;Enter your date of birth.&lt;/p&gt;&#39;</span><span class="p">,</span>
-                <span class="n">placeholder</span><span class="o">=</span><span class="s1">&#39;mm/dd/yyyy&#39;</span><span class="p">,</span>
-                <span class="n">var</span><span class="o">=</span><span class="s1">&#39;DoB&#39;</span><span class="p">,</span> <span class="n">data_rows</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> 
-                <span class="n">validate</span><span class="o">=</span><span class="n">V</span><span class="o">.</span><span class="n">date_format</span><span class="p">()</span>
+                <span class="s1">&#39;&lt;p&gt;Enter your month and year of birth.&lt;/p&gt;&#39;</span><span class="p">,</span>
+                <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;month&#39;</span><span class="p">,</span> <span class="n">var</span><span class="o">=</span><span class="s1">&#39;DoB&#39;</span><span class="p">,</span> <span class="n">data_rows</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">),</span>
-            <span class="n">Check</span><span class="p">(</span>
-                <span class="s1">&#39;&lt;p&gt;Indicate your gender.&lt;/p&gt;&#39;</span><span class="p">,</span>
-                <span class="p">[</span><span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="s1">&#39;Other&#39;</span><span class="p">],</span>
+            <span class="n">Select</span><span class="p">(</span>
+                <span class="s1">&#39;&lt;p&gt;What is your gender?&lt;/p&gt;&#39;</span><span class="p">,</span>
+                <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="s1">&#39;Other&#39;</span><span class="p">],</span>
                 <span class="n">var</span><span class="o">=</span><span class="s1">&#39;Gender&#39;</span><span class="p">,</span> <span class="n">data_rows</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
                 <span class="n">validate</span><span class="o">=</span><span class="n">V</span><span class="o">.</span><span class="n">require</span><span class="p">()</span>
             <span class="p">),</span>
@@ -378,20 +435,21 @@ My argument is: hello world
             <span class="n">terminal</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
     <span class="p">)</span>
-
-<span class="nd">@V</span><span class="o">.</span><span class="n">register</span>
-<span class="k">def</span> <span class="nf">date_format</span><span class="p">(</span><span class="n">inpt</span><span class="p">):</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="c1"># try to convert to a datetime object</span>
-        <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">inpt</span><span class="o">.</span><span class="n">response</span><span class="p">,</span> <span class="s1">&#39;%m/</span><span class="si">%d</span><span class="s1">/%Y&#39;</span><span class="p">)</span>
-    <span class="k">except</span><span class="p">:</span>
-        <span class="c1"># if this fails, the participant entered an invalid response</span>
-        <span class="k">return</span> <span class="s1">&#39;&lt;p&gt;Format your date of birth as mm/dd/yyyy.&lt;/p&gt;&#39;</span>
 </code></pre></div>
-<p>Run the app again and try to continue past the demographics page; enter an invalid date of birth, leave some questions blank, and see your validation at work.</p>
-<h2 id="multiple-validate-functions">Multiple validate functions</h2>
-<p>You can attach multiple validation functions by setting <code>validate</code> to a list of functions. Validate functions run in the order in which you add them, stopping with the first validate function which returns an error. Try adding <code>require</code> to the date of birth question by changing <code>validate=V.date_format()</code> to <code>validate=[V.require(), V.date_format()]</code>.</p>
-<p>Run your app and leave the date of birth empty. The error message will be, <code>'Please respond to this question.'</code>. Enter an invalid date of birth. The error message will be <code>'Format your date of birth as mm/dd/yyyy.'</code>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tips for adding validation to your survey</p>
+<ol>
+<li>We can add a blank option <code>''</code> to the gender select question and use <code>validate=V.require()</code> to require participants to select <code>'Male'</code>, <code>'Female'</code>, or <code>'Other'</code>.</li>
+<li>For the input questions (date of birth, number of children, income level), use native HTML validation, <code>required=True</code>.</li>
+<li>For questions that ask you to select one choice (gender, primary wage earner), use <code>validate=V.require()</code>.</li>
+<li>For questions that ask you to select at least one choice (race), use <code>validate=V.min_len(1)</code>. This means, 'select a minimum of 1 choice'.</li>
+</ol>
+</div>
+<p>Run the app again. Try to continue past the demographics page without filling in some of the questions, and see your validation at work!</p>
+<div class="admonition tip">
+<p class="admonition-title">Multiple validate functions</p>
+<p>You can attach multiple validation functions to a page or question by setting <code>validate</code> to a list of functions. Validate functions run in the order in which you add them, stopping with the first validate function that returns an error.</p>
+</div>
 <h2 id="summary">Summary</h2>
 <p>In this part of the tutorial, you learned how to validate participant responses.</p>
 <p>In the next part of the tutorial, you'll learn how to run submit functions to modify participant data after they submit a page.</p>

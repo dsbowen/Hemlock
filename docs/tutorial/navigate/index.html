@@ -53,6 +53,10 @@
                     </li>
                 </ul>
                 <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../manifesto/">Why hemlock?</a>
+                    </li>
+                </ul>
+                <ul>
                     <li class="toctree-l1"><a class="reference internal" href="../../contact/">Contact</a>
                     </li>
                 </ul>
@@ -76,17 +80,15 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../submit/">Submit</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../extensions/">Extensions</a>
+                    </li>
                     <li class="toctree-l1"><a class="reference internal" href="../compile/">Compile</a>
                     </li>
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">Navigate</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#why-navigate-functions">Why navigate functions?</a>
+    <li class="toctree-l2"><a class="reference internal" href="#visualizing-the-branch-stack">Visualizing the 'branch stack'</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#basic-syntax">Basic syntax</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#code-explanation">Code explanation</a>
-    </li>
-        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#branching-off-pages">Branching off pages</a>
     </li>
@@ -264,23 +266,18 @@
 <p>In the previous part of the tutorial, you implemented a confirmation page using compile functions.</p>
 <p>By the end of this part of the tutorial, you'll be able to set up navigation between branches.</p>
 <p>Click here to see what your <a href="https://github.com/dsbowen/hemlock-tutorial/blob/v0.6/blackboard.ipynb" target="_blank"><code>blackboard.ipynb</code></a> and <a href="https://github.com/dsbowen/hemlock-tutorial/blob/v0.6/survey.py" target="_blank"><code>survey.py</code></a> files should look like at the end of this part of the tutorial.</p>
-<h2 id="why-navigate-functions">Why navigate functions?</h2>
-<p>Navigate functions move participants through different branches of the survey. For example, participants in the control group might follow one branch, while participants in the treatment group follow another.</p>
+<details class="note"><summary>Why navigate functions?</summary><p>Navigate functions move participants through different branches of the survey. For example, participants in the control group might follow one branch, while participants in the treatment group follow another.</p>
 <p>In our case, we'll use a navigate function to bring participants from the demographics branch of our survey to an 'utlimatum game' branch. In this branch, participants will play an ultimatum game with each other.</p>
-<h2 id="basic-syntax">Basic syntax</h2>
-<p>Open your jupter notebook and run the following:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Branch</span><span class="p">,</span> <span class="n">Navigate</span> <span class="k">as</span> <span class="n">N</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Participant</span>
+</details>
+<h2 id="visualizing-the-branch-stack">Visualizing the 'branch stack'</h2>
+<p>We'll start by visualizing a participant's 'branch stack'. Open your jupter notebook and run the following:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Branch</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Participant</span>
 
 <span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
     <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span>
-        <span class="n">Page</span><span class="p">(),</span> 
-        <span class="n">Page</span><span class="p">(),</span> 
-        <span class="n">navigate</span><span class="o">=</span><span class="n">N</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+        <span class="n">Page</span><span class="p">(),</span>
+        <span class="n">Page</span><span class="p">(</span><span class="n">terminal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="p">)</span>
-
-<span class="nd">@N</span><span class="o">.</span><span class="n">register</span>
-<span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="n">start_branch</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span><span class="n">Page</span><span class="p">(</span><span class="n">terminal</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 
 <span class="n">part</span> <span class="o">=</span> <span class="n">Participant</span><span class="o">.</span><span class="n">gen_test_participant</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
 <span class="n">part</span><span class="o">.</span><span class="n">view_nav</span><span class="p">()</span>
@@ -288,115 +285,153 @@
 <p>Out:</p>
 <div class="highlight"><pre><span></span><code> &lt;Branch 1&gt;
  &lt;Page 1&gt; C 
- &lt;Page 2&gt;  
+ &lt;Page 2&gt; T
 
  C = current page 
  T = terminal page
 </code></pre></div>
-<p>You can add navigate functions to a branch or page by setting its <code>navigate</code> attribute or passing a <code>navigate</code> argument to its constructor. Navigate functions bring participants to a new branch when they have completed the branch or page to which the navigate function belongs.</p>
-<h3 id="code-explanation">Code explanation</h3>
-<p>Unlike validate, submit, and compile functions, there are no prebuilt navigate functions. We register a custom navigate function with the <code>@N.register</code> decorator. The navigate function takes the start branch (the branch returned by <code>start</code>) as its first argument. In general, navigate functions take an 'origin' branch or page as their first argument. Navigate functions return a <code>Branch</code> object.</p>
-<p><code>part.view_nav()</code> prints the participant's 'branch stack'. Right now the participant is on the branch created by <code>start</code>. Let's make our test participant navigate forward and view the navigation again:</p>
+<p><code>part.view_nav()</code> prints the participant's branch stack. Right now there's only one branch in the stack (the one returned by <code>start</code>). The branch has two pages. The participant is currently on the first page. The terminal survey page is the next page, at the end of the branch.</p>
+<h2 id="basic-syntax">Basic syntax</h2>
+<p>You can add a navigation to a branch or page the same we we added validate, submit, and compile functions to pages and questions - by setting its <code>navigate</code> attribute or passing a <code>navigate</code> argument to its constructor.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span>
+        <span class="n">Page</span><span class="p">(),</span>
+        <span class="n">Page</span><span class="p">(),</span>
+        <span class="n">navigate</span><span class="o">=</span><span class="n">end</span>
+    <span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="n">start_branch</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span>
+        <span class="n">Page</span><span class="p">(</span><span class="n">terminal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="n">part</span> <span class="o">=</span> <span class="n">Participant</span><span class="o">.</span><span class="n">gen_test_participant</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+<span class="n">part</span><span class="o">.</span><span class="n">view_nav</span><span class="p">()</span>
+</code></pre></div>
+<p>Out:</p>
+<div class="highlight"><pre><span></span><code>&lt;Branch 2&gt;
+ &lt;Page 3&gt; C 
+ &lt;Page 4&gt;
+</code></pre></div>
+<p>The navigate function <code>end</code> takes the start branch (the branch returned by <code>start</code>) as its first argument. In general, navigate functions take an 'origin' branch or page as their first argument. Navigate functions return a <code>Branch</code> object.</p>
+<p>Let's make our test participant navigate forward and view the navigation again:</p>
 <div class="highlight"><pre><span></span><code><span class="n">part</span><span class="o">.</span><span class="n">forward</span><span class="p">()</span><span class="o">.</span><span class="n">view_nav</span><span class="p">()</span>
 </code></pre></div>
 <p>Out:</p>
-<div class="highlight"><pre><span></span><code> &lt;Branch 1&gt;
- &lt;Page 1&gt;  
- &lt;Page 2&gt; C 
-
- C = current page 
- T = terminal page
+<div class="highlight"><pre><span></span><code> &lt;Branch 2&gt;
+ &lt;Page 3&gt; 
+ &lt;Page 4&gt; C
 </code></pre></div>
 <p>And again:</p>
 <div class="highlight"><pre><span></span><code><span class="n">part</span><span class="o">.</span><span class="n">forward</span><span class="p">()</span><span class="o">.</span><span class="n">view_nav</span><span class="p">()</span>
 </code></pre></div>
 <p>Out:</p>
-<div class="highlight"><pre><span></span><code> &lt;Branch 1&gt;
- &lt;Page 1&gt;  
- &lt;Page 2&gt;  
-     &lt;Branch 2&gt;
-     &lt;Page 3&gt; C T
+<div class="highlight"><pre><span></span><code> &lt;Branch 2&gt;
+ &lt;Page 3&gt; 
+ &lt;Page 4&gt; 
+     &lt;Branch (transient 139923798691696)&gt;
+     &lt;Page (transient 139922995840960)&gt; C T
 </code></pre></div>
-<p>What happened? Our participant reached the end of the <code>start</code> branch (branch 1) and navigated to the <code>end</code> branch (branch 2). It's currently on page 3, which is the last (terminal) page of the survey.</p>
-<p><strong>Note.</strong> You won't call <code>view_nav</code> or <code>forward</code> in the survey; hemlock takes care of the navigation automtically for you. These are just useful for debugging in jupyter.</p>
-<h2 id="branching-off-pages">Branching off pages</h2>
-<p>Branching off of branches allows us to navigate to a new branch at the end of our current branch. But occasionally, we'll want to navigate to a new branch from the middle of our current branch. To do this, we'll branch off of a page.</p>
-<p>This time, instead of attaching the navigate function to the branch, we'll attach it to the first page of the branch:</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
-    <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span><span class="n">Page</span><span class="p">(</span><span class="n">navigate</span><span class="o">=</span><span class="n">N</span><span class="o">.</span><span class="n">middle</span><span class="p">()),</span> <span class="n">Page</span><span class="p">(</span><span class="n">terminal</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<p>What happened? Our participant reached the end of the start branch  and navigated to the end branch. It's currently on the first page of the end branch, which is the last (terminal) page of the survey.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You don't need to run <code>forward</code> yourself in the survey. Hemlock takes care of this automatically for you.</p>
+</div>
+<details class="tip"><summary>Decorator pattern</summary><p>Like validate, submit, and compile functions, we can add navigate functions using the simple pattern or the decorator pattern. We can re-write the above navigate functions using the decorator pattern like this:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Navigate</span> <span class="k">as</span> <span class="n">N</span>
+
+<span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span>
+        <span class="n">Page</span><span class="p">(),</span>
+        <span class="n">Page</span><span class="p">(),</span>
+        <span class="n">navigate</span><span class="o">=</span><span class="n">N</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+    <span class="p">)</span>
 
 <span class="nd">@N</span><span class="o">.</span><span class="n">register</span>
-<span class="k">def</span> <span class="nf">middle</span><span class="p">(</span><span class="n">start_branch</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span><span class="n">Page</span><span class="p">())</span>
+<span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="n">start_branch</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span>
+        <span class="n">Page</span><span class="p">(</span><span class="n">terminal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="p">)</span>
+</code></pre></div>
+</details>
+<h2 id="branching-off-pages">Branching off pages</h2>
+<p>Branching off of branches allows us to navigate to a new branch at the end of our current branch. But sometimes we'll want to navigate to a new branch from the middle of our current branch. To do this, we'll branch off of a page.</p>
+<p>This time, instead of attaching the navigate function to the branch, we'll attach it to the first page of the branch:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span>
+        <span class="n">Page</span><span class="p">(</span>
+            <span class="n">navigate</span><span class="o">=</span><span class="n">middle</span>
+        <span class="p">),</span>
+        <span class="n">Page</span><span class="p">(</span>
+            <span class="n">terminal</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">middle</span><span class="p">(</span><span class="n">first_page</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span>
+        <span class="n">Page</span><span class="p">()</span>
+    <span class="p">)</span>
 
 <span class="n">part</span> <span class="o">=</span> <span class="n">Participant</span><span class="o">.</span><span class="n">gen_test_participant</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
 </code></pre></div>
 <p>As before, run <code>part.view_nav()</code> and <code>part.forward()</code> a few times. This is what you'll see:</p>
-<div class="highlight"><pre><span></span><code> &lt;Branch 1&gt;
- &lt;Page 1&gt; C 
- &lt;Page 2&gt; T
+<div class="highlight"><pre><span></span><code> &lt;Branch 5&gt;
+ &lt;Page 8&gt; C 
+ &lt;Page 9&gt; T
 </code></pre></div>
-<div class="highlight"><pre><span></span><code> &lt;Branch 1&gt;
- &lt;Page 1&gt; 
-     &lt;Branch 2&gt;
-     &lt;Page 3&gt; C 
- &lt;Page 2&gt; T
+<div class="highlight"><pre><span></span><code> &lt;Branch 5&gt;
+ &lt;Page 8&gt; 
+     &lt;Branch (transient 140643401377680)&gt;
+     &lt;Page (transient 140643401377200)&gt; C 
+ &lt;Page 9&gt; T
 </code></pre></div>
-<div class="highlight"><pre><span></span><code> &lt;Branch 1&gt;
- &lt;Page 1&gt; 
-     &lt;Branch 2&gt;
-     &lt;Page 3&gt; 
- &lt;Page 2&gt; C T
+<div class="highlight"><pre><span></span><code> &lt;Branch 5&gt;
+ &lt;Page 8&gt; 
+     &lt;Branch (transient 140643401377680)&gt;
+     &lt;Page (transient 140643401377200)&gt; 
+ &lt;Page 9&gt; C T
 </code></pre></div>
-<p>What happened? We started on the first page of the <code>start</code> branch (branch 1, page 1). Then, we branched off of page 1 to the <code>middle</code> branch (branch 2, page 3). At the end of the <code>middle</code> branch, we picked up where we left off on the <code>start</code> branch (branch 1, page 2).</p>
+<p>What happened? We started on the first page of the start branch. Then, we branched off of the first page to the middle (the branch returned by <code>middle</code>). At the end of the middle branch, we picked up where we left off on the start branch.</p>
 <h2 id="navigating-back">Navigating back</h2>
 <p>You'll often want to allow participants to navigate to a previous page. To do this, simply set a page's <code>back</code> attribute to <code>True</code>, or pass <code>back=True</code> to a page's constructor. </p>
 <p>You can also navigate backward in the notebook. Run this line a few times:</p>
 <div class="highlight"><pre><span></span><code><span class="n">part</span><span class="o">.</span><span class="n">back</span><span class="p">()</span><span class="o">.</span><span class="n">view_nav</span><span class="p">()</span>
 </code></pre></div>
 <p>Out:</p>
-<div class="highlight"><pre><span></span><code> &lt;Branch 1&gt;
- &lt;Page 1&gt; 
-     &lt;Branch 2&gt;
-     &lt;Page 3&gt; C 
- &lt;Page 2&gt; T
-
- C = current page 
- T = terminal page
+<div class="highlight"><pre><span></span><code> &lt;Branch 5&gt;
+ &lt;Page 8&gt; 
+     &lt;Branch (transient 140643401377680)&gt;
+     &lt;Page (transient 140643401377200)&gt; C 
+ &lt;Page 9&gt; T
 </code></pre></div>
-<div class="highlight"><pre><span></span><code> &lt;Branch 1&gt;
- &lt;Page 1&gt; C 
- &lt;Page 2&gt; T
-
- C = current page 
- T = terminal page
+<div class="highlight"><pre><span></span><code> &lt;Branch 5&gt;
+ &lt;Page 8&gt; C 
+ &lt;Page 9&gt; T
 </code></pre></div>
 <h2 id="navigation-in-our-app">Navigation in our app</h2>
 <p>Now that we've seen how to add navigate functions in our notebook, let's add it to our app.</p>
 <p>In <code>survey.py</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Branch</span><span class="p">,</span> <span class="n">Check</span><span class="p">,</span> <span class="n">Compile</span> <span class="k">as</span> <span class="n">C</span><span class="p">,</span> <span class="n">Embedded</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Navigate</span> <span class="k">as</span> <span class="n">N</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Range</span><span class="p">,</span> <span class="n">Select</span><span class="p">,</span> <span class="n">Submit</span> <span class="k">as</span> <span class="n">S</span><span class="p">,</span> <span class="n">Validate</span> <span class="k">as</span> <span class="n">V</span><span class="p">,</span> <span class="n">route</span>
-
-<span class="o">...</span>
+<div class="highlight"><pre><span></span><code><span class="o">...</span>
 
 <span class="nd">@route</span><span class="p">(</span><span class="s1">&#39;/survey&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
-    <span class="o">...</span>
+    <span class="n">demographics_page</span> <span class="o">=</span> <span class="n">basic_demographics</span><span class="p">(</span><span class="n">page</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">require</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span>
-        <span class="n">demographics_page</span><span class="p">,</span>
-        <span class="n">Page</span><span class="p">(</span>
-            <span class="n">Label</span><span class="p">(</span><span class="nb">compile</span><span class="o">=</span><span class="n">C</span><span class="o">.</span><span class="n">confirm</span><span class="p">(</span><span class="n">demographics_page</span><span class="p">)),</span>
-            <span class="n">back</span><span class="o">=</span><span class="kc">True</span> <span class="c1"># DELETE terminal=True</span>
-        <span class="p">),</span>
-        <span class="n">navigate</span><span class="o">=</span><span class="n">N</span><span class="o">.</span><span class="n">ultimatum_game</span><span class="p">()</span>
+        <span class="o">...</span>
+        <span class="n">navigate</span><span class="o">=</span><span class="n">ultimatum_game</span>
     <span class="p">)</span>
 
 <span class="o">...</span>
 
-<span class="nd">@N</span><span class="o">.</span><span class="n">register</span>
 <span class="k">def</span> <span class="nf">ultimatum_game</span><span class="p">(</span><span class="n">start_branch</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span>
         <span class="n">Page</span><span class="p">(</span>
-            <span class="n">Label</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;You are about to play an ultimatum game...&lt;/p&gt;&#39;</span><span class="p">),</span>
+            <span class="n">Label</span><span class="p">(</span>
+                <span class="s1">&#39;You are about to play an ultimatum game...&#39;</span>
+            <span class="p">)</span>
+        <span class="p">),</span>
+        <span class="n">Page</span><span class="p">(</span>
+            <span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Thank you for completing this survey!&#39;</span><span class="p">),</span> 
             <span class="n">terminal</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
     <span class="p">)</span>

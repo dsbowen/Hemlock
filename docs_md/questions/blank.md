@@ -34,7 +34,7 @@
 ##hemlock.**Blank**
 
 <p class="func-header">
-    <i>class</i> hemlock.<b>Blank</b>(<i>label=None, template='hemlock/input.html', **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/blank.py#L16">[source]</a>
+    <i>class</i> hemlock.<b>Blank</b>(<i>label=None, template='hemlock/input.html', **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/blank.py#L19">[source]</a>
 </p>
 
 Fill in the blank question.

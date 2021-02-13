@@ -53,6 +53,10 @@
                     </li>
                 </ul>
                 <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../manifesto/">Why hemlock?</a>
+                    </li>
+                </ul>
+                <ul>
                     <li class="toctree-l1"><a class="reference internal" href="../../contact/">Contact</a>
                     </li>
                 </ul>
@@ -75,6 +79,8 @@
                     <li class="toctree-l1"><a class="reference internal" href="../validate/">Validate</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../submit/">Submit</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../extensions/">Extensions</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../compile/">Compile</a>
                     </li>
@@ -103,8 +109,6 @@
     <li class="toctree-l2"><a class="reference internal" href="#duplicates">Duplicates</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#screenouts">Screenouts</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#validation-off">Validation off</a>
     </li>
     </ul>
                     </li>
@@ -255,15 +259,15 @@
             <div class="section">
               
                 <h1 id="bells-and-whistles">Bells and whistles</h1>
-<p>You already know most of the important stuff. Here are some tips and tricks to make your life easier.</p>
+<p>You already know the important stuff. Here are some tips and tricks to make your life easier.</p>
 <h2 id="redis">Redis</h2>
-<p>One of hemlock's most impressive features is seamless integration with Redis for running complex background processes during surveys. <a href="../worker.md">Read more here</a>.</p>
+<p>One of hemlock's most impressive features is seamless integration with Redis for running complex background processes during surveys. <a href="../../models/worker/">Read more here</a>.</p>
 <h2 id="settings">Settings</h2>
 <p>We can use settings to change the default values of most attributes of most hemlock objects (see the API documentation for precise details). For example, let's add a back button to every page by default:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Page</span><span class="p">,</span> <span class="n">settings</span>
 
 <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Page&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;back&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
-<span class="n">path</span> <span class="o">=</span> <span class="n">Page</span><span class="p">()</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
+<span class="n">Page</span><span class="p">()</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
 </code></pre></div>
 <h2 id="duplicates">Duplicates</h2>
 <p>We often want to block the same participant from going through our survey multiple times. We do this with the <code>duplicate_keys</code> setting. This blocks visitors who match participants who've already completed the study on certain keys. For example:</p>
@@ -279,34 +283,23 @@
 
 <span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;screenout_keys&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;IPv4&#39;</span><span class="p">,</span> <span class="s1">&#39;workerId&#39;</span><span class="p">]})</span>
 </code></pre></div>
-<h2 id="validation-off">Validation off</h2>
-<p>During development and testing, we often want to be able to click through a survey quickly, ignoring validation. We can turn all validation off as follows:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">settings</span>
+<!-- ## Google cloud buckets
 
-<span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;validate&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">})</span>
-</code></pre></div>
-<p>&lt;!-- ## Google cloud buckets</p>
-<p>Hook up a Google cloud bucket to your app with:</p>
+Hook up a Google cloud bucket to your app with:
+
 <div class="highlight"><pre><span></span><code>$ hlk gcloud-bucket &lt;my-billing-account&gt;
 </code></pre></div>
-<p>Make sure you have a Google cloud computing account and Google Cloud SDK installed. If using WSL, you can install these with hemlock-CLI:</p>
+
+Make sure you have a Google cloud computing account and Google Cloud SDK installed. If using WSL, you can install these with hemlock-CLI:
+
 <div class="highlight"><pre><span></span><code>$ hlk setup win --cloud-sdk
 </code></pre></div>
-<p>Additionally, install the google cloud storage python API with:</p>
-<div class="highlight"><pre><span></span><code>$ pip3 install google-cloud-storage <span class="c1"># or hlk install google-cloud-storage (see below)</span>
-<span class="sb">```</span> --&gt;
 
-<span class="c1">## Installing 3rd party packages</span>
+Additionally, install the google cloud storage python API with:
 
-We ordinarily install 3rd party packages with:
-
-<span class="sb">```</span>bash
-$ pip install &lt;requested-package&gt; <span class="c1"># or pip3 install &lt;requested-package&gt;</span>
-</code></pre></div>
-<p>If you're using heroku, you need to include these in a <code>requirements.txt</code> file. If you're sharing your hemlock project with collaborators, I recommend additionally adding these to a <code>local-requirements.txt</code> file. </p>
-<p>Hemlock-CLI has a shortcut for 1) installing 3rd party packages, 2) adding them to <code>requirements.txt</code>, and 3) adding them to <code>local-requirements.txt</code>:</p>
-<div class="highlight"><pre><span></span><code>$ hlk install &lt;requested-package&gt;
-</code></pre></div>
+```bash
+$ pip3 install google-cloud-storage # or hlk install google-cloud-storage (see below)
+``` -->
               
             </div>
           </div>
