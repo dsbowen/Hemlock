@@ -9,12 +9,8 @@ This will make sense after you [go through the tutorial](tutorial/intro.md).
 ```bash
 $ hlk init <my-project-name> <my-github-username> <my-github-token>
 $ cd <my-project-name>
+$ hlk setup-venv <my-operating-system>
 ```
-
-??? note "Additional step for Windows git bash"
-    ```bash
-    hlk setup-venv <my-project-name>
-    ```
 
 ## Edit
 
@@ -47,7 +43,7 @@ $ hlk debug
 Deploy and test using free resources:
 
 ```bash
-$ hlk deploy # make sure to set the PASSWORD environment variable
+$ hlk deploy
 ```
 
 Destroy the test app:
@@ -81,5 +77,5 @@ to:
 Deploy 'for real':
 
 ```bash
-hlk deploy # set PASSWORD
+hlk deploy # make sure to set the PASSWORD environment variable
 ```

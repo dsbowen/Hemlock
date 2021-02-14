@@ -42,28 +42,21 @@ $ hlk init my-first-project dsbowen bts4rxpmw2x6tsy2qel1y7p5hwmhd7wxopmk5vsp
 
 This will 'clone' the template into a folder `my-first-project`, initialize an eponymous github repository for your project, and set up a virtual environment.
 
-Change into the project directory and check out the folder structure:
+Change into the project directory and setup your virtual environment:
 
 ```bash
 $ cd my-first-project
-$ ls
+$ hlk setup-venv <my-operating-system> # replace <my-operating-system> with win, mac, linux, or wsl
 ```
 
 !!! note
-    You will only have to run `hlk init` once per project.
+    You will only have to run `hlk init` and `hlk setup-venv` once per project.
 
 ??? error "Cannot uninstall PyYAML"
     To fix this, run:
 
     ```bash
     $ pip install --ignore-installed pyyaml
-    ```
-
-??? note "If using Windows git bash"
-    After changing into your project directory, set up your virtual environment:
-
-    ```bash
-    $ hlk setup-venv my-first-project
     ```
 
 ## Preview a page in jupyter notebook

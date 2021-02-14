@@ -258,10 +258,8 @@
 <h2 id="initialize">Initialize</h2>
 <div class="highlight"><pre><span></span><code>$ hlk init &lt;my-project-name&gt; &lt;my-github-username&gt; &lt;my-github-token&gt;
 $ <span class="nb">cd</span> &lt;my-project-name&gt;
+$ hlk setup-venv &lt;my-operating-system&gt;
 </code></pre></div>
-<details class="note"><summary>Additional step for Windows git bash</summary><div class="highlight"><pre><span></span><code>hlk setup-venv &lt;my-project-name&gt;
-</code></pre></div>
-</details>
 <h2 id="edit">Edit</h2>
 <p>Iterate quickly on the blackboard:</p>
 <div class="highlight"><pre><span></span><code>$ jupyter notebook <span class="c1"># open blackboard.ipynb, Kernel &gt;&gt; Change kernel &gt;&gt; &lt;my-project-name&gt;</span>
@@ -277,7 +275,7 @@ $ <span class="nb">cd</span> &lt;my-project-name&gt;
 </code></pre></div>
 <h2 id="deploy">Deploy</h2>
 <p>Deploy and test using free resources:</p>
-<div class="highlight"><pre><span></span><code>$ hlk deploy <span class="c1"># make sure to set the PASSWORD environment variable</span>
+<div class="highlight"><pre><span></span><code>$ hlk deploy
 </code></pre></div>
 <p>Destroy the test app:</p>
 <div class="highlight"><pre><span></span><code>$ heroku apps:destroy -a &lt;my-app-name&gt;
@@ -299,7 +297,7 @@ $ <span class="nb">cd</span> &lt;my-project-name&gt;
     <span class="err">...</span>
 </code></pre></div>
 <p>Deploy 'for real':</p>
-<div class="highlight"><pre><span></span><code>hlk deploy <span class="c1"># set PASSWORD</span>
+<div class="highlight"><pre><span></span><code>hlk deploy <span class="c1"># make sure to set the PASSWORD environment variable</span>
 </code></pre></div>
               
             </div>

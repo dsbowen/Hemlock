@@ -290,20 +290,16 @@
 </code></pre></div>
 <p>(This isn't my real authentication token!)</p>
 <p>This will 'clone' the template into a folder <code>my-first-project</code>, initialize an eponymous github repository for your project, and set up a virtual environment.</p>
-<p>Change into the project directory and check out the folder structure:</p>
+<p>Change into the project directory and setup your virtual environment:</p>
 <div class="highlight"><pre><span></span><code>$ <span class="nb">cd</span> my-first-project
-$ ls
+$ hlk setup-venv &lt;my-operating-system&gt; <span class="c1"># replace &lt;my-operating-system&gt; with win, mac, linux, or wsl</span>
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>You will only have to run <code>hlk init</code> once per project.</p>
+<p>You will only have to run <code>hlk init</code> and <code>hlk setup-venv</code> once per project.</p>
 </div>
 <details class="error"><summary>Cannot uninstall PyYAML</summary><p>To fix this, run:</p>
 <div class="highlight"><pre><span></span><code>$ pip install --ignore-installed pyyaml
-</code></pre></div>
-</details>
-<details class="note"><summary>If using Windows git bash</summary><p>After changing into your project directory, set up your virtual environment:</p>
-<div class="highlight"><pre><span></span><code>$ hlk setup-venv my-first-project
 </code></pre></div>
 </details>
 <h2 id="preview-a-page-in-jupyter-notebook">Preview a page in jupyter notebook</h2>
