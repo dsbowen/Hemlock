@@ -120,7 +120,7 @@ Out:
 ```
 <p>What is your gender?</p>
 <p>Please specify your gender.</p>
-<p>Enter your month and year of birth.</p>
+<p>How old are you?</p>
 
         <p>Which race or ethnicity do you belong to?</p>
         <p>Check as many as apply.</p>
@@ -128,15 +128,15 @@ Out:
 <p>Please specify your race or ethnicity.</p>
 ```
 
-The 0th question asks for gender, the 2nd for month and year of birth, and the 3rd for race. (The 1st and 4th questions ask participants to specify gender and race if they choose 'Other').
+The 0th question asks for gender, the 2nd for age, and the 3rd for race. (The 1st and 4th questions ask participants to specify gender and race if they choose 'Other').
 
 Let's enter hypothetical responses for these questions.
 
 ```python
 gender = demographics_page.questions[0]
 gender.response = 'Male'
-dob = demographics_page.questions[2]
-dob.response = '1992-10'
+age = demographics_page.questions[2]
+age.response = '28'
 race = demographics_page.questions[3]
 race.response = ['White']
 ```
@@ -151,11 +151,11 @@ from hemlock import Compile as C
 @C.register
 def confirm_demographics(confirm_label, demographics_page):
     gender = demographics_page.questions[0].response
-    dob = demographics_page.questions[2].response
+    age = demographics_page.questions[2].response
     race = join('and', *demographics_page.questions[3].response)
     demographics_list = html_list(
         'Gender: {}'.format(gender),
-        'Year and month of birth: {}'.format(dob),
+        'Age: {}'.format(age),
         'Race: {}'.format(race),
         ordered=False
     )

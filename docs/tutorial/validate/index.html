@@ -418,15 +418,16 @@ My argument is hello world
 <span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
     <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span>
         <span class="n">Page</span><span class="p">(</span>
-            <span class="n">Input</span><span class="p">(</span>
-                <span class="s1">&#39;&lt;p&gt;Enter your month and year of birth.&lt;/p&gt;&#39;</span><span class="p">,</span>
-                <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;month&#39;</span><span class="p">,</span> <span class="n">var</span><span class="o">=</span><span class="s1">&#39;DoB&#39;</span><span class="p">,</span> <span class="n">data_rows</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span>
-            <span class="p">),</span>
             <span class="n">Select</span><span class="p">(</span>
                 <span class="s1">&#39;&lt;p&gt;What is your gender?&lt;/p&gt;&#39;</span><span class="p">,</span>
                 <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="s1">&#39;Other&#39;</span><span class="p">],</span>
                 <span class="n">var</span><span class="o">=</span><span class="s1">&#39;Gender&#39;</span><span class="p">,</span> <span class="n">data_rows</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
                 <span class="n">validate</span><span class="o">=</span><span class="n">V</span><span class="o">.</span><span class="n">require</span><span class="p">()</span>
+            <span class="p">),</span>
+            <span class="n">Input</span><span class="p">(</span>
+                <span class="s1">&#39;&lt;p&gt;How old are you?&lt;/p&gt;&#39;</span><span class="p">,</span>
+                <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;number&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">var</span><span class="o">=</span><span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="n">data_rows</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">required</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">),</span>
             <span class="c1"># REST OF THE DEMOGRAPHICS PAGE HERE</span>
         <span class="p">),</span>
@@ -439,8 +440,7 @@ My argument is hello world
 <div class="admonition tip">
 <p class="admonition-title">Tips for adding validation to your survey</p>
 <ol>
-<li>We can add a blank option <code>''</code> to the gender select question and use <code>validate=V.require()</code> to require participants to select <code>'Male'</code>, <code>'Female'</code>, or <code>'Other'</code>.</li>
-<li>For the input questions (date of birth, number of children, income level), use native HTML validation, <code>required=True</code>.</li>
+<li>For the input questions (age, income level), use native HTML validation, <code>required=True</code>.</li>
 <li>For questions that ask you to select one choice (gender, primary wage earner), use <code>validate=V.require()</code>.</li>
 <li>For questions that ask you to select at least one choice (race), use <code>validate=V.min_len(1)</code>. This means, 'select a minimum of 1 choice'.</li>
 </ol>

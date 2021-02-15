@@ -22,7 +22,7 @@ Welcome to the 21st century
 
 During the first year of my Ph.D., I spent hundreds of hours creating behavior experiments in Qualtrics. I remember the tediousness of copying and pasting blocks of questions, the struggle of implementing branching logic, and the frustration of updating hundreds of nearly-identical questions whenever my advisor wanted to modify the phrasing.
 
-My experience wasn't unique. Every social science Ph.D. student, research assistant, and professor spends hundreds of hours, year after year, mired in a monotonous struggle with a GUI that looks like it's from the 1970s.
+My experience wasn't unique. Every social science Ph.D. student, research assistant, and professor spends hundreds of hours, year after year, mired in a monotonous struggle with a GUI that looks like it was downloaded from a bootlegged floppy disk.
 
 Throughout my Ph.D., I've worked with dozens of intelligent, hard-working colleagues, research assistants, and professors. They have better things to do with their time than shuffle question blocks or implement conditional logic using a drop-down menu. So do you. Qualtrics is an unacceptable waste of your time. Hemlock is the solution.
 

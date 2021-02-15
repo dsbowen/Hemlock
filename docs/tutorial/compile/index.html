@@ -352,19 +352,19 @@ White, Black, and South Asian
 <p>Out:</p>
 <div class="highlight"><pre><span></span><code>&lt;p&gt;What is your gender?&lt;/p&gt;
 &lt;p&gt;Please specify your gender.&lt;/p&gt;
-&lt;p&gt;Enter your month and year of birth.&lt;/p&gt;
+&lt;p&gt;How old are you?&lt;/p&gt;
 
         &lt;p&gt;Which race or ethnicity do you belong to?&lt;/p&gt;
         &lt;p&gt;Check as many as apply.&lt;/p&gt;
 
 &lt;p&gt;Please specify your race or ethnicity.&lt;/p&gt;
 </code></pre></div>
-<p>The 0th question asks for gender, the 2nd for month and year of birth, and the 3rd for race. (The 1st and 4th questions ask participants to specify gender and race if they choose 'Other').</p>
+<p>The 0th question asks for gender, the 2nd for age, and the 3rd for race. (The 1st and 4th questions ask participants to specify gender and race if they choose 'Other').</p>
 <p>Let's enter hypothetical responses for these questions.</p>
 <div class="highlight"><pre><span></span><code><span class="n">gender</span> <span class="o">=</span> <span class="n">demographics_page</span><span class="o">.</span><span class="n">questions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">gender</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="s1">&#39;Male&#39;</span>
-<span class="n">dob</span> <span class="o">=</span> <span class="n">demographics_page</span><span class="o">.</span><span class="n">questions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-<span class="n">dob</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="s1">&#39;1992-10&#39;</span>
+<span class="n">age</span> <span class="o">=</span> <span class="n">demographics_page</span><span class="o">.</span><span class="n">questions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">age</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="s1">&#39;28&#39;</span>
 <span class="n">race</span> <span class="o">=</span> <span class="n">demographics_page</span><span class="o">.</span><span class="n">questions</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
 <span class="n">race</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;White&#39;</span><span class="p">]</span>
 </code></pre></div>
@@ -375,11 +375,11 @@ White, Black, and South Asian
 <span class="nd">@C</span><span class="o">.</span><span class="n">register</span>
 <span class="k">def</span> <span class="nf">confirm_demographics</span><span class="p">(</span><span class="n">confirm_label</span><span class="p">,</span> <span class="n">demographics_page</span><span class="p">):</span>
     <span class="n">gender</span> <span class="o">=</span> <span class="n">demographics_page</span><span class="o">.</span><span class="n">questions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">response</span>
-    <span class="n">dob</span> <span class="o">=</span> <span class="n">demographics_page</span><span class="o">.</span><span class="n">questions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">response</span>
+    <span class="n">age</span> <span class="o">=</span> <span class="n">demographics_page</span><span class="o">.</span><span class="n">questions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">response</span>
     <span class="n">race</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">demographics_page</span><span class="o">.</span><span class="n">questions</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">response</span><span class="p">)</span>
     <span class="n">demographics_list</span> <span class="o">=</span> <span class="n">html_list</span><span class="p">(</span>
         <span class="s1">&#39;Gender: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gender</span><span class="p">),</span>
-        <span class="s1">&#39;Year and month of birth: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dob</span><span class="p">),</span>
+        <span class="s1">&#39;Age: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">age</span><span class="p">),</span>
         <span class="s1">&#39;Race: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">race</span><span class="p">),</span>
         <span class="n">ordered</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">)</span>

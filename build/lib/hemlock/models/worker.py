@@ -61,6 +61,9 @@ class Worker(WorkerMixin, Base, db.Model):
     Our `app.py` is standard:
 
     ```python
+    import eventlet
+    eventlet.monkey_patch()
+
     import survey
 
     from hemlock import create_app
@@ -75,8 +78,8 @@ class Worker(WorkerMixin, Base, db.Model):
     To run the app locally, you will need to set the `REDIS_URL` environment 
     variable and run a redis queue from your project's root directory.
 
-    **Note.** Windows cannot run redis natively. To run redis on Windows, use 
-    [Windows Subsystem for Linux](../setup/wsl.md).
+    ??? warning "Redis on Windows"
+    \    Windows cannot run redis natively. To run redis on Windows, use [Windows Subsystem for Linux](../setup/wsl.md).
 
     If using the hemlock template and hemlock-CLI:
 
@@ -108,7 +111,7 @@ class Worker(WorkerMixin, Base, db.Model):
     In the root directory of your project, open `Procfile`. Add the line `worker: rq worker -u $REDIS_URL hemlock-task-queue`. Your `Procfile` should look like:
 
     ```
-    web: gunicorn -k eventlet app:app
+    web: gunicorn -k eventlet -w 1 app:app
     worker: rq worker -u $REDIS_URL hemlock-task-queue
     ```
 
@@ -122,7 +125,7 @@ class Worker(WorkerMixin, Base, db.Model):
     {
     \    "addons": [
     \        "heroku-postgresql:hobby-dev", 
-    \        {"plan": "heroku-redis:hobby-dev", "options": {"version": 5}}
+    \        {"plan": "heroku-redis:hobby-dev"}
     \    ],
     \    "formation": {
     \        "web": {"quantity": 1, "size": "hobby"},
@@ -147,9 +150,8 @@ class Worker(WorkerMixin, Base, db.Model):
         ...
     ```
 
-    Notes
-    -----
-    I recommend redis version 5, rather than the latest version 6. Why? Heroku required you to manually set up TLS authentication for redis 6, which is a complicated process, whereas you can bypass TLS authentication using redis 5.
+    ??? note "Why redis 5?" 
+    \    I recommend redis version 5, rather than the latest version 6. Heroku requires you to manually set up TLS authentication for redis 6, which is a complicated process, whereas you can bypass TLS authentication using redis 5.
     """
     id = db.Column(db.Integer, primary_key=True)
     _compile_id = db.Column(db.Integer, db.ForeignKey('page.id'))

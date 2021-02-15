@@ -382,14 +382,14 @@
 <span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
     <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span>
         <span class="n">Page</span><span class="p">(</span>
-            <span class="n">Input</span><span class="p">(</span>
-                <span class="s1">&#39;&lt;p&gt;Enter your month and year of birth.&lt;/p&gt;&#39;</span><span class="p">,</span>
-                <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;month&#39;</span><span class="p">,</span> <span class="n">var</span><span class="o">=</span><span class="s1">&#39;DoB&#39;</span><span class="p">,</span> <span class="n">data_rows</span><span class="o">=-</span><span class="mi">1</span>
-            <span class="p">),</span>
             <span class="n">Select</span><span class="p">(</span>
                 <span class="s1">&#39;&lt;p&gt;What is your gender?&lt;/p&gt;&#39;</span><span class="p">,</span>
-                <span class="p">[</span><span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="s1">&#39;Other&#39;</span><span class="p">],</span>
+                <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="s1">&#39;Other&#39;</span><span class="p">],</span>
                 <span class="n">var</span><span class="o">=</span><span class="s1">&#39;Gender&#39;</span><span class="p">,</span> <span class="n">data_rows</span><span class="o">=-</span><span class="mi">1</span>
+            <span class="p">),</span>
+            <span class="n">Input</span><span class="p">(</span>
+                <span class="s1">&#39;&lt;p&gt;How old are you?&lt;/p&gt;&#39;</span><span class="p">,</span>
+                <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;number&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">var</span><span class="o">=</span><span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="n">data_rows</span><span class="o">=-</span><span class="mi">1</span>
             <span class="p">),</span>
             <span class="c1"># SET THE `var` AND `data_rows` ATTRIBUTES FOR THE REST OF THE QUESTIONS</span>
             <span class="o">...</span>

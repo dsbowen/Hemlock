@@ -1,15 +1,16 @@
-from hemlock import Branch, Page, Label, route, settings
+from hemlock import Branch, Page, Label, Input, route, settings
 
 @route('/survey')
 def start():
     return Branch(
         Page(
-            Label(
-                'page 1'
-            )
+            Input(type='month', validate=check_datetime)
         ),
         Page(
             Label('hello, world'),
-            terminal=True
+            terminal=True, back=True
         )
     )
+
+def check_datetime(inpt):
+    print(inpt.response)

@@ -195,10 +195,6 @@ from hemlock import (
 def start():
     return Branch(
         Page(
-            Input(
-                '<p>Enter your month and year of birth.</p>',
-                type='month', var='DoB', data_rows=-1, required=True
-            ),
             Select(
                 '<p>What is your gender?</p>',
                 ['', 'Male', 'Female', 'Other'],

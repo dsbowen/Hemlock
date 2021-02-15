@@ -171,14 +171,14 @@ In `survey.py`:
 def start():
     return Branch(
         Page(
-            Input(
-                '<p>Enter your month and year of birth.</p>',
-                type='month', var='DoB', data_rows=-1
-            ),
             Select(
                 '<p>What is your gender?</p>',
-                ['Male', 'Female', 'Other'],
+                ['', 'Male', 'Female', 'Other'],
                 var='Gender', data_rows=-1
+            ),
+            Input(
+                '<p>How old are you?</p>',
+                type='number', min=0, var='Age', data_rows=-1
             ),
             # SET THE `var` AND `data_rows` ATTRIBUTES FOR THE REST OF THE QUESTIONS
             ...

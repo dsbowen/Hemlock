@@ -133,6 +133,7 @@ def get_approve_df(data_df, batch_df, bonus=False, verbose=True):
 
     client = boto3.client('mturk')
     approve_assignments(client, approve_df, bonus=True, reason='Great job!')
+    ```
     """
     if isinstance(data_df, str):
         data_df = pd.read_csv(data_df)

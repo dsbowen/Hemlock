@@ -59,7 +59,7 @@ You can also customize your demographics page:
 from hemlock_demographics import demographics
 
 demographics(
-    'gender', 'age', 'race', 'children', 'primary_wage_earner', 'income_group', 
+    'gender', 'age', 'race', 'children', 'income_group', 
     page=True, require=True
 ).preview()
 ```

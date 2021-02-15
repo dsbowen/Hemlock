@@ -149,7 +149,7 @@ class Assigner(Randomizer):
     In:
 
     ```python
-    [(e.var, e.data) for e in part.embedded]
+    part.meta
     ```
 
     Out:

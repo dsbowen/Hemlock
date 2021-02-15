@@ -234,15 +234,16 @@ from hemlock import (
 def start():
     return Branch(
         Page(
-            Input(
-                '<p>Enter your month and year of birth.</p>',
-                type='month', var='DoB', data_rows=-1, required=True
-            ),
             Select(
                 '<p>What is your gender?</p>',
                 ['', 'Male', 'Female', 'Other'],
                 var='Gender', data_rows=-1,
                 validate=V.require()
+            ),
+            Input(
+                '<p>How old are you?</p>',
+                type='number', min=0, var='Age', data_rows=-1,
+                required=True
             ),
             # REST OF THE DEMOGRAPHICS PAGE HERE
         ),
@@ -254,10 +255,9 @@ def start():
 ```
 
 !!! tip "Tips for adding validation to your survey"
-    1. We can add a blank option `''` to the gender select question and use `validate=V.require()` to require participants to select `'Male'`, `'Female'`, or `'Other'`.
-    2. For the input questions (date of birth, number of children, income level), use native HTML validation, `required=True`.
-    3. For questions that ask you to select one choice (gender, primary wage earner), use `validate=V.require()`.
-    4. For questions that ask you to select at least one choice (race), use `validate=V.min_len(1)`. This means, 'select a minimum of 1 choice'.
+    1. For the input questions (age, income level), use native HTML validation, `required=True`.
+    2. For questions that ask you to select one choice (gender, primary wage earner), use `validate=V.require()`.
+    3. For questions that ask you to select at least one choice (race), use `validate=V.min_len(1)`. This means, 'select a minimum of 1 choice'.
 
 Run the app again. Try to continue past the demographics page without filling in some of the questions, and see your validation at work!
 
