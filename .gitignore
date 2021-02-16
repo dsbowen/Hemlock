@@ -4,6 +4,7 @@ __pycache__/
 dist/
 env/gcp-credentials.json
 hemlock-venv/
+tmp/
 data.csv
 data.db
 data.db-journal

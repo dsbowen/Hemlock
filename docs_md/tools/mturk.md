@@ -163,11 +163,12 @@ import boto3
 
 client = boto3.client('mturk')
 approve_assignments(client, approve_df, bonus=True, reason='Great job!')
+```
 
 ##hemlock.tools.**approve_assignments**
 
 <p class="func-header">
-    <i>def</i> hemlock.tools.<b>approve_assignments</b>(<i>client, approve_df, approve=True, bonus=False, bonus_reason='', OverrideRejection=False</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/mturk.py#L158">[source]</a>
+    <i>def</i> hemlock.tools.<b>approve_assignments</b>(<i>client, approve_df, approve=True, bonus=False, bonus_reason='', OverrideRejection=False</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/mturk.py#L159">[source]</a>
 </p>
 
 Approve and reject assignments and pay bonuses.
