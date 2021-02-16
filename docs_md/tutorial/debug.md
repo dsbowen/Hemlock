@@ -85,10 +85,12 @@ driver.close()
 We can attach debug functions to pages or questions. Most questions have a default debug function. For example, input questions have a default debug function which sends random ASCII characters to the input. Check out the default debug function at work:
 
 ```python
-Page(
+page = Page(
     Input(),
     debug=D.debug_questions()
-).preview(driver)._debug(driver)
+)
+page.preview(driver)
+page._debug(driver)
 ```
 
 ## Custom debug functions

@@ -319,9 +319,11 @@ $ hlk setup-venv &lt;my-operating-system&gt; <span class="c1"># replace &lt;my-o
 <span class="p">)</span>
 <span class="n">p</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
 </code></pre></div>
-<p>This opens a preview of your page in your browser.</p>
-<p>Previewing works by creating temporary preview files. When you're done previewing your files, it's good practice to delete them:</p>
-<div class="highlight"><pre><span></span><code><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">app</span><span class="o">.</span><span class="n">tmpfiles</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">f</span><span class="p">)]</span>
+<p>This should automatically open a preview of your page in your browser.</p>
+<details class="tip"><summary>Troubleshooting if the page didn't open</summary><p>Underneath the cell you just ran is a file path ending in <code>preview.html</code>. This is the location of your preview file. Copy and paste this into your browser.</p>
+</details>
+<p>Previewing works by creating preview files. By default, the preview files are stored in a <code>tmp</code> folder in the root directory of your project. You should delete this folder periodically to avoid memory issues:</p>
+<div class="highlight"><pre><span></span><code>$ rm -r tmp
 </code></pre></div>
 <h2 id="code-explanation">Code explanation</h2>
 <p>The first line simply imports <code>Page</code> and <code>Label</code> objects.</p>

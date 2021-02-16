@@ -344,7 +344,7 @@ originating from this page.</p>
 
 <h2 id="hemlockcompile_questions">hemlock.<strong>compile_questions</strong></h2>
 <p class="func-header">
-    <i>def</i> hemlock.<b>compile_questions</b>(<i>page</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L55">[source]</a>
+    <i>def</i> hemlock.<b>compile_questions</b>(<i>page</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L54">[source]</a>
 </p>
 
 <p>Execute the page's questions' compile methods in index order.</p>
@@ -364,7 +364,7 @@ originating from this page.</p>
 
 <h2 id="hemlockvalidate_questions">hemlock.<strong>validate_questions</strong></h2>
 <p class="func-header">
-    <i>def</i> hemlock.<b>validate_questions</b>(<i>page</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L66">[source]</a>
+    <i>def</i> hemlock.<b>validate_questions</b>(<i>page</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L65">[source]</a>
 </p>
 
 <p>Execute the page's questions' validate methods in index order.</p>
@@ -384,7 +384,7 @@ originating from this page.</p>
 
 <h2 id="hemlocksubmit_questions">hemlock.<strong>submit_questions</strong></h2>
 <p class="func-header">
-    <i>def</i> hemlock.<b>submit_questions</b>(<i>page</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L77">[source]</a>
+    <i>def</i> hemlock.<b>submit_questions</b>(<i>page</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L76">[source]</a>
 </p>
 
 <p>Execute the page's questions' submit methods in index order.</p>
@@ -404,7 +404,7 @@ originating from this page.</p>
 
 <h2 id="hemlockdebug_questions">hemlock.<strong>debug_questions</strong></h2>
 <p class="func-header">
-    <i>def</i> hemlock.<b>debug_questions</b>(<i>driver, page</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L88">[source]</a>
+    <i>def</i> hemlock.<b>debug_questions</b>(<i>driver, page</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L87">[source]</a>
 </p>
 
 <p>Execute the page's questions' debug methods in  <em>random</em> order.</p>
@@ -428,7 +428,7 @@ originating from this page.</p>
 
 <h2 id="hemlocknavigate">hemlock.<strong>navigate</strong></h2>
 <p class="func-header">
-    <i>def</i> hemlock.<b>navigate</b>(<i>driver, page, p_forward=0.8, p_back=0.1, sleep_time=3</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L103">[source]</a>
+    <i>def</i> hemlock.<b>navigate</b>(<i>driver, page, p_forward=0.8, p_back=0.1, sleep_time=3</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L102">[source]</a>
 </p>
 
 <p>Randomly navigate forward or backward, or refresh the page. By default, it
@@ -467,7 +467,7 @@ is executed after the default page debug function.</p>
 <p>The probability of refreshing the page is <code>1-p_forward-p_back</code>.</p>
 <h2 id="hemlockpage">hemlock.<strong>Page</strong></h2>
 <p class="func-header">
-    <i>class</i> hemlock.<b>Page</b>(<i>*questions, extra_css=[], extra_js=[], delay_forward= None, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L187">[source]</a>
+    <i>class</i> hemlock.<b>Page</b>(<i>*questions, extra_css=[], extra_js=[], delay_forward= None, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L186">[source]</a>
 </p>
 
 <p>Pages are queued in a branch. A page contains a list of questions which it
@@ -668,11 +668,13 @@ displays to the participant in index order.</p>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">push_app_context</span><span class="p">()</span>
 
-<span class="n">Page</span><span class="p">(</span><span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Hello World&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
+<span class="n">Page</span><span class="p">(</span>
+<span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Hello World&#39;</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
 </code></pre></div>
 <h4 id="methods">Methods</h4>
 <p class="func-header">
-    <i></i> <b>clear_error</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L533">[source]</a>
+    <i></i> <b>clear_error</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L534">[source]</a>
 </p>
 
 <p>Clear the error message from this page and all of its questions.</p>
@@ -691,7 +693,7 @@ displays to the participant in index order.</p>
 </table>
 
 <p class="func-header">
-    <i></i> <b>clear_response</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L545">[source]</a>
+    <i></i> <b>clear_response</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L546">[source]</a>
 </p>
 
 <p>Clear the response from all of this page's questions.</p>
@@ -710,7 +712,7 @@ displays to the participant in index order.</p>
 </table>
 
 <p class="func-header">
-    <i></i> <b>first_page</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L556">[source]</a>
+    <i></i> <b>first_page</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L557">[source]</a>
 </p>
 
 <table class="docutils field-list field-table" frame="void" rules="none">
@@ -728,7 +730,7 @@ displays to the participant in index order.</p>
 </table>
 
 <p class="func-header">
-    <i></i> <b>last_page</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L571">[source]</a>
+    <i></i> <b>last_page</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L572">[source]</a>
 </p>
 
 <table class="docutils field-list field-table" frame="void" rules="none">
@@ -751,7 +753,7 @@ function or next branch that this page is not the last (i.e. that the
 next branch will have pages). Avoid relying on this method if e.g.
 this page's navigate function may return an empty branch.</p>
 <p class="func-header">
-    <i></i> <b>is_valid</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L604">[source]</a>
+    <i></i> <b>is_valid</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L605">[source]</a>
 </p>
 
 <table class="docutils field-list field-table" frame="void" rules="none">
@@ -769,7 +771,7 @@ this page's navigate function may return an empty branch.</p>
 </table>
 
 <p class="func-header">
-    <i></i> <b>preview</b>(<i>self, driver=None</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L615">[source]</a>
+    <i></i> <b>preview</b>(<i>self, driver=None, dir='tmp', filename='preview', suffix= '.html', overwrite=False</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L616">[source]</a>
 </p>
 
 <p>Preview the page in a browser window.</p>
@@ -782,13 +784,29 @@ this page's navigate function may return an empty branch.</p>
     <td class="field-body" width="100%"><b>driver : <i>selenium.webdriver.chrome.webdriver.WebDriver or None, default=None</i></b>
 <p class="attr">
     Driver to preview page debugging. If <code>None</code>, the page will be opened in a web browser.
+</p>
+<b>dir : <i>str, default='tmp'</i></b>
+<p class="attr">
+    Directory to save the preview file. If the directory does not exist, this method creates it.
+</p>
+<b>filename : <i>str, default='preview'</i></b>
+<p class="attr">
+    Name of the preview file.
+</p>
+<b>suffix : <i>str, default='.html'</i></b>
+<p class="attr">
+
+</p>
+<b>overwrite : <i>bool, default=False</i></b>
+<p class="attr">
+    Indicates to overwrite existing files of the same name.
 </p></td>
 </tr>
 <tr class="field">
     <th class="field-name"><b>Returns:</b></td>
-    <td class="field-body" width="100%"><b>self : <i>hemlock.Page</i></b>
+    <td class="field-body" width="100%"><b>filepath : <i>str</i></b>
 <p class="attr">
-
+    Path to the preview file.
 </p></td>
 </tr>
     </tbody>
@@ -797,7 +815,7 @@ this page's navigate function may return an empty branch.</p>
 <h4 id="notes_3">Notes</h4>
 <p>This method does not run the compile functions.</p>
 <p class="func-header">
-    <i></i> <b>view_nav</b>(<i>self, indent=0</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L674">[source]</a>
+    <i></i> <b>view_nav</b>(<i>self, indent=0</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L699">[source]</a>
 </p>
 
 <p>Print the navigation starting at this page for debugging purposes.</p>

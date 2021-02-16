@@ -88,12 +88,15 @@ p = Page(
 p.preview()
 ```
 
-This opens a preview of your page in your browser.
+This should automatically open a preview of your page in your browser.
 
-Previewing works by creating temporary preview files. When you're done previewing your files, it's good practice to delete them:
+??? tip "Troubleshooting if the page didn't open"
+    Underneath the cell you just ran is a file path ending in `preview.html`. This is the location of your preview file. Copy and paste this into your browser.
 
-```python
-[os.remove(f) for f in app.tmpfiles if os.path.exists(f)]
+Previewing works by creating preview files. By default, the preview files are stored in a `tmp` folder in the root directory of your project. You should delete this folder periodically to avoid memory issues:
+
+```bash
+$ rm -r tmp
 ```
 
 ## Code explanation

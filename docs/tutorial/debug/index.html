@@ -322,10 +322,12 @@
 </div>
 <h2 id="default-debug-functions">Default debug functions</h2>
 <p>We can attach debug functions to pages or questions. Most questions have a default debug function. For example, input questions have a default debug function which sends random ASCII characters to the input. Check out the default debug function at work:</p>
-<div class="highlight"><pre><span></span><code><span class="n">Page</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="n">page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span>
     <span class="n">Input</span><span class="p">(),</span>
     <span class="n">debug</span><span class="o">=</span><span class="n">D</span><span class="o">.</span><span class="n">debug_questions</span><span class="p">()</span>
-<span class="p">)</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span><span class="o">.</span><span class="n">_debug</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">page</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
+<span class="n">page</span><span class="o">.</span><span class="n">_debug</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="custom-debug-functions">Custom debug functions</h2>
 <p>We won't need custom debug functions for our survey, but you may need them elsewhere. Creating custom debug function is similar to creating custom compile, validate, submit, and navigate functions, with one important difference. While the functions you've seen take their parent as their first argument, debug functions take a selenium webdriver as their first argument and their parent as their second argument:</p>

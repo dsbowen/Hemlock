@@ -400,13 +400,14 @@
 10 assignments rejected
 Total bonus: $90
 </code></pre></div>
-<p>```python
-import boto3</p>
-<p>client = boto3.client('mturk')
-approve_assignments(client, approve_df, bonus=True, reason='Great job!')</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">boto3</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;mturk&#39;</span><span class="p">)</span>
+<span class="n">approve_assignments</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">approve_df</span><span class="p">,</span> <span class="n">bonus</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="s1">&#39;Great job!&#39;</span><span class="p">)</span>
+</code></pre></div>
 <h2 id="hemlocktoolsapprove_assignments">hemlock.tools.<strong>approve_assignments</strong></h2>
 <p class="func-header">
-    <i>def</i> hemlock.tools.<b>approve_assignments</b>(<i>client, approve_df, approve=True, bonus=False, bonus_reason='', OverrideRejection=False</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/mturk.py#L158">[source]</a>
+    <i>def</i> hemlock.tools.<b>approve_assignments</b>(<i>client, approve_df, approve=True, bonus=False, bonus_reason='', OverrideRejection=False</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/mturk.py#L159">[source]</a>
 </p>
 
 <p>Approve and reject assignments and pay bonuses.</p>
