@@ -20,12 +20,14 @@ from .utils import random_datetime, random_num, random_str
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium_tools import (
-    drag_range as drag_range_, send_datetime as send_datetime_
+    click_slider_range as click_slider_range_,
+    drag_range as drag_range_, 
+    send_datetime as send_datetime_
 )
 
 import math
 from datetime import datetime, timedelta
-from random import randint, random, randrange, shuffle
+from random import choice, randint, random, randrange, shuffle
 
 from time import sleep
 
@@ -246,6 +248,18 @@ def random_input(driver, question):
         send_keys(driver, question)
 
 # Range debugger
+
+@Debug.register
+def click_slider_range(driver, slider, target=None, tol=0, max_iter=10):
+    if target is None:
+        target = choice(slider.get_values())
+    inpt = driver.find_element_by_id(slider.key)
+    click_slider_range_(
+        driver, inpt, target,
+        horizontal=not slider.orientation=='vertical',
+        tol=tol,
+        max_iter=max_iter
+    )
 
 @Debug.register
 def drag_range(driver, range_, target=None, tol=0, max_iter=10):

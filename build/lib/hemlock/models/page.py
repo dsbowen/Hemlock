@@ -46,7 +46,6 @@ from sqlalchemy_mutable import (
 import os
 import webbrowser
 from random import random, shuffle
-from tempfile import NamedTemporaryFile
 from time import sleep
 
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
@@ -354,7 +353,9 @@ class Page(BranchingBase, db.Model):
 
     app = push_app_context()
 
-    Page(Label('Hello World')).preview()
+    Page(
+        Label('Hello World')
+    ).preview()
     ```
 
     Notes
@@ -612,7 +613,10 @@ class Page(BranchingBase, db.Model):
         """
         return not (self.error or any([q.error for q in self.questions]))
 
-    def preview(self, driver=None):
+    def preview(
+            self, driver=None, dir='tmp', filename='preview', suffix='.html', 
+            overwrite=False
+        ):
         """
         Preview the page in a browser window.
 
@@ -622,9 +626,22 @@ class Page(BranchingBase, db.Model):
             Driver to preview page debugging. If `None`, the page will be
             opened in a web browser.
 
+        dir : str, default='tmp'
+            Directory to save the preview file. If the directory does not 
+            exist, this method creates it.
+
+        filename : str, default='preview'
+            Name of the preview file.
+
+        suffix : str, default='.html'
+
+        overwrite : bool, default=False
+            Indicates to overwrite existing files of the same name.
+
         Returns
         -------
-        self : hemlock.Page
+        filepath : str
+            Path to the preview file.
 
         Notes
         -----
@@ -654,22 +671,30 @@ class Page(BranchingBase, db.Model):
 
         def create_tmp_file():
             # create tempoarary file and write out HTML
-            with NamedTemporaryFile('w', suffix='.html', delete=False) as f:
+            if not os.path.exists(dir):
+                os.mkdir(dir)
+            i = 0
+            if not overwrite:
+                while os.path.exists(mkpath(i)):
+                    i += 1
+            path = mkpath(i)
+            with open(path, 'w') as f:
                 f.write(str(html))
                 if hasattr(current_app, 'tmpfiles'):
-                    current_app.tmpfiles.append(f.name)
-            return f.name
+                    current_app.tmpfiles.append(path)
+            return os.path.abspath(path)
+
+        def mkpath(i):
+            f = filename if i == 0 else filename+' ({})'.format(i)
+            return os.path.join(dir, f+suffix)
 
         static_paths = get_static_paths()
         html = BeautifulSoup(self._render(), 'lxml')
         convert_rel_paths('href')
         convert_rel_paths('src')
         uri = create_tmp_file()
-        if driver is None:
-            webbrowser.open(uri)
-        else:
-            driver.get('file://'+uri)
-        return self
+        webbrowser.open(uri) if driver is None else driver.get('file://'+uri)
+        return uri
 
     def view_nav(self, indent=0):
         """

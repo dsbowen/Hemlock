@@ -8,6 +8,6 @@ from .download import Download
 from .file import File
 from .input import Input
 from .label import Label
-from .range import Range, RangeInput
+from .range import Range, RangeInput, Slider, likert
 from .select import Select
 from .textarea import Textarea

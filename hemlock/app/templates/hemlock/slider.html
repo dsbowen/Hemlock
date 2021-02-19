@@ -1,0 +1,11 @@
+{% extends 'hemlock/input-group.html' %}
+
+{% block input %}
+    {% set value = q.response if q.has_responded else q.default %}
+    {% if value is none %}
+        {% set value = "" %}
+    {% endif %}
+    <div class="text-center w-100">
+        <input id="{{ q.key }}" name="{{ q.key }}" data-slider-id="{{ q.key }}Slider" data-provide="slider" {{ q._render_input_attrs() | safe }} data-slider-value="{{ value }}"/>
+    </div>
+{% endblock %}
