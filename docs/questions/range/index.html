@@ -173,6 +173,8 @@
                     </li>
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">Range</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#hemlocklikert">hemlock.likert</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#hemlockrange">hemlock.Range</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#notes">Notes</a>
@@ -186,6 +188,14 @@
     <li class="toctree-l3"><a class="reference internal" href="#notes_1">Notes</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#examples_1">Examples</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#hemlockslider">hemlock.Slider</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#notes_2">Notes</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#methods">Methods</a>
     </li>
         </ul>
     </li>
@@ -205,6 +215,8 @@
                     <li class="toctree-l1"><a class="reference internal" href="../../tools/mturk/">MTurk</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../tools/navbar/">Navbar</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tools/progress/">Progress bar</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../tools/random/">Randomization</a>
                     </li>
@@ -287,7 +299,7 @@
         border-radius: 0.1em
     }
 </style>
-<h1 id="range-slider">Range slider</h1>
+<h1 id="range-sliders">Range sliders</h1>
 <table class="docutils field-list field-table" frame="void" rules="none">
     <col class="field-name" />
     <col class="field-body" />
@@ -296,9 +308,48 @@
     </tbody>
 </table>
 
+<h2 id="hemlocklikert">hemlock.<strong>likert</strong></h2>
+<p class="func-header">
+    <i>def</i> hemlock.<b>likert</b>(<i>label=None, choices=5, default=0, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/range.py#L43">[source]</a>
+</p>
+
+<p>Create a Likert slider.</p>
+<table class="docutils field-list field-table" frame="void" rules="none">
+    <col class="field-name" />
+    <col class="field-body" />
+    <tbody valign="top">
+        <tr class="field">
+    <th class="field-name"><b>Parameters:</b></td>
+    <td class="field-body" width="100%"><b>label : <i>str, default=None</i></b>
+<p class="attr">
+
+</p>
+<b>choices : <i>int or list, default=5</i></b>
+<p class="attr">
+    A list of choices (str). May also be <code>5</code>, <code>7</code>, or <code>9</code> for default choice lists of length 5, 7, and 9. The list of choices should be an odd length and symmetric around the midpoint.
+</p>
+<b>default : <i>int, default=0</i></b>
+<p class="attr">
+    Default value. <code>0</code> is the scale midpoint.
+</p>
+<b>**kwargs : <i></i></b>
+<p class="attr">
+    Keyword arguments are passed to the <code>Slider</code> constructor.
+</p></td>
+</tr>
+<tr class="field">
+    <th class="field-name"><b>Returns:</b></td>
+    <td class="field-body" width="100%"><b>Likert : <i><code>Slider</code></i></b>
+<p class="attr">
+
+</p></td>
+</tr>
+    </tbody>
+</table>
+
 <h2 id="hemlockrange">hemlock.<strong>Range</strong></h2>
 <p class="func-header">
-    <i>class</i> hemlock.<b>Range</b>(<i>label=None, template='hemlock/range.html', **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/range.py#L18">[source]</a>
+    <i>class</i> hemlock.<b>Range</b>(<i>label=None, template='hemlock/range.html', **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/range.py#L99">[source]</a>
 </p>
 
 <p>Range sliders can be dragged between minimum and maximum values in step
@@ -336,7 +387,7 @@ arguments passed to the constructor.</p>
 </code></pre></div>
 <h2 id="hemlockrangeinput">hemlock.<strong>RangeInput</strong></h2>
 <p class="func-header">
-    <i>class</i> hemlock.<b>RangeInput</b>(<i>label=None, template='hemlock/rangeinput.html', **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/range.py#L66">[source]</a>
+    <i>class</i> hemlock.<b>RangeInput</b>(<i>label=None, template='hemlock/rangeinput.html', **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/range.py#L147">[source]</a>
 </p>
 
 <p>Range slider with an input field.</p>
@@ -375,6 +426,112 @@ arguments passed to the constructor.</p>
 
 <span class="n">Page</span><span class="p">(</span><span class="n">RangeInput</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;This is a range slider.&lt;/p&gt;&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
 </code></pre></div>
+<h2 id="hemlockslider">hemlock.<strong>Slider</strong></h2>
+<p class="func-header">
+    <i>class</i> hemlock.<b>Slider</b>(<i>label=None, template='hemlock/slider.html', **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/range.py#L195">[source]</a>
+</p>
+
+<p>Bootstrap slider.
+<a href="https://github.com/seiyria/bootstrap-slider" target="_blank">See here</a>.</p>
+<p>Inherits from <a href="../bases/"><code>hemlock.InputBase</code></a> and
+<a href="../../models/question/"><code>hemlock.Question</code></a>.</p>
+<table class="docutils field-list field-table" frame="void" rules="none">
+    <col class="field-name" />
+    <col class="field-body" />
+    <tbody valign="top">
+        <tr class="field">
+    <th class="field-name"><b>Parameters:</b></td>
+    <td class="field-body" width="100%"><b>label : <i>str or None, default=None</i></b>
+<p class="attr">
+    Range label.
+</p>
+<b>template : <i>str, default='hemlock/slider.html'</i></b>
+<p class="attr">
+
+</p></td>
+</tr>
+    </tbody>
+</table>
+
+<h4 id="notes_2">Notes</h4>
+<p>You can input the <code>formatter</code> parameter in one of three ways:</p>
+<ol>
+<li>Javascript function (str). <a href="https://seiyria.com/bootstrap-slider/#example-1" target="_blank">See here</a>.</li>
+<li>List of formatted values, one for each tick.</li>
+<li>Dictionary mapping tick values to formatted values. Any ticks not mapped to a formatted value are displayed as the tick value.</li>
+</ol>
+<h4 id="methods">Methods</h4>
+<p class="func-header">
+    <i></i> <b>get_max</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/range.py#L252">[source]</a>
+</p>
+
+<table class="docutils field-list field-table" frame="void" rules="none">
+    <col class="field-name" />
+    <col class="field-body" />
+    <tbody valign="top">
+        <tr class="field">
+    <th class="field-name"><b>Returns:</b></td>
+    <td class="field-body" width="100%"><b>max : <i>scalar</i></b>
+<p class="attr">
+    Maximum value the slider can take.
+</p></td>
+</tr>
+    </tbody>
+</table>
+
+<p class="func-header">
+    <i></i> <b>get_min</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/range.py#L263">[source]</a>
+</p>
+
+<table class="docutils field-list field-table" frame="void" rules="none">
+    <col class="field-name" />
+    <col class="field-body" />
+    <tbody valign="top">
+        <tr class="field">
+    <th class="field-name"><b>Returns:</b></td>
+    <td class="field-body" width="100%"><b>min : <i>scalar</i></b>
+<p class="attr">
+    Minimum value the sldier can take.
+</p></td>
+</tr>
+    </tbody>
+</table>
+
+<p class="func-header">
+    <i></i> <b>get_values</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/range.py#L274">[source]</a>
+</p>
+
+<table class="docutils field-list field-table" frame="void" rules="none">
+    <col class="field-name" />
+    <col class="field-body" />
+    <tbody valign="top">
+        <tr class="field">
+    <th class="field-name"><b>Returns:</b></td>
+    <td class="field-body" width="100%"><b>values : <i>generator</i></b>
+<p class="attr">
+    Range of values the slider can take.
+</p></td>
+</tr>
+    </tbody>
+</table>
+
+<p class="func-header">
+    <i></i> <b>get_midpoint</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/range.py#L284">[source]</a>
+</p>
+
+<table class="docutils field-list field-table" frame="void" rules="none">
+    <col class="field-name" />
+    <col class="field-body" />
+    <tbody valign="top">
+        <tr class="field">
+    <th class="field-name"><b>Returns:</b></td>
+    <td class="field-body" width="100%"><b>midpoint : <i>scalar</i></b>
+<p class="attr">
+    Scale midpoint.
+</p></td>
+</tr>
+    </tbody>
+</table>
               
             </div>
           </div>

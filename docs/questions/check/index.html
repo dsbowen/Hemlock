@@ -159,20 +159,18 @@
                     </li>
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">Check</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#hemlockcheckbase">hemlock.CheckBase</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#notes">Notes</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#hemlockcheck">hemlock.Check</a>
+    <li class="toctree-l2"><a class="reference internal" href="#hemlockbinary">hemlock.binary</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a>
     </li>
         </ul>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#hemlockbinary">hemlock.Binary</a>
+    <li class="toctree-l2"><a class="reference internal" href="#hemlockbinary_1">hemlock.Binary</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#hemlockcheck">hemlock.Check</a>
         <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#notes">Notes</a>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#examples_1">Examples</a>
     </li>
         </ul>
@@ -207,6 +205,8 @@
                     <li class="toctree-l1"><a class="reference internal" href="../../tools/mturk/">MTurk</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../tools/navbar/">Navbar</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tools/progress/">Progress bar</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../tools/random/">Randomization</a>
                     </li>
@@ -298,44 +298,66 @@
     </tbody>
 </table>
 
-<h2 id="hemlockcheckbase">hemlock.<strong>CheckBase</strong></h2>
-<p>Base for <code>hemlock.Binary</code> and <code>hemlock.Check</code> question types. Inherits
-from <a href="../../models/question/"><code>hemlock.ChoiceQuestion</code></a>.</p>
+<h2 id="hemlockbinary">hemlock.<strong>binary</strong></h2>
+<p class="func-header">
+    <i>def</i> hemlock.<b>binary</b>(<i>label=None, choices=['Yes', 'No'], inline=True, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/check.py#L9">[source]</a>
+</p>
+
+<p>Creates a binary (yes/no) check question.</p>
 <table class="docutils field-list field-table" frame="void" rules="none">
     <col class="field-name" />
     <col class="field-body" />
     <tbody valign="top">
         <tr class="field">
-    <th class="field-name"><b>Attributes:</b></td>
-    <td class="field-body" width="100%"><b>align : <i>str, default='left'</i></b>
+    <th class="field-name"><b>Parameters:</b></td>
+    <td class="field-body" width="100%"><b>label : <i>str, default=None</i></b>
 <p class="attr">
-    Alignment of the choice text. Value can be <code>'left'</code>, <code>'center'</code>, or <code>'right'</code>.
+
 </p>
-<b>inline : <i>bool, default=False</i></b>
+<b>choices : <i>list, default=['Yes', 'No']</i></b>
 <p class="attr">
-    Indicates that choices should be <a href="https://getbootstrap.com/docs/4.0/components/forms/#inline">inline</a>, as opposed to vertical.
+    List of choice labels.
+</p>
+<b>inline : <i>bool, default=True</i></b>
+<p class="attr">
+    Indicates that choices should be displayed inline.
+</p>
+<b>**kwargs : <i></i></b>
+<p class="attr">
+    Keyword arguments passed to <code>Check</code> constructor.
 </p></td>
 </tr>
     </tbody>
 </table>
 
-<h4 id="notes">Notes</h4>
-<p>A choice can be input as any of the following:</p>
-<ol>
-<li><code>Choice</code> object.</li>
-<li><code>str</code>, treated as the choice label.</li>
-<li><code>(choice label, value)</code> tuple.</li>
-<li><code>(choice label, value, name)</code> tuple.</li>
-<li>Dictionary with choice keyword arguments.</li>
-</ol>
+<h4 id="examples">Examples</h4>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Page</span><span class="p">,</span> <span class="n">binary</span><span class="p">,</span> <span class="n">push_app_context</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">push_app_context</span><span class="p">()</span>
+
+<span class="n">Page</span><span class="p">(</span><span class="n">binary</span><span class="p">(</span><span class="s1">&#39;Yes or no?&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="hemlockbinary_1">hemlock.<strong>Binary</strong></h2>
+<p class="func-header">
+    <i>def</i> hemlock.<b>Binary</b>(<i>*args, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/check.py#L41">[source]</a>
+</p>
+
+<table class="docutils field-list field-table" frame="void" rules="none">
+    <col class="field-name" />
+    <col class="field-body" />
+    <tbody valign="top">
+
+    </tbody>
+</table>
+
 <h2 id="hemlockcheck">hemlock.<strong>Check</strong></h2>
 <p class="func-header">
-    <i>class</i> hemlock.<b>Check</b>(<i>label=None, choices=[], template='hemlock/check.html', **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/check.py#L48">[source]</a>
+    <i>class</i> hemlock.<b>Check</b>(<i>label=None, choices=[], template='hemlock/check.html', **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/check.py#L52">[source]</a>
 </p>
 
 <p>Check questions use radio inputs if only one choice can be selected, or
 checkbox inputs if multiple choices can be selected.</p>
-<p>Inherits from <a href="./"><code>hemlock.qpolymorphs.check.CheckBase</code></a>.</p>
+<p>Inherits from <a href="../bases/"><code>hemlock.qpolymorphs.base.InputBase</code></a> and <a href="../../models/question/"><code>hemlock.models.ChoiceQuestion</code></a>.</p>
 <p>Its default debug function is
 <a href="../../functions/debug/#hemlockfunctionsdebugclick_choices"><code>click_choices</code></a>.</p>
 <table class="docutils field-list field-table" frame="void" rules="none">
@@ -359,13 +381,17 @@ checkbox inputs if multiple choices can be selected.</p>
 </tr>
 <tr class="field">
     <th class="field-name"><b>Attributes:</b></td>
-    <td class="field-body" width="100%"><b>choices : <i>list of <code>hemlock.Choice</code></i></b>
+    <td class="field-body" width="100%"><b>align : <i>str, default='left'</i></b>
+<p class="attr">
+    Alignment of the choice text. Value can be <code>'left'</code>, <code>'center'</code>, or <code>'right'</code>.
+</p>
+<b>choices : <i>list of <code>hemlock.Choice</code></i></b>
 <p class="attr">
     Set from the <code>choices</code> parameter.
 </p>
-<b>inline : <i>default=False</i></b>
+<b>inline : <i>bool, default=False</i></b>
 <p class="attr">
-
+    Indicates that choices should be <a href="https://getbootstrap.com/docs/4.0/components/forms/#inline">inline</a>, as opposed to vertical.
 </p>
 <b>multiple : <i>bool, default=False</i></b>
 <p class="attr">
@@ -375,65 +401,21 @@ checkbox inputs if multiple choices can be selected.</p>
     </tbody>
 </table>
 
-<h4 id="examples">Examples</h4>
+<h4 id="notes">Notes</h4>
+<p>A choice can be input as any of the following:</p>
+<ol>
+<li><code>Choice</code> object.</li>
+<li><code>str</code>, treated as the choice label, value, and name.</li>
+<li><code>(choice label, value)</code> tuple.</li>
+<li><code>(choice label, value, name)</code> tuple.</li>
+<li>Dictionary with choice keyword arguments.</li>
+</ol>
+<h4 id="examples_1">Examples</h4>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Check</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">push_app_context</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">push_app_context</span><span class="p">()</span>
 
 <span class="n">Page</span><span class="p">(</span><span class="n">Check</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;Check one.&lt;/p&gt;&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Yes&#39;</span><span class="p">,</span><span class="s1">&#39;No&#39;</span><span class="p">,</span><span class="s1">&#39;Maybe&#39;</span><span class="p">]))</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
-</code></pre></div>
-<h2 id="hemlockbinary">hemlock.<strong>Binary</strong></h2>
-<p class="func-header">
-    <i>class</i> hemlock.<b>Binary</b>(<i>label=None, choices=['Yes', 'No'], template= 'hemlock/check.html', **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/check.py#L107">[source]</a>
-</p>
-
-<p>Binary question use radio inputs and have two options, coded as 0 and 1.</p>
-<p>Inherits from <a href="./"><code>hemlock.qpolymorphs.check.CheckBase</code></a>.</p>
-<p>Its default debug function is
-<a href="../../functions/debug/#hemlockfunctionsdebugclick_choices"><code>click_choices</code></a>.</p>
-<table class="docutils field-list field-table" frame="void" rules="none">
-    <col class="field-name" />
-    <col class="field-body" />
-    <tbody valign="top">
-        <tr class="field">
-    <th class="field-name"><b>Parameters:</b></td>
-    <td class="field-body" width="100%"><b>label : <i>str or None, default=None</i></b>
-<p class="attr">
-    Check question label.
-</p>
-<b>choices : <i>list of [str, str], default=['Yes', 'No']</i></b>
-<p class="attr">
-    Choices which participants can check. The first choice is coded as 1, the second as 0.
-</p>
-<b>template : <i>str, default='hemlock/check.html'</i></b>
-<p class="attr">
-    File name of the Jinja template.
-</p></td>
-</tr>
-<tr class="field">
-    <th class="field-name"><b>Attributes:</b></td>
-    <td class="field-body" width="100%"><b>choices : <i>list of <code>hemlock.Choice</code></i></b>
-<p class="attr">
-    Set from the <code>choices</code> parameter.
-</p>
-<b>inline : <i>bool, default=True</i></b>
-<p class="attr">
-
-</p>
-<b>multiple : <i>bool, default=False</i></b>
-<p class="attr">
-    Indicates that the participant may select multiple choices.
-</p></td>
-</tr>
-    </tbody>
-</table>
-
-<h4 id="examples_1">Examples</h4>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Binary</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">push_app_context</span>
-
-<span class="n">app</span> <span class="o">=</span> <span class="n">push_app_context</span><span class="p">()</span>
-
-<span class="n">Page</span><span class="p">(</span><span class="n">Binary</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;Yes or no?&lt;/p&gt;&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
 </code></pre></div>
               
             </div>

@@ -34,7 +34,7 @@
 ##hemlock.**InputBase**
 
 <p class="func-header">
-    <i>class</i> hemlock.<b>InputBase</b>(<i>*args, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/bases.py#L25">[source]</a>
+    <i>class</i> hemlock.<b>InputBase</b>(<i>*args, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/bases.py#L27">[source]</a>
 </p>
 
 This base class provides methods useful for debugging. Additionally, when
@@ -56,7 +56,7 @@ input tag HTML attribues.
 
 
 <p class="func-header">
-    <i></i> <b>input_from_driver</b>(<i>self, driver=None</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/bases.py#L71">[source]</a>
+    <i></i> <b>input_from_driver</b>(<i>self, driver=None</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/bases.py#L73">[source]</a>
 </p>
 
 
@@ -87,7 +87,7 @@ input tag HTML attribues.
 
 
 <p class="func-header">
-    <i></i> <b>label_from_driver</b>(<i>self, driver</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/bases.py#L85">[source]</a>
+    <i></i> <b>label_from_driver</b>(<i>self, driver</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/bases.py#L87">[source]</a>
 </p>
 
 

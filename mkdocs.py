@@ -105,6 +105,7 @@ tools_filenames = [
     'lang',
     'mturk',
     'navbar',
+    'progress',
     'random',
     'statics',
     'titrate',

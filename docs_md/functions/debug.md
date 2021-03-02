@@ -44,7 +44,7 @@ By default, the last debug function of a page navigates. To remove this, run
 ##hemlock.functions.debug.**forward**
 
 <p class="func-header">
-    <i>def</i> hemlock.functions.debug.<b>forward</b>(<i>driver, page, max_wait=30, wait_interval=3</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L58">[source]</a>
+    <i>def</i> hemlock.functions.debug.<b>forward</b>(<i>driver, page, max_wait=30, wait_interval=3</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L60">[source]</a>
 </p>
 
 Click the forward button.
@@ -77,14 +77,17 @@ app = push_app_context()
 
 driver = chromedriver()
 
-p = Page(debug=[D.debug_questions(), D.forward()])
-p.preview(driver)._debug(driver)
+p = Page(
+    debug=[D.debug_questions(), D.forward()]
+)
+p.preview(driver)
+p._debug(driver)
 ```
 
 ##hemlock.functions.debug.**back**
 
 <p class="func-header">
-    <i>def</i> hemlock.functions.debug.<b>back</b>(<i>driver, page, max_wait=30, wait_interval=1</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L89">[source]</a>
+    <i>def</i> hemlock.functions.debug.<b>back</b>(<i>driver, page, max_wait=30, wait_interval=1</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L94">[source]</a>
 </p>
 
 Click the back button.
@@ -117,14 +120,17 @@ app = push_app_context()
 
 driver = chromedriver()
 
-p = Page(debug=[D.debug_questions(), D.back()])
-p.preview(driver)._debug(driver)
+p = Page(
+    debug=[D.debug_questions(), D.back()]
+)
+p.preview(driver)
+p._debug(driver)
 ```
 
 ##hemlock.functions.debug.**send_keys**
 
 <p class="func-header">
-    <i>def</i> hemlock.functions.debug.<b>send_keys</b>(<i>driver, question, *keys, p_num=0.5</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L122">[source]</a>
+    <i>def</i> hemlock.functions.debug.<b>send_keys</b>(<i>driver, question, *keys, p_num=0.5</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L130">[source]</a>
 </p>
 
 Send the specified keys to the `<textarea>` or `<input>`.
@@ -169,14 +175,18 @@ app = push_app_context()
 
 driver = chromedriver()
 
-p = Page(Input(debug=D.send_keys('hello world')))
-p.preview(driver)._debug(driver)
+p = Page(
+    Input(debug=D.send_keys('hello world')),
+    debug=D.debug_questions()
+)
+p.preview(driver)
+p._debug(driver)
 ```
 
 ##hemlock.functions.debug.**send_datetime**
 
 <p class="func-header">
-    <i>def</i> hemlock.functions.debug.<b>send_datetime</b>(<i>driver, question, datetime_=None</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L183">[source]</a>
+    <i>def</i> hemlock.functions.debug.<b>send_datetime</b>(<i>driver, question, datetime_=None</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L195">[source]</a>
 </p>
 
 Send a `datetime.datetime` object to an input. Inputs should be of type
@@ -220,14 +230,18 @@ app = push_app_context()
 
 driver = chromedriver()
 
-p = Page(Input(type='date', debug=D.send_datetime(datetime.utcnow())))
-p.preview(driver)._debug(driver)
+p = Page(
+    Input(type='date', debug=D.send_datetime(datetime.utcnow())),
+    debug=D.debug_questions()
+)
+p.preview(driver)
+p._debug(driver)
 ```
 
 ##hemlock.functions.debug.**random_input**
 
 <p class="func-header">
-    <i>def</i> hemlock.functions.debug.<b>random_input</b>(<i>driver, question</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L224">[source]</a>
+    <i>def</i> hemlock.functions.debug.<b>random_input</b>(<i>driver, question</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L240">[source]</a>
 </p>
 
 Default debug function for input questions. This function sends a random
@@ -254,10 +268,74 @@ object if the input takes dates or times.
 
 
 
+##hemlock.functions.debug.**click_slider_range**
+
+<p class="func-header">
+    <i>def</i> hemlock.functions.debug.<b>click_slider_range</b>(<i>driver, slider, target=None, tol=0, max_iter=10, max_wait=3, wait_interval=1</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L267">[source]</a>
+</p>
+
+Click a Bootstrap-slider input.
+
+<table class="docutils field-list field-table" frame="void" rules="none">
+    <col class="field-name" />
+    <col class="field-body" />
+    <tbody valign="top">
+        <tr class="field">
+    <th class="field-name"><b>Parameters:</b></td>
+    <td class="field-body" width="100%"><b>driver : <i>selenium.webdriver.chrome.webdriver.WebDriver</i></b>
+<p class="attr">
+    
+</p>
+<b>slider : <i>hemlock.Slider</i></b>
+<p class="attr">
+    
+</p>
+<b>target : <i>float or None, default=None</i></b>
+<p class="attr">
+    Target value to which the slider should be dragged. If <code>None</code>, a random target value will be chosen.
+</p>
+<b>tol : <i>float, default=0</i></b>
+<p class="attr">
+    Tolerance for error if the slider cannot be dragged to the exact target.
+</p>
+<b>max_iter : <i>int, default=10</i></b>
+<p class="attr">
+    Maximum number of iterations for the slider to reach the target.
+</p>
+<b>max_wait : <i>int, default=3</i></b>
+<p class="attr">
+    Number of iterations to wait for javascript to load the slider.
+</p>
+<b>wait_interval : <i>int, default=1</i></b>
+<p class="attr">
+    Number of seconds to wait each iteration.
+</p></td>
+</tr>
+    </tbody>
+</table>
+
+####Examples
+
+```python
+from hemlock import Debug as D, Page, Slider, push_app_context
+from hemlock.tools import chromedriver
+
+app = push_app_context()
+
+driver = chromedriver()
+
+p = Page(
+    Slider(debug=D.click_slider_range(80)),
+    debug=D.debug_questions()
+)
+p.preview(driver)
+p._debug(driver)
+```
+
 ##hemlock.functions.debug.**drag_range**
 
 <p class="func-header">
-    <i>def</i> hemlock.functions.debug.<b>drag_range</b>(<i>driver, range_, target=None, tol=0, max_iter=10</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L251">[source]</a>
+    <i>def</i> hemlock.functions.debug.<b>drag_range</b>(<i>driver, range_, target=None, tol=0, max_iter=10</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L334">[source]</a>
 </p>
 
 Drag a range slider to specified target value.
@@ -306,14 +384,18 @@ app = push_app_context()
 
 driver = chromedriver()
 
-p = Page(Range(debug=D.drag_range(80)))
-p.preview(driver)._debug(driver)
+p = Page(
+    Range(debug=D.drag_range(80)),
+    debug=D.debug_questions()
+)
+p.preview(driver)
+p._debug(driver)
 ```
 
 ##hemlock.functions.debug.**click_choices**
 
 <p class="func-header">
-    <i>def</i> hemlock.functions.debug.<b>click_choices</b>(<i>driver, question, *values, if_selected=None, max_clicks=5</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L305">[source]</a>
+    <i>def</i> hemlock.functions.debug.<b>click_choices</b>(<i>driver, question, *values, if_selected=None, max_clicks=5</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L392">[source]</a>
 </p>
 
 Click on choices or options.
@@ -351,7 +433,7 @@ Will not attempt to click choices or options which are not displayed.
 ####Examples
 
 ```python
-from hemlock import Binary, Debug as D, Page, push_app_context
+from hemlock import Check, Debug as D, Page, push_app_context
 from hemlock.tools import chromedriver
 
 app = push_app_context()
@@ -359,18 +441,21 @@ app = push_app_context()
 driver = chromedriver()
 
 p = Page(
-    Binary(
+    Check(
         '<p>Click "Yes".</p>',
+        ['Yes', 'No', 'Maybe'],
         debug=D.click_choices('Yes')
-    )
+    ),
+    debug=D.debug_questions()
 )
-p.preview(driver)._debug(driver)
+p.preview(driver)
+p._debug(driver)
 ```
 
 ##hemlock.functions.debug.**clear_choices**
 
 <p class="func-header">
-    <i>def</i> hemlock.functions.debug.<b>clear_choices</b>(<i>driver, question</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L360">[source]</a>
+    <i>def</i> hemlock.functions.debug.<b>clear_choices</b>(<i>driver, question</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L450">[source]</a>
 </p>
 
 Clear selected choices.
@@ -414,7 +499,9 @@ p = Page(
         default='Chocolate',
         multiple=True,
         debug=D.clear_choices()
-    )
+    ),
+    debug=D.debug_questions()
 )
-p.preview(driver)._debug(driver)
+p.preview(driver)
+p._debug(driver)
 ```

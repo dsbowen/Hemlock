@@ -6,6 +6,8 @@ from ..models import Question
 from selenium_tools import get_datetime
 from sqlalchemy_mutable import HTMLAttrsType
 
+from datetime import datetime
+
 HTML_DATETIME_TYPES = (
     'date',
     'datetime-local',
@@ -114,6 +116,15 @@ class InputBase():
         return super()._validate()
 
     def _record_data(self):
+        def get_data_type():
+            if hasattr(self, 'min') and isinstance(self.min, float):
+                return float
+            if hasattr(self, 'max') and isinstance(self.max, float):
+                return float
+            if hasattr(self, 'step') and isinstance(self.step, float):
+                return float
+            return int
+
         if hasattr(self, 'type') and self.type in HTML_DATETIME_TYPES:
             # convert data to datetime type
             self.data = get_datetime(self.type, self.response) or None
@@ -122,13 +133,7 @@ class InputBase():
             and self.response
         ):
             # convert data to int or float
-            if (
-                hasattr(self, 'step') 
-                and (self.step is None or isinstance(self.step, int))
-            ):
-                self.data = int(float(self.response))
-            else:
-                self.data = float(self.response)
+            self.data = get_data_type()(float(self.response))
         else:
             super()._record_data()
         return self

@@ -159,11 +159,17 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#hemlockfunctionsdebugrandom_input">hemlock.functions.debug.random_input</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#hemlockfunctionsdebugclick_slider_range">hemlock.functions.debug.click_slider_range</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#examples_4">Examples</a>
+    </li>
+        </ul>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#hemlockfunctionsdebugdrag_range">hemlock.functions.debug.drag_range</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#notes_3">Notes</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#examples_4">Examples</a>
+    <li class="toctree-l3"><a class="reference internal" href="#examples_5">Examples</a>
     </li>
         </ul>
     </li>
@@ -171,7 +177,7 @@
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#notes_4">Notes</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#examples_5">Examples</a>
+    <li class="toctree-l3"><a class="reference internal" href="#examples_6">Examples</a>
     </li>
         </ul>
     </li>
@@ -179,7 +185,7 @@
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#notes_5">Notes</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#examples_6">Examples</a>
+    <li class="toctree-l3"><a class="reference internal" href="#examples_7">Examples</a>
     </li>
         </ul>
     </li>
@@ -245,6 +251,8 @@
                     <li class="toctree-l1"><a class="reference internal" href="../../tools/mturk/">MTurk</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../tools/navbar/">Navbar</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../tools/progress/">Progress bar</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../tools/random/">Randomization</a>
                     </li>
@@ -346,7 +354,7 @@ driver with <code>driver.close()</code>.</p>
 <code>page.debug.pop()</code>.</p>
 <h2 id="hemlockfunctionsdebugforward">hemlock.functions.debug.<strong>forward</strong></h2>
 <p class="func-header">
-    <i>def</i> hemlock.functions.debug.<b>forward</b>(<i>driver, page, max_wait=30, wait_interval=3</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L58">[source]</a>
+    <i>def</i> hemlock.functions.debug.<b>forward</b>(<i>driver, page, max_wait=30, wait_interval=3</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L60">[source]</a>
 </p>
 
 <p>Click the forward button.</p>
@@ -376,12 +384,15 @@ driver with <code>driver.close()</code>.</p>
 
 <span class="n">driver</span> <span class="o">=</span> <span class="n">chromedriver</span><span class="p">()</span>
 
-<span class="n">p</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="p">[</span><span class="n">D</span><span class="o">.</span><span class="n">debug_questions</span><span class="p">(),</span> <span class="n">D</span><span class="o">.</span><span class="n">forward</span><span class="p">()])</span>
-<span class="n">p</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span><span class="o">.</span><span class="n">_debug</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span>
+    <span class="n">debug</span><span class="o">=</span><span class="p">[</span><span class="n">D</span><span class="o">.</span><span class="n">debug_questions</span><span class="p">(),</span> <span class="n">D</span><span class="o">.</span><span class="n">forward</span><span class="p">()]</span>
+<span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">_debug</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="hemlockfunctionsdebugback">hemlock.functions.debug.<strong>back</strong></h2>
 <p class="func-header">
-    <i>def</i> hemlock.functions.debug.<b>back</b>(<i>driver, page, max_wait=30, wait_interval=1</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L89">[source]</a>
+    <i>def</i> hemlock.functions.debug.<b>back</b>(<i>driver, page, max_wait=30, wait_interval=1</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L94">[source]</a>
 </p>
 
 <p>Click the back button.</p>
@@ -411,12 +422,15 @@ driver with <code>driver.close()</code>.</p>
 
 <span class="n">driver</span> <span class="o">=</span> <span class="n">chromedriver</span><span class="p">()</span>
 
-<span class="n">p</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="p">[</span><span class="n">D</span><span class="o">.</span><span class="n">debug_questions</span><span class="p">(),</span> <span class="n">D</span><span class="o">.</span><span class="n">back</span><span class="p">()])</span>
-<span class="n">p</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span><span class="o">.</span><span class="n">_debug</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span>
+    <span class="n">debug</span><span class="o">=</span><span class="p">[</span><span class="n">D</span><span class="o">.</span><span class="n">debug_questions</span><span class="p">(),</span> <span class="n">D</span><span class="o">.</span><span class="n">back</span><span class="p">()]</span>
+<span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">_debug</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="hemlockfunctionsdebugsend_keys">hemlock.functions.debug.<strong>send_keys</strong></h2>
 <p class="func-header">
-    <i>def</i> hemlock.functions.debug.<b>send_keys</b>(<i>driver, question, *keys, p_num=0.5</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L122">[source]</a>
+    <i>def</i> hemlock.functions.debug.<b>send_keys</b>(<i>driver, question, *keys, p_num=0.5</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L130">[source]</a>
 </p>
 
 <p>Send the specified keys to the <code>&lt;textarea&gt;</code> or <code>&lt;input&gt;</code>.</p>
@@ -456,12 +470,16 @@ driver with <code>driver.close()</code>.</p>
 
 <span class="n">driver</span> <span class="o">=</span> <span class="n">chromedriver</span><span class="p">()</span>
 
-<span class="n">p</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="n">Input</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="n">D</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="s1">&#39;hello world&#39;</span><span class="p">)))</span>
-<span class="n">p</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span><span class="o">.</span><span class="n">_debug</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span>
+    <span class="n">Input</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="n">D</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="s1">&#39;hello world&#39;</span><span class="p">)),</span>
+    <span class="n">debug</span><span class="o">=</span><span class="n">D</span><span class="o">.</span><span class="n">debug_questions</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">_debug</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="hemlockfunctionsdebugsend_datetime">hemlock.functions.debug.<strong>send_datetime</strong></h2>
 <p class="func-header">
-    <i>def</i> hemlock.functions.debug.<b>send_datetime</b>(<i>driver, question, datetime_=None</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L183">[source]</a>
+    <i>def</i> hemlock.functions.debug.<b>send_datetime</b>(<i>driver, question, datetime_=None</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L195">[source]</a>
 </p>
 
 <p>Send a <code>datetime.datetime</code> object to an input. Inputs should be of type
@@ -500,12 +518,16 @@ driver with <code>driver.close()</code>.</p>
 
 <span class="n">driver</span> <span class="o">=</span> <span class="n">chromedriver</span><span class="p">()</span>
 
-<span class="n">p</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="n">Input</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="n">D</span><span class="o">.</span><span class="n">send_datetime</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">())))</span>
-<span class="n">p</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span><span class="o">.</span><span class="n">_debug</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span>
+    <span class="n">Input</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="n">D</span><span class="o">.</span><span class="n">send_datetime</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">())),</span>
+    <span class="n">debug</span><span class="o">=</span><span class="n">D</span><span class="o">.</span><span class="n">debug_questions</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">_debug</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="hemlockfunctionsdebugrandom_input">hemlock.functions.debug.<strong>random_input</strong></h2>
 <p class="func-header">
-    <i>def</i> hemlock.functions.debug.<b>random_input</b>(<i>driver, question</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L224">[source]</a>
+    <i>def</i> hemlock.functions.debug.<b>random_input</b>(<i>driver, question</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L240">[source]</a>
 </p>
 
 <p>Default debug function for input questions. This function sends a random
@@ -529,9 +551,68 @@ object if the input takes dates or times.</p>
     </tbody>
 </table>
 
+<h2 id="hemlockfunctionsdebugclick_slider_range">hemlock.functions.debug.<strong>click_slider_range</strong></h2>
+<p class="func-header">
+    <i>def</i> hemlock.functions.debug.<b>click_slider_range</b>(<i>driver, slider, target=None, tol=0, max_iter=10, max_wait=3, wait_interval=1</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L267">[source]</a>
+</p>
+
+<p>Click a Bootstrap-slider input.</p>
+<table class="docutils field-list field-table" frame="void" rules="none">
+    <col class="field-name" />
+    <col class="field-body" />
+    <tbody valign="top">
+        <tr class="field">
+    <th class="field-name"><b>Parameters:</b></td>
+    <td class="field-body" width="100%"><b>driver : <i>selenium.webdriver.chrome.webdriver.WebDriver</i></b>
+<p class="attr">
+
+</p>
+<b>slider : <i>hemlock.Slider</i></b>
+<p class="attr">
+
+</p>
+<b>target : <i>float or None, default=None</i></b>
+<p class="attr">
+    Target value to which the slider should be dragged. If <code>None</code>, a random target value will be chosen.
+</p>
+<b>tol : <i>float, default=0</i></b>
+<p class="attr">
+    Tolerance for error if the slider cannot be dragged to the exact target.
+</p>
+<b>max_iter : <i>int, default=10</i></b>
+<p class="attr">
+    Maximum number of iterations for the slider to reach the target.
+</p>
+<b>max_wait : <i>int, default=3</i></b>
+<p class="attr">
+    Number of iterations to wait for javascript to load the slider.
+</p>
+<b>wait_interval : <i>int, default=1</i></b>
+<p class="attr">
+    Number of seconds to wait each iteration.
+</p></td>
+</tr>
+    </tbody>
+</table>
+
+<h4 id="examples_4">Examples</h4>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Debug</span> <span class="k">as</span> <span class="n">D</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Slider</span><span class="p">,</span> <span class="n">push_app_context</span>
+<span class="kn">from</span> <span class="nn">hemlock.tools</span> <span class="kn">import</span> <span class="n">chromedriver</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">push_app_context</span><span class="p">()</span>
+
+<span class="n">driver</span> <span class="o">=</span> <span class="n">chromedriver</span><span class="p">()</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span>
+    <span class="n">Slider</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="n">D</span><span class="o">.</span><span class="n">click_slider_range</span><span class="p">(</span><span class="mi">80</span><span class="p">)),</span>
+    <span class="n">debug</span><span class="o">=</span><span class="n">D</span><span class="o">.</span><span class="n">debug_questions</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">_debug</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
+</code></pre></div>
 <h2 id="hemlockfunctionsdebugdrag_range">hemlock.functions.debug.<strong>drag_range</strong></h2>
 <p class="func-header">
-    <i>def</i> hemlock.functions.debug.<b>drag_range</b>(<i>driver, range_, target=None, tol=0, max_iter=10</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L251">[source]</a>
+    <i>def</i> hemlock.functions.debug.<b>drag_range</b>(<i>driver, range_, target=None, tol=0, max_iter=10</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L334">[source]</a>
 </p>
 
 <p>Drag a range slider to specified target value.</p>
@@ -567,7 +648,7 @@ object if the input takes dates or times.</p>
 
 <h4 id="notes_3">Notes</h4>
 <p>This debug function is skipped if the question is not displayed.</p>
-<h4 id="examples_4">Examples</h4>
+<h4 id="examples_5">Examples</h4>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Debug</span> <span class="k">as</span> <span class="n">D</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Range</span><span class="p">,</span> <span class="n">push_app_context</span>
 <span class="kn">from</span> <span class="nn">hemlock.tools</span> <span class="kn">import</span> <span class="n">chromedriver</span>
 
@@ -575,12 +656,16 @@ object if the input takes dates or times.</p>
 
 <span class="n">driver</span> <span class="o">=</span> <span class="n">chromedriver</span><span class="p">()</span>
 
-<span class="n">p</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="n">Range</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="n">D</span><span class="o">.</span><span class="n">drag_range</span><span class="p">(</span><span class="mi">80</span><span class="p">)))</span>
-<span class="n">p</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span><span class="o">.</span><span class="n">_debug</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span>
+    <span class="n">Range</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="n">D</span><span class="o">.</span><span class="n">drag_range</span><span class="p">(</span><span class="mi">80</span><span class="p">)),</span>
+    <span class="n">debug</span><span class="o">=</span><span class="n">D</span><span class="o">.</span><span class="n">debug_questions</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">_debug</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="hemlockfunctionsdebugclick_choices">hemlock.functions.debug.<strong>click_choices</strong></h2>
 <p class="func-header">
-    <i>def</i> hemlock.functions.debug.<b>click_choices</b>(<i>driver, question, *values, if_selected=None, max_clicks=5</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L305">[source]</a>
+    <i>def</i> hemlock.functions.debug.<b>click_choices</b>(<i>driver, question, *values, if_selected=None, max_clicks=5</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L392">[source]</a>
 </p>
 
 <p>Click on choices or options.</p>
@@ -612,8 +697,8 @@ object if the input takes dates or times.</p>
 
 <h4 id="notes_4">Notes</h4>
 <p>Will not attempt to click choices or options which are not displayed.</p>
-<h4 id="examples_5">Examples</h4>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Binary</span><span class="p">,</span> <span class="n">Debug</span> <span class="k">as</span> <span class="n">D</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">push_app_context</span>
+<h4 id="examples_6">Examples</h4>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Check</span><span class="p">,</span> <span class="n">Debug</span> <span class="k">as</span> <span class="n">D</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">push_app_context</span>
 <span class="kn">from</span> <span class="nn">hemlock.tools</span> <span class="kn">import</span> <span class="n">chromedriver</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">push_app_context</span><span class="p">()</span>
@@ -621,16 +706,19 @@ object if the input takes dates or times.</p>
 <span class="n">driver</span> <span class="o">=</span> <span class="n">chromedriver</span><span class="p">()</span>
 
 <span class="n">p</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span>
-    <span class="n">Binary</span><span class="p">(</span>
+    <span class="n">Check</span><span class="p">(</span>
         <span class="s1">&#39;&lt;p&gt;Click &quot;Yes&quot;.&lt;/p&gt;&#39;</span><span class="p">,</span>
+        <span class="p">[</span><span class="s1">&#39;Yes&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Maybe&#39;</span><span class="p">],</span>
         <span class="n">debug</span><span class="o">=</span><span class="n">D</span><span class="o">.</span><span class="n">click_choices</span><span class="p">(</span><span class="s1">&#39;Yes&#39;</span><span class="p">)</span>
-    <span class="p">)</span>
+    <span class="p">),</span>
+    <span class="n">debug</span><span class="o">=</span><span class="n">D</span><span class="o">.</span><span class="n">debug_questions</span><span class="p">()</span>
 <span class="p">)</span>
-<span class="n">p</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span><span class="o">.</span><span class="n">_debug</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">_debug</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="hemlockfunctionsdebugclear_choices">hemlock.functions.debug.<strong>clear_choices</strong></h2>
 <p class="func-header">
-    <i>def</i> hemlock.functions.debug.<b>clear_choices</b>(<i>driver, question</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L360">[source]</a>
+    <i>def</i> hemlock.functions.debug.<b>clear_choices</b>(<i>driver, question</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/debug.py#L450">[source]</a>
 </p>
 
 <p>Clear selected choices.</p>
@@ -654,7 +742,7 @@ object if the input takes dates or times.</p>
 
 <h4 id="notes_5">Notes</h4>
 <p>Intended only for questions in which multiple choices may be selected.</p>
-<h4 id="examples_6">Examples</h4>
+<h4 id="examples_7">Examples</h4>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Check</span><span class="p">,</span> <span class="n">Debug</span> <span class="k">as</span> <span class="n">D</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">push_app_context</span>
 <span class="kn">from</span> <span class="nn">hemlock.tools</span> <span class="kn">import</span> <span class="n">chromedriver</span>
 
@@ -669,9 +757,11 @@ object if the input takes dates or times.</p>
         <span class="n">default</span><span class="o">=</span><span class="s1">&#39;Chocolate&#39;</span><span class="p">,</span>
         <span class="n">multiple</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">debug</span><span class="o">=</span><span class="n">D</span><span class="o">.</span><span class="n">clear_choices</span><span class="p">()</span>
-    <span class="p">)</span>
+    <span class="p">),</span>
+    <span class="n">debug</span><span class="o">=</span><span class="n">D</span><span class="o">.</span><span class="n">debug_questions</span><span class="p">()</span>
 <span class="p">)</span>
-<span class="n">p</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span><span class="o">.</span><span class="n">_debug</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">_debug</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
 </code></pre></div>
               
             </div>

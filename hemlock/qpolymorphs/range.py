@@ -1,11 +1,14 @@
-"""# Range slider"""
+"""# Range sliders"""
 
 from ..app import db, settings
 from ..functions.debug import click_slider_range, drag_range, send_keys
 from ..models import Question
 from .bases import InputBase
 
+import numpy as np
 from flask import render_template
+
+import json
 
 choices_5 = [
     'Strongly disagree',
@@ -38,14 +41,36 @@ choices_9 = [
 ]
 
 def likert(label=None, choices=5, default=0, **kwargs):
+    """
+    Create a Likert slider.
+
+    Parameters
+    ----------
+    label : str, default=None
+
+    choices : int or list, default=5
+        A list of choices (str). May also be `5`, `7`, or `9` for default choice lists of length 5, 7, and 9. The list of choices should be an odd length and symmetric around the midpoint.
+
+    default : int, default=0
+        Default value. `0` is the scale midpoint.
+
+    \*\*kwargs :
+        Keyword arguments are passed to the `Slider` constructor.
+
+    Returns
+    -------
+    Likert : `Slider`
+    """
     def get_choices(choices):
         assert isinstance(choices, list) or choices in (5, 7, 9)
         if choices == 5:
-            return choices_5
+            choices = choices_5
         elif choices == 7:
-            return choices_7
+            choices = choices_7
         elif choices == 9:
-            return choices_9
+            choices = choices_9
+        if kwargs.get('reversed'):
+            choices.reverse()
         return choices
 
     choices = get_choices(choices)
@@ -165,15 +190,33 @@ class RangeInput(InputBase, Question):
         self.js.append(render_template('hemlock/rangeinput.js', q=self))
 
 
-settings['Slider'] = {
-    'min': 0, 'max': 10, 'step': 1, 'debug': click_slider_range
-}
+settings['Slider'] = {'debug': click_slider_range}
 
-class Slider(Question):
+class Slider(InputBase, Question):
+    """
+    Bootstrap slider. 
+    <a href="https://github.com/seiyria/bootstrap-slider" target="_blank">See here</a>.
+
+    Inherits from [`hemlock.InputBase`](bases.md) and 
+    [`hemlock.Question`](../models/question.md).
+
+    Parameters
+    ----------
+    label : str or None, default=None
+        Range label.
+
+    template : str, default='hemlock/slider.html'
+
+    Notes
+    -----
+    You can input the `formatter` parameter in one of three ways:
+
+    1. Javascript function (str). <a href="https://seiyria.com/bootstrap-slider/#example-1" target="_blank">See here</a>.
+    2. List of formatted values, one for each tick.
+    3. Dictionary mapping tick values to formatted values. Any ticks not mapped to a formatted value are displayed as the tick value.
+    """
     id = db.Column(db.Integer, db.ForeignKey('question.id'), primary_key=True)
     __mapper_args__ = {'polymorphic_identity': 'slider'}
-
-    formatter = db.Column(db.PickleType)
 
     _input_attr_names = [
         'min', 'max', 'step',
@@ -188,6 +231,7 @@ class Slider(Question):
         'reversed',
         'rtl',
         'enabled',
+        'formatter',
         'natural_arrow_keys',
         'ticks',
         'ticks_positions',
@@ -205,70 +249,109 @@ class Slider(Question):
         self.input_attrs = {}
         super().__init__(label=label, template=template, **kwargs)
 
-    def get_values(self):
+    def get_max(self):
+        """
+        Returns
+        -------
+        max : scalar
+            Maximum value the slider can take.
+        """
         if self.ticks:
-            return range(self.ticks[0], self.ticks[-1]+self.step, self.step)
-        return range(self.min, self.max, self.step)
+            return self.ticks[-1]
+        return 10 if self.max is None else self.max
 
-    def __getattribute__(self, key):
-        if key == '_input_attr_names' or key not in self._input_attr_names:
-            return super().__getattribute__(key)
-        return self.input_attrs.get('data-slider-'+key.replace('_', '-'))
+    def get_min(self):
+        """
+        Returns
+        -------
+        min : scalar
+            Minimum value the sldier can take.
+        """
+        if self.ticks:
+            return self.ticks[0]
+        return 0 if self.min is None else self.min
 
-    def __setattr__(self, key, val):
-        if key in self._input_attr_names:
-            self.input_attrs['data-slider-'+key.replace('_', '-')] = val
-        else:
-            super().__setattr__(key, val)
+    def get_values(self):
+        """
+        Returns
+        -------
+        values : generator
+            Range of values the slider can take.
+        """
+        step = 1 if self.step is None else self.step
+        return np.arange(self.get_min(), self.get_max()+step, step).tolist()
+
+    def get_midpoint(self):
+        """
+        Returns
+        -------
+        midpoint : scalar
+            Scale midpoint.
+        """
+        values = self.get_values()
+        return values[int(len(values)/2)]
 
     def _render_js(self):
-        def gen_formatter():
-            if isinstance(self.formatter, str):
-                return self.formatter
-            elif isinstance(self.formatter, dict):
-                mapping = {
-                    str(key): str(val) for key, val in self.formatter.items()
-                }
-                return '''
-                    var mapping={};
-                    if (mapping[value]){{
-                        return mapping[value];
-                    }}
-                    return value;
-                '''.format(mapping)
-            elif isinstance(self.formatter, list):
+        # gender bootstrap-slider javascript
+        def set_value():
+            # values is 1. response, 2. default, 3. scale midpoint
+            if self.has_responded:
+                value = self.response
+            elif self.default is not None:
+                value = self.default
+            else:
+                value = self.get_midpoint()
+            slider_attrs['value'] = value
+
+        def compile_formatter():
+            formatter = slider_attrs.pop('formatter', None)
+            if formatter is None:
+                return
+            if isinstance(formatter, list):
+                # list of formatted values for each tick
                 mapping = {
                     str(key): str(val) 
-                    for key, val in zip(self.get_values(), self.formatter)
+                    for key, val in zip(self.get_values(), formatter)
                 }
-                return 'return {}[value];'.format(mapping)
+                formatter = '''
+                    function(value) {{
+                        return {}[value];
+                    }}
+                '''.format(mapping)
+            elif isinstance(formatter, dict):
+                # mapping of tick values to formatted values
+                mapping = {
+                    str(key): str(val) for key, val in formatter.items()
+                }
+                formatter = '''
+                    function(value) {{
+                        var mapping = {};
+                        if (mapping[value]){{
+                            return mapping[value];
+                        }}
+                        return value;
+                    }}
+                '''.format(mapping)
+            return formatter
 
-        js = super()._render_js()
-        if self.formatter is not None:
-            formatter = gen_formatter()
-            js += render_template(
-                'hemlock/slider.js', q=self, formatter=formatter
-            )
-        return js
-
-    def _render_input_attrs(self):
-        ticks_labels = self.input_attrs.pop('data-slider-ticks-labels', None)
-        if ticks_labels is None:
-            return self.input_attrs.to_html()
-        labels = ['"{}"'.format(i) for i in ticks_labels]
-        labels = '[{}]'.format(', '.join(labels))
-        labels = " data-slider-ticks-labels='{}'".format(labels)
-        attrs = self.input_attrs.to_html()
-        return_val = attrs + ' ' + labels
-        self.input_attrs['data-slider-ticks-labels'] = ticks_labels
-        return return_val
+        slider_attrs = self.input_attrs.copy()
+        set_value()
+        formatter = compile_formatter()
+        slider_attrs = json.dumps(slider_attrs)
+        if formatter:
+            # slider_attrs is now a string ending in '}'
+            # need to remove this, then insert formatter, then close with '}'
+            slider_attrs = slider_attrs[:-1]+', formatter: '+formatter+'}'
+        return render_template(
+            'hemlock/slider.js', q=self, slider_attrs=slider_attrs
+        )
 
     def _record_data(self):
         self.data = float(self.response)
-        if self.reversed:
-            values = list(self.get_values())
-            min_, max_ = values[0], values[-1]
-            self.data = (
-                (max_-min_)*(1 - (self.data-min_) / (max_-min_)) + min_
-            )
+        if (
+            isinstance(self.get_min(), int)
+            and isinstance(self.get_max(), int)
+            and (self.step is None or isinstance(self.step, int))
+        ):
+            self.data = int(self.data)
         return self

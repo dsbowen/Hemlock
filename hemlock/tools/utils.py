@@ -247,7 +247,7 @@ def _show_on_event_js(
         target, condition, value, regex=False, duration=400, event=None, 
     ):
     from ..models import ChoiceQuestion
-    from ..qpolymorphs import Binary, Check, Select
+    from ..qpolymorphs import Check, Select
 
     def get_event_value(condition, value):
         if isinstance(condition, ChoiceQuestion):
@@ -262,7 +262,7 @@ def _show_on_event_js(
 
     event, value = get_event_value(condition, value)
     choice = option = False # value is neither a radio, check box, or option
-    if isinstance(condition, (Binary, Check)):
+    if isinstance(condition, Check):
         # value corresponds to radio or check box
         choice, option = True, False
     elif isinstance(condition, Select):

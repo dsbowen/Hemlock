@@ -6,6 +6,7 @@ from .mturk import (
     consent_page, completion_page, get_approve_df, approve_assignments
 )
 from .navbar import Navbar, Navitem, Navitemdd, Dropdownitem
+from .progress import progress
 from .random import Assigner, Randomizer, key, reset_random_seed
 from .statics import (
     format_attrs, external_css, internal_css, external_js, internal_js, 

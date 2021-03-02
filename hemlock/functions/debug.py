@@ -77,8 +77,11 @@ def forward(driver, page, max_wait=30, wait_interval=3):
 
     driver = chromedriver()
 
-    p = Page(debug=[D.debug_questions(), D.forward()])
-    p.preview(driver)._debug(driver)
+    p = Page(
+    \    debug=[D.debug_questions(), D.forward()]
+    )
+    p.preview(driver)
+    p._debug(driver)
     ```
     """
     forward_btn = driver.find_element_by_id('forward-btn')
@@ -108,8 +111,11 @@ def back(driver, page, max_wait=30, wait_interval=1):
 
     driver = chromedriver()
 
-    p = Page(debug=[D.debug_questions(), D.back()])
-    p.preview(driver)._debug(driver)
+    p = Page(
+    \    debug=[D.debug_questions(), D.back()]
+    )
+    p.preview(driver)
+    p._debug(driver)
     ```
     """
     back_btn = driver.find_element_by_id('back-btn')
@@ -153,8 +159,12 @@ def send_keys(driver, question, *keys, p_num=.5):
 
     driver = chromedriver()
 
-    p = Page(Input(debug=D.send_keys('hello world')))
-    p.preview(driver)._debug(driver)
+    p = Page(
+    \    Input(debug=D.send_keys('hello world')),
+    \    debug=D.debug_questions()
+    )
+    p.preview(driver)
+    p._debug(driver)
     ```
     """
     def random_keys():
@@ -213,8 +223,12 @@ def send_datetime(driver, question, datetime_=None):
 
     driver = chromedriver()
 
-    p = Page(Input(type='date', debug=D.send_datetime(datetime.utcnow())))
-    p.preview(driver)._debug(driver)
+    p = Page(
+    \    Input(type='date', debug=D.send_datetime(datetime.utcnow())),
+    \    debug=D.debug_questions()
+    )
+    p.preview(driver)
+    p._debug(driver)
     ```
     """
     inpt = question.input_from_driver(driver)
@@ -250,16 +264,71 @@ def random_input(driver, question):
 # Range debugger
 
 @Debug.register
-def click_slider_range(driver, slider, target=None, tol=0, max_iter=10):
+def click_slider_range(
+        driver, slider, target=None, tol=0, max_iter=10, 
+        max_wait=3, wait_interval=1
+    ):
+    """
+    Click a Bootstrap-slider input.
+
+    Parameters
+    ----------
+    driver : selenium.webdriver.chrome.webdriver.WebDriver
+
+    slider : hemlock.Slider
+
+    target : float or None, default=None
+        Target value to which the slider should be dragged. If `None`, a
+        random target value will be chosen.
+
+    tol : float, default=0
+        Tolerance for error if the slider cannot be dragged to the exact
+        target.
+
+    max_iter : int, default=10
+        Maximum number of iterations for the slider to reach the target.
+
+    max_wait : int, default=3
+        Number of iterations to wait for javascript to load the slider.
+
+    wait_interval : int, default=1
+        Number of seconds to wait each iteration.
+
+    Examples
+    --------
+    ```python
+    from hemlock import Debug as D, Page, Slider, push_app_context
+    from hemlock.tools import chromedriver
+
+    app = push_app_context()
+
+    driver = chromedriver()
+
+    p = Page(
+    \    Slider(debug=D.click_slider_range(80)),
+    \    debug=D.debug_questions()
+    )
+    p.preview(driver)
+    p._debug(driver)
+    ```
+    """
     if target is None:
         target = choice(slider.get_values())
     inpt = driver.find_element_by_id(slider.key)
-    click_slider_range_(
-        driver, inpt, target,
-        horizontal=not slider.orientation=='vertical',
-        tol=tol,
-        max_iter=max_iter
-    )
+    for _ in range(max_wait):
+        # wait time allows js to load the slider bar
+        try:
+            slider_elem = driver.find_element_by_id(slider.key+'Slider')
+            assert slider_elem.is_displayed()
+            click_slider_range_(
+                driver, inpt, target,
+                horizontal=not slider.orientation=='vertical',
+                reversed=slider.reversed,
+                tol=tol,
+                max_iter=max_iter
+            )
+        except:
+            sleep(wait_interval)
 
 @Debug.register
 def drag_range(driver, range_, target=None, tol=0, max_iter=10):
@@ -297,8 +366,12 @@ def drag_range(driver, range_, target=None, tol=0, max_iter=10):
 
     driver = chromedriver()
 
-    p = Page(Range(debug=D.drag_range(80)))
-    p.preview(driver)._debug(driver)
+    p = Page(
+    \    Range(debug=D.drag_range(80)),
+    \    debug=D.debug_questions()
+    )
+    p.preview(driver)
+    p._debug(driver)
     ```
     """
     if target is None:
@@ -343,7 +416,7 @@ def click_choices(driver, question, *values, if_selected=None, max_clicks=5):
     Examples
     --------
     ```python
-    from hemlock import Binary, Debug as D, Page, push_app_context
+    from hemlock import Check, Debug as D, Page, push_app_context
     from hemlock.tools import chromedriver
 
     app = push_app_context()
@@ -351,12 +424,15 @@ def click_choices(driver, question, *values, if_selected=None, max_clicks=5):
     driver = chromedriver()
 
     p = Page(
-    \    Binary(
-    \        '<p>Click "Yes".</p>', 
+    \    Check(
+    \        '<p>Click "Yes".</p>',
+    \        ['Yes', 'No', 'Maybe'],
     \        debug=D.click_choices('Yes')
-    \    )
+    \    ),
+    \    debug=D.debug_questions()
     )
-    p.preview(driver)._debug(driver)
+    p.preview(driver)
+    p._debug(driver)
     ```
     """
     def choose_values():
@@ -402,9 +478,11 @@ def clear_choices(driver, question):
     \        default='Chocolate', 
     \        multiple=True,
     \        debug=D.clear_choices()
-    \    )
+    \    ),
+    \    debug=D.debug_questions()
     )
-    p.preview(driver)._debug(driver)
+    p.preview(driver)
+    p._debug(driver)
     ```
     """
     if not question.choices:

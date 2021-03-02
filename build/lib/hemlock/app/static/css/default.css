@@ -43,3 +43,15 @@ input:checked + label {
 input[type="checkbox"]:checked:hover + label {
     background-color: #BEBEBE;
 }
+
+/* Bootstrap-slider formatting */
+.slider.slider-horizontal {
+    width: 80%;
+}
+.slider-selection.tick-slider-selection {
+    background: transparent;
+}
+.slider-tick.in-selection {
+    background-color: #f7f7f7;
+    background-image: none;
+}

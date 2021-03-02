@@ -67,6 +67,7 @@ nav:
     - Language: tools/lang.md
     - MTurk: tools/mturk.md
     - Navbar: tools/navbar.md
+    - Progress bar: tools/progress.md
     - Randomization: tools/random.md
     - Statics: tools/statics.md
     - Titrate: tools/titrate.md
