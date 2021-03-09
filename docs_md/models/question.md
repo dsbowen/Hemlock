@@ -236,10 +236,45 @@ Clear the response.
 
 
 
+
+
+<p class="func-header">
+    <i></i> <b>convert_markdown</b>(<i>self, string, strip_last_paragraph=False</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/question.py#L231">[source]</a>
+</p>
+
+Convert markdown-formatted string to HMTL.
+
+<table class="docutils field-list field-table" frame="void" rules="none">
+    <col class="field-name" />
+    <col class="field-body" />
+    <tbody valign="top">
+        <tr class="field">
+    <th class="field-name"><b>Parameters:</b></td>
+    <td class="field-body" width="100%"><b>string : <i>str</i></b>
+<p class="attr">
+    Markdown-formatted string.
+</p>
+<b>strip_last_paragraph : <i>bool, default=False</i></b>
+<p class="attr">
+    Strips the <code>&lt;p&gt;</code> tag from the last paragraph. This often prettifies the display.
+</p></td>
+</tr>
+<tr class="field">
+    <th class="field-name"><b>Returns:</b></td>
+    <td class="field-body" width="100%"><b>HTML : <i>str</i></b>
+<p class="attr">
+    HTML-formatted string.
+</p></td>
+</tr>
+    </tbody>
+</table>
+
+
+
 ##hemlock.**ChoiceQuestion**
 
 <p class="func-header">
-    <i>class</i> hemlock.<b>ChoiceQuestion</b>(<i>label=None, choices=[], template=None, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/question.py#L277">[source]</a>
+    <i>class</i> hemlock.<b>ChoiceQuestion</b>(<i>label=None, choices=[], template=None, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/question.py#L302">[source]</a>
 </p>
 
 A question which contains choices. Inherits from `hemlock.Question`.

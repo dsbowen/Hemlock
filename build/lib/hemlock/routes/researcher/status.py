@@ -44,7 +44,7 @@ def status():
         Label(PARTICIPANTS.format(**ds.current_status)),
         navbar=navbar.render(), back=False, forward=False,
         extra_js=[
-            external_js(current_app.settings['socket_js_src']),
-            external_js(url_for('hemlock.static', filename='js/status.js'))
+            {'src': current_app.settings['socket_js_src']},
+            {'src': url_for('hemlock.static', filename='js/status.js')}
         ]
     )._render()

@@ -50,19 +50,28 @@ def get_download_page():
     )
     presentation_q = Select(
         "Select presentation for viewing.",
-        [('First presentation only', 'first'), ('All presentations', 'all')],
+        [
+            ('First presentation only', 'first'), 
+            ('All presentations', 'all')
+        ],
     )
     show_on_event(presentation_q, part_ids_q, '\S+', regex=True)
     file_type_q = Select(
         "Select the type of download.",
-        [('Screenshots', 'screenshot'), ('Text', 'text')],
+        [
+            ('Screenshots', 'screenshot'), 
+            ('Text', 'text')
+        ],
     )
     show_on_event(file_type_q, part_ids_q, '\S+', regex=True)
 
     page = Page(
         Check(
             "Select files to download.", 
-            [('Data frame', 'data'), ('Participant metadata', 'meta')],
+            [
+                ('Data frame', 'data'), 
+                ('Participant metadata', 'meta')
+            ],
             multiple=True,
         ),
         part_ids_q,

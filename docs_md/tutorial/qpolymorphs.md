@@ -14,21 +14,22 @@ Click here to see what your <a href="https://github.com/dsbowen/hemlock-tutorial
 We'll use jupyter notebook as a blackboard to iterate on our demographics page design. After pushing the application context, we'll create a demographics page based on the World Values Survey:
 
 ```python
-from hemlock import Binary, Check, Input, Page, Label, RangeInput, Select
+from hemlock import Check, Input, Page, Label, RangeInput, Select, binary
 
 p = Page(
     Select(
-        '<p>What is your gender?</p>',
+        'What is your gender?',
         ['', 'Male', 'Female', 'Other']
     ),
     Input(
-        '<p>How old are you?</p>',
-        type='number', min=0
+        'How old are you?',
+        type='number', min=0,
     ),
     Check(
         '''
-        <p>Which race or ethnicity do you belong to?</p> 
-        <p>Check as many as apply.</p>
+        Which race or ethnicity do you belong to?
+        
+        Check as many as apply.
         ''',
         [
             'White',
@@ -40,13 +41,12 @@ p = Page(
         ],
         multiple=True
     ),
-    Binary(
-        '<p>Are you the primary wage earner in your household?</p>'
+    binary(
+        'Are you the primary wage earner in your household?'
     ),
     RangeInput(
         '''
-        <p>On a scale from 0 (lowest) to 10 (highest), which income group does 
-        your household belong to?</p>
+        On a scale from 0 (lowest) to 10 (highest), which income group does your household belong to?
         ''',
         min=0, max=10
     )
@@ -68,7 +68,7 @@ The third question is a check question. Like a select question, this allows part
 
 Also notice that we pass `multiple=True` to the `Check` constructor. This allows participants to select multiple choices. By default, `multiple` is `False`, meaning participants can only select one choice. We can also pass `multiple=True` to `Select` questions to allow participants to select multiple choices from a dropdown menu.
 
-The fourth question is a binary, which is like a check but for exactly two choices. By default, the choices are `'Yes'` and `'No'`, and their values are recoded as `1` and `0` when you download the data.
+We create the fourth question using the `binary` function. `binary` creates a check question with two choices. By default, the choices are `'Yes'` and `'No'`, and their values are recoded as `1` and `0` when you download the data.
 
 The last question is a `RangeInput`, which is what you get when a range slider and an input give each other a special hug. By default, range inputs go from 0 to 100, but we change it from 0 to 10 by specifying the `min` and `max` values.
 
@@ -87,7 +87,7 @@ def start():
     return Branch(
         Page(
             Select(
-                '<p>What is your gender?</p>',
+                'What is your gender?',
                 ['', 'Male', 'Female', 'Other']
             ),
             # INSERT THE REST OF THE DEMOGRAPHICS PAGE HERE

@@ -303,7 +303,7 @@
             <span class="p">),</span>
             <span class="n">checks</span><span class="o">=</span><span class="n">Page</span><span class="p">(</span>
                 <span class="n">Check</span><span class="p">(</span>
-                    <span class="s1">&#39;&lt;p&gt;Select the correct choice.&lt;/p&gt;&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;Select the correct choice.&#39;</span><span class="p">,</span>
                     <span class="p">[</span><span class="s1">&#39;Correct&#39;</span><span class="p">,</span> <span class="s1">&#39;Incorrect&#39;</span><span class="p">,</span> <span class="s1">&#39;Also incorrect&#39;</span><span class="p">],</span>
                     <span class="nb">compile</span><span class="o">=</span><span class="p">[</span><span class="n">C</span><span class="o">.</span><span class="n">clear_response</span><span class="p">(),</span> <span class="n">C</span><span class="o">.</span><span class="n">shuffle</span><span class="p">()],</span>
                     <span class="n">validate</span><span class="o">=</span><span class="n">V</span><span class="o">.</span><span class="n">require</span><span class="p">(),</span>
@@ -332,35 +332,30 @@
 <h2 id="ultimatum-game-comprehension-check">Ultimatum game comprehension check</h2>
 <p>We're going to use a comprehension check to explain the ultimatum game to our participants and test their understanding of it. First, open <code>app.py</code> and change <code>import tmp_survey</code> back to <code>import survey</code>.</p>
 <h3 id="instructions">Instructions</h3>
+<p>We're going to write several paragraphs of instructions for our participants. Rather than put this directly in <code>survey.py</code>, we'll store it in a file <code>ug_instructions.md</code>, also in the root directory.</p>
+<p>??? tip "Why store instructions in a separate file?:
+    It's good practice to store large blocks of text in separate markdown files for two reasons:</p>
+<pre><code>1. It avoids cluttering your python file
+2. It allows you to iterate on the phrasing of important survey pages with your less tech-savvy collaborators, sparing them the enormous burden of having to parse a few lines of code
+</code></pre>
+<p>Create a file named <code>ug_instructions.md</code> and paste the following:</p>
+<div class="highlight"><pre><span></span><code>You are about to play an ultimatum game. The game involves two players: a **proposer** and a **responder**. The proposer has ${} to split between him/herself and the responder. The responder names an amount of money such that he/she accepts any proposed split which gives him/her at least this amount, and rejects any proposed split which gives him/her less than this amount.
+
+**If the split is accepted, the proposer and responder split the money according to the proposal. If the split is rejected, both players receive $0.**
+
+You will play {} rounds of this game. Each round, you will be paired with another randomly selected participant. **You will rarely, if ever, play two rounds with the same player.**
+
+We will test your understanding of these instructions on the next page.
+</code></pre></div>
 <p>Open your notebook and let's preview the instructions page:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Label</span>
 
-<span class="c1"># the number of rounds participants play</span>
-<span class="n">N_ROUNDS</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="c1"># the amount of money split</span>
-<span class="n">POT</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">N_ROUNDS</span> <span class="o">=</span> <span class="mi">5</span> <span class="c1"># the number of rounds participants play</span>
+<span class="n">POT</span> <span class="o">=</span> <span class="mi">20</span> <span class="c1"># the amount of money split</span>
 
 <span class="n">Page</span><span class="p">(</span>
     <span class="n">Label</span><span class="p">(</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        &lt;p&gt;You are about to play an ultimatum game. The game involves two</span>
-<span class="sd">        players: a &lt;b&gt;proposer&lt;/b&gt; and a &lt;b&gt;responder&lt;/b&gt;. The proposer has </span>
-<span class="sd">        ${} to split between him/herself and the responder. The responder </span>
-<span class="sd">        names an amount of money such that he/she accepts any proposed </span>
-<span class="sd">        split which gives him/her at least this amount, and rejects any </span>
-<span class="sd">        proposed split which gives him/her less than this amount.&lt;/p&gt;</span>
-
-<span class="sd">        &lt;p&gt;&lt;b&gt;If the split is accepted, the proposer and responder split the </span>
-<span class="sd">        money according to the proposal. If the split is rejected, both </span>
-<span class="sd">        players receive $0.&lt;/b&gt;&lt;/p&gt;</span>
-
-<span class="sd">        &lt;p&gt;You will play {} rounds of this game. Each round, you will be </span>
-<span class="sd">        paired with another randomly selected participant. &lt;b&gt;You will rarely, </span>
-<span class="sd">        if ever, play two rounds with the same player.&lt;/b&gt;</span>
-
-<span class="sd">        We will test your understanding of these instructions on the </span>
-<span class="sd">        next page.</span>
-<span class="sd">        &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">POT</span><span class="p">,</span> <span class="n">N_ROUNDS</span><span class="p">)</span>
+        <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;ug_instructions.md&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">POT</span><span class="p">,</span> <span class="n">N_ROUNDS</span><span class="p">)</span>
     <span class="p">)</span>
 <span class="p">)</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
 </code></pre></div>
@@ -374,11 +369,11 @@
     <span class="k">return</span> <span class="n">Page</span><span class="p">(</span>
         <span class="n">Label</span><span class="p">(),</span>
         <span class="n">Input</span><span class="p">(</span>
-            <span class="s1">&#39;&lt;p&gt;How much money does the proposer receive?&lt;/p&gt;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;How much money does the proposer receive?&#39;</span><span class="p">,</span>
             <span class="n">prepend</span><span class="o">=</span><span class="s1">&#39;$&#39;</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="s1">&#39;.00&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;number&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">),</span>
         <span class="n">Input</span><span class="p">(</span>
-            <span class="s1">&#39;&lt;p&gt;How much money does the responder receive?&lt;/p&gt;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;How much money does the responder receive?&#39;</span><span class="p">,</span>
             <span class="n">prepend</span><span class="o">=</span><span class="s1">&#39;$&#39;</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="s1">&#39;.00&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;number&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">),</span>
         <span class="nb">compile</span><span class="o">=</span><span class="p">[</span><span class="n">C</span><span class="o">.</span><span class="n">clear_response</span><span class="p">(),</span> <span class="n">C</span><span class="o">.</span><span class="n">random_proposal</span><span class="p">(</span><span class="n">accept</span><span class="p">)]</span>
@@ -394,7 +389,6 @@
 <p>The <code>gen_check_page</code> function generates a check page. The <code>Label</code> with which the page starts is going to be populated by a randomly generated proposal-response pair which we'll create with the compile function <code>random_proposal</code>. Both <code>gen_check_page</code> and <code>random_proposal</code> take an <code>accept</code> argument which indicates whether the proposal will be accepted or rejected.</p>
 <p>Now, fill in the <code>random_proposal</code> function in the next cell:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Compile</span> <span class="k">as</span> <span class="n">C</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Submit</span> <span class="k">as</span> <span class="n">S</span>
-<span class="kn">from</span> <span class="nn">hemlock.tools</span> <span class="kn">import</span> <span class="n">html_list</span>
 
 <span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
 
@@ -407,24 +401,22 @@
     <span class="c1"># compute the payoff</span>
     <span class="n">payoff</span> <span class="o">=</span> <span class="n">proposal</span> <span class="k">if</span> <span class="n">response</span><span class="o">&lt;=</span><span class="n">proposal</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
     <span class="c1"># describe the proposal and response in the label</span>
-    <span class="n">proposal_html</span> <span class="o">=</span> <span class="n">html_list</span><span class="p">(</span>
-        <span class="s1">&#39;Proposer: $</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">proposal</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
-        <span class="s1">&#39;Responder: $</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">proposal</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
-        <span class="n">ordered</span><span class="o">=</span><span class="kc">False</span>
-    <span class="p">)</span>
     <span class="n">check_page</span><span class="o">.</span><span class="n">questions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
-<span class="s1">    &lt;p&gt;Imagine the proposer proposes the following split:&lt;/p&gt;</span>
-<span class="s1">    </span><span class="si">{}</span><span class="s1"></span>
+<span class="s1">    Imagine the proposer proposes the following split:</span>
+
+<span class="s1">    - Proposer: $</span><span class="si">{}</span><span class="s1"></span>
+<span class="s1">    - Responder: $</span><span class="si">{}</span><span class="s1"></span>
+
 <span class="s1">    The responder says, &quot;I will accept any proposal which gives me at least $</span><span class="si">{}</span><span class="s1">.&quot;</span>
-<span class="s1">    &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">proposal_html</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+<span class="s1">    &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">proposal</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">proposal</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">response</span><span class="p">)</span>
     <span class="c1"># add submit functions to verify that the response was correct</span>
-    <span class="n">check_page</span><span class="o">.</span><span class="n">questions</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">submit</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">payoff</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">check_page</span><span class="o">.</span><span class="n">questions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">submit</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">payoff</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">check_page</span><span class="o">.</span><span class="n">questions</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">submit</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">payoff</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">check_page</span><span class="o">.</span><span class="n">questions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">submit</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">payoff</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 </code></pre></div>
 <p><code>random_proposal</code> begins by generating a random proposal. We then generate a random response which will accept the proposal if <code>accept</code> is <code>True</code> and reject the proposal if <code>accept</code> is <code>False</code>.</p>
 <p>The <code>payoff</code> is the proposal if the proposal is accepted and <code>(0,0)</code> if the proposal is rejected.</p>
 <p>We then fill in the check page's label with the proposal and response.</p>
-<p>Finally, we add submit functions to the check page's input questions to verify that the participant's responses match the payoffs.</p>
+<p>Finally, we add submit functions to the check page's input questions to verify that the participant's responses equal (<code>eq</code>) the true payoffs.</p>
 <p>Let's preview our comprehension check page when the responder accepts the proposal:</p>
 <div class="highlight"><pre><span></span><code><span class="n">check_page</span> <span class="o">=</span> <span class="n">gen_check_page</span><span class="p">(</span><span class="n">accept</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">check_page</span><span class="o">.</span><span class="n">_compile</span><span class="p">()</span>
@@ -441,24 +433,25 @@
     <span class="n">Branch</span><span class="p">,</span> <span class="n">Compile</span> <span class="k">as</span> <span class="n">C</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Validate</span> <span class="k">as</span> <span class="n">V</span><span class="p">,</span> <span class="n">Submit</span> <span class="k">as</span> <span class="n">S</span><span class="p">,</span> 
     <span class="n">route</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">hemlock.tools</span> <span class="kn">import</span> <span class="n">comprehension_check</span><span class="p">,</span> <span class="n">html_list</span><span class="p">,</span> <span class="n">join</span>
+<span class="kn">from</span> <span class="nn">hemlock.tools</span> <span class="kn">import</span> <span class="n">comprehension_check</span><span class="p">,</span> <span class="n">join</span>
 <span class="kn">from</span> <span class="nn">hemlock_demographics</span> <span class="kn">import</span> <span class="n">basic_demographics</span>
 
 <span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
 
-<span class="c1"># the number of rounds participants play</span>
-<span class="n">N_ROUNDS</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="c1"># the amount of money split</span>
-<span class="n">POT</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">N_ROUNDS</span> <span class="o">=</span> <span class="mi">5</span> <span class="c1"># the number of rounds participants play</span>
+<span class="n">POT</span> <span class="o">=</span> <span class="mi">20</span> <span class="c1"># the amount of money split</span>
 
 <span class="o">...</span>
 
 <span class="k">def</span> <span class="nf">ultimatum_game</span><span class="p">(</span><span class="n">start_branch</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">gen_check_page</span><span class="p">(</span><span class="n">accept</span><span class="p">):</span>
+        <span class="c1"># PASTE YOUR GEN_CHECK_PAGE FUNCTION HERE</span>
+
     <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span>
         <span class="o">*</span><span class="n">comprehension_check</span><span class="p">(</span>
             <span class="n">instructions</span><span class="o">=</span><span class="n">Page</span><span class="p">(</span>
                 <span class="n">Label</span><span class="p">(</span>
-                    <span class="c1"># ULTIMATUM GAME INSTRUCTIONS HERE</span>
+                    <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;ug_instructions.md&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">POT</span><span class="p">,</span> <span class="n">N_ROUNDS</span><span class="p">)</span>
                 <span class="p">)</span>
             <span class="p">),</span>
             <span class="n">checks</span><span class="o">=</span><span class="p">[</span>
@@ -479,12 +472,9 @@
         <span class="p">)</span>
     <span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">gen_check_page</span><span class="p">(</span><span class="n">accept</span><span class="p">):</span>
-    <span class="c1"># COPY AND PASTE YOUR FUNCTION HERE</span>
-
 <span class="nd">@C</span><span class="o">.</span><span class="n">register</span>
 <span class="k">def</span> <span class="nf">random_proposal</span><span class="p">(</span><span class="n">check_page</span><span class="p">,</span> <span class="n">accept</span><span class="p">):</span>
-    <span class="c1"># COPY AND PASTE YOUR FUNCTION HERE</span>
+    <span class="c1"># PASTE YOUR RANDOM_PROPOSAL FUNCTION HERE</span>
 </code></pre></div>
 <p>Run your app and see your comprehension check at work!</p>
 <h2 id="summary">Summary</h2>

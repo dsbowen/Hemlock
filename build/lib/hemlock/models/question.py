@@ -5,7 +5,7 @@ most useful when fleshed out. See section on question polymorphs.
 """
 
 from ..app import db
-from ..tools import key
+from ..tools import key, markdown
 from .bases import Data
 from .private import CSSListType, JSListType
 
@@ -228,13 +228,38 @@ class Question(Data):
         self.has_responded = False
         return self
 
+    def convert_markdown(self, string, strip_last_paragraph=False):
+        """
+        Convert markdown-formatted string to HMTL.
+
+        Parameters
+        ----------
+        string : str
+            Markdown-formatted string.
+
+        strip_last_paragraph : bool, default=False
+            Strips the `<p>` tag from the last paragraph. This often prettifies
+            the display.
+
+        Returns
+        -------
+        HTML : str
+            HTML-formatted string.
+        """
+        return markdown(string, strip_last_paragraph)
+
     # methods executed during study
     def _compile(self):
         [f(self) for f in self.compile]
         return self
 
     def _render(self, body=None):
-        return render_template(self.template, q=self)
+        return render_template(
+            self.template, 
+            q=self, 
+            error=markdown(self.error, strip_last_paragraph=True), 
+            label=markdown(self.label)
+        )
 
     def _render_js(self):
         return self.js.render()
@@ -316,10 +341,6 @@ class ChoiceQuestion(Question):
     def __init__(self, label=None, choices=[], template=None, **kwargs):
         self.choices = choices
         super().__init__(label=label, template=template, **kwargs)
-
-    def _render(self, body=None):
-        """Add choice HTML to `body`"""
-        return render_template(self.template, q=self)
 
     def _record_response(self):
         """Record response

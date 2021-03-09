@@ -212,9 +212,9 @@
     </li>
         </ul>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#hemlocktoolshtml_list">hemlock.tools.html_list</a>
+    <li class="toctree-l2"><a class="reference internal" href="#hemlocktoolsmake_list">hemlock.tools.make_list</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#hemlocktoolshtml_table">hemlock.tools.html_table</a>
+    <li class="toctree-l2"><a class="reference internal" href="#hemlocktoolsmake_table">hemlock.tools.make_table</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#examples_2">Examples</a>
     </li>
@@ -391,22 +391,35 @@ parameter you pass.</p>
 &#39;StartTime&#39;: [datetime.datetime(2020, 7, 6, 17, 11, 0, 245032)],
 &#39;Status&#39;: [&#39;Completed&#39;]}
 </code></pre></div>
-<h2 id="hemlocktoolshtml_list">hemlock.tools.<strong>html_list</strong></h2>
+<h2 id="hemlocktoolsmake_list">hemlock.tools.<strong>make_list</strong></h2>
 <p class="func-header">
-    <i>def</i> hemlock.tools.<b>html_list</b>(<i>*items, ordered=True</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/utils.py#L90">[source]</a>
+    <i>def</i> hemlock.tools.<b>make_list</b>(<i>items, ordered=False</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/utils.py#L90">[source]</a>
 </p>
 
 <table class="docutils field-list field-table" frame="void" rules="none">
     <col class="field-name" />
     <col class="field-body" />
     <tbody valign="top">
+        <tr class="field">
+    <th class="field-name"><b>Parameters:</b></td>
+    <td class="field-body" width="100%"><b>items : <i>list</i></b>
+<p class="attr">
 
+</p></td>
+</tr>
+<tr class="field">
+    <th class="field-name"><b>Returns:</b></td>
+    <td class="field-body" width="100%"><b>markdown : <i>str</i></b>
+<p class="attr">
+    Markdown-formatted list.
+</p></td>
+</tr>
     </tbody>
 </table>
 
-<h2 id="hemlocktoolshtml_table">hemlock.tools.<strong>html_table</strong></h2>
+<h2 id="hemlocktoolsmake_table">hemlock.tools.<strong>make_table</strong></h2>
 <p class="func-header">
-    <i>def</i> hemlock.tools.<b>html_table</b>(<i>table, extra_classes=[]</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/utils.py#L96">[source]</a>
+    <i>def</i> hemlock.tools.<b>make_table</b>(<i>table, extra_classes=[]</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/utils.py#L107">[source]</a>
 </p>
 
 <table class="docutils field-list field-table" frame="void" rules="none">
@@ -458,7 +471,7 @@ parameter you pass.</p>
 </code></pre></div>
 <h2 id="hemlocktoolsshow_on_event">hemlock.tools.<strong>show_on_event</strong></h2>
 <p class="func-header">
-    <i>def</i> hemlock.tools.<b>show_on_event</b>(<i>target, condition, value, init_hidden=True, *args, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/utils.py#L158">[source]</a>
+    <i>def</i> hemlock.tools.<b>show_on_event</b>(<i>target, condition, value, init_hidden=True, *args, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/utils.py#L169">[source]</a>
 </p>
 
 <p>Show the target question when a condition is met.</p>
@@ -524,7 +537,7 @@ parameter you pass.</p>
 </code></pre></div>
 <h2 id="hemlocktoolsurl_for">hemlock.tools.<strong>url_for</strong></h2>
 <p class="func-header">
-    <i>def</i> hemlock.tools.<b>url_for</b>(<i>*args, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/utils.py#L283">[source]</a>
+    <i>def</i> hemlock.tools.<b>url_for</b>(<i>*args, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/utils.py#L294">[source]</a>
 </p>
 
 <p>Attempt to return <code>flask.url_for(*args, **kwargs)</code>. However, this method

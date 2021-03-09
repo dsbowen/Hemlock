@@ -1,7 +1,7 @@
 """Tools"""
 
 from .comprehension import comprehension_check
-from .lang import indef_article, join, plural, pronouns
+from .lang import indef_article, join, markdown, plural, pronouns
 from .mturk import (
     consent_page, completion_page, get_approve_df, approve_assignments
 )
@@ -14,5 +14,5 @@ from .statics import (
 )
 from .titrate import titrate
 from .utils import (
-    chromedriver, get_data, html_list, html_table, show_on_event, url_for
+    chromedriver, get_data, make_list, make_table, show_on_event, url_for
 )

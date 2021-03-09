@@ -441,7 +441,7 @@ Use a selenium webdriver to click on this choice.
 ##hemlock.**Option**
 
 <p class="func-header">
-    <i>class</i> hemlock.<b>Option</b>(<i>label=None, template='hemlock/option.html', **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/choice.py#L256">[source]</a>
+    <i>class</i> hemlock.<b>Option</b>(<i>label=None, template='hemlock/option.html', **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/choice.py#L257">[source]</a>
 </p>
 
 Options are displayed as part of their question (usually
@@ -478,7 +478,7 @@ is similar to `hemlock.Choice`, but for `Select` questions instead of
 
 
 <p class="func-header">
-    <i></i> <b>click</b>(<i>self, driver, if_selected=None</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/choice.py#L279">[source]</a>
+    <i></i> <b>click</b>(<i>self, driver, if_selected=None</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/choice.py#L280">[source]</a>
 </p>
 
 Use a selenium webdriver to click on this choice.
@@ -513,7 +513,7 @@ Use a selenium webdriver to click on this choice.
 
 
 <p class="func-header">
-    <i></i> <b>is_displayed</b>(<i>self, driver</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/choice.py#L307">[source]</a>
+    <i></i> <b>is_displayed</b>(<i>self, driver</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/choice.py#L308">[source]</a>
 </p>
 
 

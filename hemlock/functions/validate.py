@@ -8,7 +8,8 @@ the repsonse is invalid.
 from ..models import Validate
 from ..tools.lang import join, plural
 from .utils import (
-    convert, correct_choices as correct_choices_, match as match_
+    convert, correct_choices as correct_choices_, get_benchmark, 
+    match as match_
 )
 
 import re
@@ -175,12 +176,94 @@ def is_not_in(question, invalid_set, resp_type=None):
     if resp in invalid_set:
         return NOT_IN_MSG.format(join('or', *invalid_set))
 
-# Range validation
-
-MAX_MSG = 'Please enter a response less than {}'
+# Value validation
 
 @Validate.register
-def max_val(question, max_, resp_type=None):
+def eq(question, value, resp_type=None):
+    """
+    Validate that the response equals the given value.
+
+    Parameters
+    ----------
+    question : hemlock.Question
+
+    value :
+        Value that the response should equal. If a `Question`, then 
+        `value.data` is used.
+
+    resp_type : class or None, default=None
+        Expected type of response. If `None`, the type of `value` will be 
+        used.
+
+    Examples
+    --------
+    ```python
+    from hemlock import Input, Validate as V, push_app_context
+
+    app = push_app_context()
+
+    inpt = Input(response='51', validate=V.eq(50))
+    inpt._validate()
+    inpt.error
+    ```
+
+    Out:
+
+    ```
+    'Please enter 50'
+    ```
+    """
+    value, resp_type = get_benchmark(value, resp_type)
+    type_error_msg = response_type(question, resp_type)
+    if type_error_msg is not None:
+        return type_error_msg
+    if resp_type(question.response) != value:
+        return 'Please enter {}'.format(value)
+
+@Validate.register
+def neq(question, value, resp_type=None):
+    """
+    Validate that the response does not equal the given value.
+
+    Parameters
+    ----------
+    question : hemlock.Question
+
+    value :
+        Value that the response should not equal. If a `Question`, then 
+        `value.data` is used.
+
+    resp_type : class or None, default=None
+        Expected type of response. If `None`, the type of `value` will be 
+        used.
+
+    Examples
+    --------
+    ```python
+    from hemlock import Input, Validate as V, push_app_context
+
+    app = push_app_context()
+
+    inpt = Input(response='50', validate=V.neq(50))
+    inpt._validate()
+    inpt.error
+    ```
+
+    Out:
+
+    ```
+    'Please do not enter 50'
+    ```
+    """
+    value, resp_type = get_benchmark(value, resp_type)
+    type_error_msg = response_type(question, resp_type)
+    if type_error_msg is not None:
+        return type_error_msg
+    if resp_type(question.response) == value:
+        return 'Please do not enter {}'.format(value)
+
+@Validate.register
+def max(question, max, resp_type=None):
     """
     Validate that the response does not exceed a maximum value.
 
@@ -188,8 +271,8 @@ def max_val(question, max_, resp_type=None):
     ----------
     question : hemlock.Question
 
-    max_ : 
-        Maximum value.
+    max : 
+        Maximum value. If a `Question`, then `max.data` is the maximum value.
 
     resp_type : class or None, default=None
         Expected type of response. If `None`, the type of `max` will be used.
@@ -201,7 +284,7 @@ def max_val(question, max_, resp_type=None):
 
     app = push_app_context()
 
-    inpt = Input(response='101', validate=V.max_val(100))
+    inpt = Input(response='101', validate=V.max(100))
     inpt._validate()
     inpt.error
     ```
@@ -212,13 +295,15 @@ def max_val(question, max_, resp_type=None):
     Please enter a response less than 100.
     ```
     """
-    error_msg = MAX_MSG.format(max_)
-    return _compare_resp(question, max_, __le__, error_msg, resp_type)
-
-MIN_MSG = 'Please enter a response greater than {}'
+    max, resp_type = get_benchmark(max, resp_type)
+    type_error_msg = response_type(question, resp_type)
+    if type_error_msg is not None:
+        return type_error_msg
+    if resp_type(question.response) > max:
+        return 'Please enter a response less than {}'.format(max)
 
 @Validate.register
-def min_val(question, min_, resp_type=None):
+def min(question, min, resp_type=None):
     """
     Validate that the response does not deceed a minumum value.
 
@@ -226,8 +311,8 @@ def min_val(question, min_, resp_type=None):
     ----------
     question : hemlock.Question
 
-    min_ : 
-        Minimum value.
+    min : 
+        Minimum value. If a `Question`, then `min.data` is the minimum value.
 
     resp_type : class or None, default=None
         Expected type of response. If `None`, the type of `min` will be used.
@@ -250,41 +335,15 @@ def min_val(question, min_, resp_type=None):
     Please enter a response greater than 0.
     ```
     """
-    error_msg = MIN_MSG.format(min_)
-    return _compare_resp(question, min_, __ge__, error_msg, resp_type)
-
-def _compare_resp(question, val, comparator, error_msg, resp_type=None):
-    """
-    Compare question response.
-
-    Parameters
-    ----------
-    question : hemlock.Question
-
-    val :
-        Comparison value.
-
-    comparator : callable
-        Takes `question.resposne` and `val` and returns a bool indicating that 
-        the comparison was 'successful'.
-
-    error_msg : str
-        Error message to be displayed if comparison is unsuccessful.
-
-    resp_type : class or None, default=None
-        Expected type of response. If `None`, the type of `val` will be used.
-    """
-    resp_type = resp_type or type(val)
+    min, resp_type = get_benchmark(min, resp_type)
     type_error_msg = response_type(question, resp_type)
     if type_error_msg is not None:
         return type_error_msg
-    if not comparator(resp_type(question.response), val):
-        return error_msg
-
-RANGE_MSG = 'Please enter a response between {0} and {1}'
+    if resp_type(question.response) < min:
+        return 'Please enter a response greater than {}'.format(min)
 
 @Validate.register
-def range_val(question, min_, max_, resp_type=None):
+def range(question, min, max, resp_type=None):
     """
     Validate that the response is in a given range.
 
@@ -292,11 +351,13 @@ def range_val(question, min_, max_, resp_type=None):
     ----------
     question : hemlock.Question
     
-    min_ : 
-        Minimum value for the question response.
+    min : 
+        Minimum value for the question response. If a `Question`, then 
+        `min.data` is the minimum value.
 
-    max_ :
-        Maximum value for the question response.
+    max :
+        Maximum value for the question response. If a `Question`, then 
+        `max.data` is the maximum value.
 
     resp_type : class or None, default=None
         Expected type of response. If `None`, the expected response type is 
@@ -309,7 +370,7 @@ def range_val(question, min_, max_, resp_type=None):
 
     app = push_app_context()
 
-    inpt = Input(response='101', validate=V.range_val(0, 100))
+    inpt = Input(response='101', validate=V.range(0, 100))
     inpt._validate()
     inpt.error
     ```
@@ -320,14 +381,15 @@ def range_val(question, min_, max_, resp_type=None):
     Please enter a response between 0 and 100.
     ```
     """
-    if resp_type is None:
-        assert type(min_) == type(max_)
-        resp_type = type(min_)
-    type_error_msg = response_type(question, resp_type)
+    min, min_type = get_benchmark(min, resp_type)
+    max, max_type = get_benchmark(max, resp_type)
+
+    assert min_type == max_type, '`min` and `max` must be the same type'
+    type_error_msg = response_type(question, min_type)
     if type_error_msg is not None:
         return type_error_msg
-    if not (min_ <= resp_type(question.response) <= max_):
-        return RANGE_MSG.format(min_, max_)
+    if not (min <= min_type(question.response) <= max):
+        return 'Please enter a response between {} and {}'.format(min, max)
 
 # Length validation
 

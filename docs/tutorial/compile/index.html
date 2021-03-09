@@ -310,37 +310,21 @@ check.choices
 <p><code>shuffle</code> is just one of many <a href="../../functions/compile/">native hemlock compile functions</a>.</p>
 </div>
 <h2 id="an-aside-on-tools">An aside on tools</h2>
-<p>To make our confirmation page, we're going to need two tools.</p>
-<p>The first is <code>join</code>. This tool joins a list of items using a 'joiner' like 'and' or 'or'. We'll use this display the participant's race.</p>
+<p>To make our confirmation page, we're going to need a tool called <code>join</code>. This tool joins a list of items using a 'joiner' like 'and' or 'or'. We'll use this display the participant's race.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock.tools</span> <span class="kn">import</span> <span class="n">join</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;White&#39;</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;White&#39;</span><span class="p">,</span> <span class="s1">&#39;Black&#39;</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;White&#39;</span><span class="p">,</span> <span class="s1">&#39;Black&#39;</span><span class="p">,</span> <span class="s1">&#39;South Asian&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;White&#39;</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;White&#39;</span><span class="p">,</span> <span class="s1">&#39;Black&#39;</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;White&#39;</span><span class="p">,</span> <span class="s1">&#39;Black&#39;</span><span class="p">,</span> <span class="s1">&#39;South Asian&#39;</span><span class="p">]))</span>
 </code></pre></div>
 <p>Out:</p>
 <div class="highlight"><pre><span></span><code>White
 White and Black
 White, Black, and South Asian
 </code></pre></div>
-<p>The second tool is <code>html_list</code>. This tool joins a list of items in a bullet point (unordered) or enumerated (ordered) list.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Label</span>
-<span class="kn">from</span> <span class="nn">hemlock.tools</span> <span class="kn">import</span> <span class="n">html_list</span>
-
-<span class="n">Page</span><span class="p">(</span>
-    <span class="n">Label</span><span class="p">(</span>
-        <span class="n">html_list</span><span class="p">(</span>
-            <span class="s1">&#39;Item 1&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;Item 2&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;Item 3&#39;</span><span class="p">,</span>
-            <span class="n">ordered</span><span class="o">=</span><span class="kc">False</span>
-        <span class="p">)</span>
-    <span class="p">)</span>
-<span class="p">)</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
-</code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">More tools</p>
-<p><code>join</code> and <code>html_list</code> are just two of many native hemlock tools. Check out the 'Tools' heading in the navigation bar for more.</p>
+<p><code>join</code> is just one of many native hemlock tools. Check out the 'Tools' heading in the navigation bar for more.</p>
 </div>
 <h2 id="custom-compilation">Custom compilation</h2>
 <p>We're going to take the participant's responses to the demographics page and display them on a new page. We'll ask the participant to correct any errors by going back to the demographics page.</p>
@@ -352,14 +336,15 @@ White, Black, and South Asian
 <span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">label</span><span class="p">)</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">demographics_page</span><span class="o">.</span><span class="n">questions</span><span class="p">]</span>
 </code></pre></div>
 <p>Out:</p>
-<div class="highlight"><pre><span></span><code>&lt;p&gt;What is your gender?&lt;/p&gt;
-&lt;p&gt;Please specify your gender.&lt;/p&gt;
-&lt;p&gt;How old are you?&lt;/p&gt;
+<div class="highlight"><pre><span></span><code>What is your gender?
+Please specify your gender.
+How old are you?
 
-        &lt;p&gt;Which race or ethnicity do you belong to?&lt;/p&gt;
-        &lt;p&gt;Check as many as apply.&lt;/p&gt;
+        Which race or ethnicity do you belong to?
 
-&lt;p&gt;Please specify your race or ethnicity.&lt;/p&gt;
+        Check as many as apply.
+
+Please specify your race or ethnicity.
 </code></pre></div>
 <p>The 0th question asks for gender, the 2nd for age, and the 3rd for race. (The 1st and 4th questions ask participants to specify gender and race if they choose 'Other').</p>
 <p>Let's enter hypothetical responses for these questions.</p>
@@ -378,30 +363,27 @@ White, Black, and South Asian
 <span class="k">def</span> <span class="nf">confirm_demographics</span><span class="p">(</span><span class="n">confirm_label</span><span class="p">,</span> <span class="n">demographics_page</span><span class="p">):</span>
     <span class="n">gender</span> <span class="o">=</span> <span class="n">demographics_page</span><span class="o">.</span><span class="n">questions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">response</span>
     <span class="n">age</span> <span class="o">=</span> <span class="n">demographics_page</span><span class="o">.</span><span class="n">questions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">response</span>
-    <span class="n">race</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">demographics_page</span><span class="o">.</span><span class="n">questions</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">response</span><span class="p">)</span>
-    <span class="n">demographics_list</span> <span class="o">=</span> <span class="n">html_list</span><span class="p">(</span>
-        <span class="s1">&#39;Gender: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gender</span><span class="p">),</span>
-        <span class="s1">&#39;Age: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">age</span><span class="p">),</span>
-        <span class="s1">&#39;Race: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">race</span><span class="p">),</span>
-        <span class="n">ordered</span><span class="o">=</span><span class="kc">False</span>
-    <span class="p">)</span>
+    <span class="n">race</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="n">demographics_page</span><span class="o">.</span><span class="n">questions</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">response</span><span class="p">)</span>
     <span class="n">confirm_label</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
-<span class="s1">        &lt;p&gt;Confirm the following information:&lt;/p&gt;</span>
-<span class="s1">        </span><span class="si">{}</span><span class="s1"></span>
-<span class="s1">        To correct this information, click &#39;&amp;lt;&amp;lt;&#39;.</span>
-<span class="s1">    &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">demographics_list</span><span class="p">)</span>
+<span class="s1">        Confirm the following information:</span>
+
+<span class="s1">        - Gender: </span><span class="si">{}</span><span class="s1"></span>
+<span class="s1">        - Age: </span><span class="si">{}</span><span class="s1"></span>
+<span class="s1">        - Race: </span><span class="si">{}</span><span class="s1"></span>
+
+<span class="s1">        To correct this information, click &#39;&lt;&lt;&#39;.</span>
+<span class="s1">    &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gender</span><span class="p">,</span> <span class="n">age</span><span class="p">,</span> <span class="n">race</span><span class="p">)</span>
 </code></pre></div>
 <p>First, we register a new compile function with the <code>@C.register</code> decorator. The compile function takes the confirmation label as its first argument. In general, compile functions take their parent as their first argument. We also pass in the demographics page as the compile function's second argument.</p>
 <p><code>confirm_demographics</code> begins by gathering the demographics data (gender, date of birth, and race) from the demographics page. We use the <code>join</code> tool to join the participant's races.</p>
-<p>Finally, we create a list of the participant's demographic information using <code>html_list</code>, and add this to the confirmation label.</p>
-<details class="note"><summary>What's <code>'&amp;lt;'</code>?</summary><p>The <code>label</code> attribute contains an HTML string. In HTML, <code>'&lt;'</code> has a specific meaning, so we can't say <code>'click &lt;&lt;'</code>. The HTML encoding of <code>'&lt;'</code> is <code>'&amp;lt;'</code>, so we use that instead.</p>
-<p>Tl;dr Use a Word to HTML converter.</p>
-</details>
+<p>Finally, we add the demographics information to the confirmation label.</p>
 <details class="warning"><summary><code>Label</code> object vs. <code>label</code> attribute</summary><p>Note that we set the confirmation label with <code>confirm_label.label='my awesome label'</code>. <code>confirm_label</code> is a <code>Label</code> object. <code>confirm_label.label</code> is the attribute which contains the HTML. Don't confuse the <code>Label</code> object with the <code>label</code> attribute!</p>
 </details>
 <h3 id="our-compile-function-at-work">Our compile function at work</h3>
 <p>Finally, let's see our compile function at work.</p>
-<div class="highlight"><pre><span></span><code><span class="n">confirm_page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Label</span>
+
+<span class="n">confirm_page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span>
     <span class="n">Label</span><span class="p">(</span>
         <span class="nb">compile</span><span class="o">=</span><span class="n">C</span><span class="o">.</span><span class="n">confirm_demographics</span><span class="p">(</span><span class="n">demographics_page</span><span class="p">)</span>
     <span class="p">),</span>
@@ -415,7 +397,7 @@ White, Black, and South Asian
 <p>Now that we've seen how to add compile functions in our notebook, let's add it to our app.</p>
 <p>In <code>survey.py</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Branch</span><span class="p">,</span> <span class="n">Compile</span> <span class="k">as</span> <span class="n">C</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">route</span>
-<span class="kn">from</span> <span class="nn">hemlock.tools</span> <span class="kn">import</span> <span class="n">join</span><span class="p">,</span> <span class="n">html_list</span>
+<span class="kn">from</span> <span class="nn">hemlock.tools</span> <span class="kn">import</span> <span class="n">join</span>
 <span class="kn">from</span> <span class="nn">hemlock_demographics</span> <span class="kn">import</span> <span class="n">basic_demographics</span>
 
 <span class="nd">@route</span><span class="p">(</span><span class="s1">&#39;/survey&#39;</span><span class="p">)</span>

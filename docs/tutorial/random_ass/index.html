@@ -293,31 +293,29 @@
 <h2 id="random-assignment-in-our-app">Random assignment in our app</h2>
 <p>In <code>survey.py</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="o">...</span>
-<span class="kn">from</span> <span class="nn">hemlock.tools</span> <span class="kn">import</span> <span class="n">Assigner</span><span class="p">,</span> <span class="n">comprehension_check</span><span class="p">,</span> <span class="n">html_list</span><span class="p">,</span> <span class="n">join</span>
+<span class="kn">from</span> <span class="nn">hemlock.tools</span> <span class="kn">import</span> <span class="n">Assigner</span><span class="p">,</span> <span class="n">comprehension_check</span><span class="p">,</span> <span class="n">join</span>
 <span class="o">...</span>
 
-<span class="c1"># the number of rounds participants play</span>
-<span class="n">N_ROUNDS</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="c1"># the amount of money split</span>
-<span class="n">POT</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">N_ROUNDS</span> <span class="o">=</span> <span class="mi">5</span> <span class="c1"># the number of rounds participants play</span>
+<span class="n">POT</span> <span class="o">=</span> <span class="mi">20</span> <span class="c1"># the amount of money split</span>
 
 <span class="n">assigner</span> <span class="o">=</span> <span class="n">Assigner</span><span class="p">({</span><span class="s1">&#39;Proposer&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)})</span>
 
 <span class="o">...</span>
 
 <span class="k">def</span> <span class="nf">ultimatum_game</span><span class="p">(</span><span class="n">start_branch</span><span class="p">):</span>
+    <span class="o">...</span>
+
     <span class="n">proposer</span> <span class="o">=</span> <span class="n">assigner</span><span class="o">.</span><span class="n">next</span><span class="p">()[</span><span class="s1">&#39;Proposer&#39;</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span>
-        <span class="o">*</span><span class="n">comprehension_check</span><span class="p">(</span>
-            <span class="c1"># COMPREHENSION CHECK ARGUMENTS HERE</span>
-        <span class="p">),</span>
+        <span class="o">...</span>
         <span class="n">Page</span><span class="p">(</span>
             <span class="n">Label</span><span class="p">(</span><span class="s1">&#39;You passed the comprehension check!&#39;</span><span class="p">)</span>
         <span class="p">),</span>
         <span class="n">Page</span><span class="p">(</span>
             <span class="n">Label</span><span class="p">(</span>
                 <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">                You are about to play an ultimatum game as a &lt;b&gt;{}&lt;/b&gt;.</span>
+<span class="sd">                You are about to play an ultimatum game as a **{}**.</span>
 <span class="sd">                &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;proposer&#39;</span> <span class="k">if</span> <span class="n">proposer</span> <span class="k">else</span> <span class="s1">&#39;responder&#39;</span><span class="p">)</span>
             <span class="p">)</span>
         <span class="p">),</span>

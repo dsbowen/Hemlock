@@ -203,7 +203,7 @@ The probability of refreshing the page is `1-p_forward-p_back`.
 ##hemlock.**Page**
 
 <p class="func-header">
-    <i>class</i> hemlock.<b>Page</b>(<i>*questions, extra_css=[], extra_js=[], delay_forward= None, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L186">[source]</a>
+    <i>class</i> hemlock.<b>Page</b>(<i>*questions, extra_css=[], extra_js=[], delay_forward= None, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L185">[source]</a>
 </p>
 
 Pages are queued in a branch. A page contains a list of questions which it
@@ -420,7 +420,7 @@ Label('Hello World')
 
 
 <p class="func-header">
-    <i></i> <b>clear_error</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L534">[source]</a>
+    <i></i> <b>clear_error</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L533">[source]</a>
 </p>
 
 Clear the error message from this page and all of its questions.
@@ -444,7 +444,7 @@ Clear the error message from this page and all of its questions.
 
 
 <p class="func-header">
-    <i></i> <b>clear_response</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L546">[source]</a>
+    <i></i> <b>clear_response</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L545">[source]</a>
 </p>
 
 Clear the response from all of this page's questions.
@@ -468,7 +468,42 @@ Clear the response from all of this page's questions.
 
 
 <p class="func-header">
-    <i></i> <b>first_page</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L557">[source]</a>
+    <i></i> <b>convert_markdown</b>(<i>self, string, strip_last_paragraph=False</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L556">[source]</a>
+</p>
+
+Convert markdown-formatted string to HMTL.
+
+<table class="docutils field-list field-table" frame="void" rules="none">
+    <col class="field-name" />
+    <col class="field-body" />
+    <tbody valign="top">
+        <tr class="field">
+    <th class="field-name"><b>Parameters:</b></td>
+    <td class="field-body" width="100%"><b>string : <i>str</i></b>
+<p class="attr">
+    Markdown-formatted string.
+</p>
+<b>strip_last_paragraph : <i>bool, default=False</i></b>
+<p class="attr">
+    Strips the <code>&lt;p&gt;</code> tag from the last paragraph. This often prettifies the display.
+</p></td>
+</tr>
+<tr class="field">
+    <th class="field-name"><b>Returns:</b></td>
+    <td class="field-body" width="100%"><b>HTML : <i>str</i></b>
+<p class="attr">
+    HTML-formatted string.
+</p></td>
+</tr>
+    </tbody>
+</table>
+
+
+
+
+
+<p class="func-header">
+    <i></i> <b>first_page</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L575">[source]</a>
 </p>
 
 
@@ -492,7 +527,7 @@ Clear the response from all of this page's questions.
 
 
 <p class="func-header">
-    <i></i> <b>last_page</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L572">[source]</a>
+    <i></i> <b>last_page</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L590">[source]</a>
 </p>
 
 
@@ -521,7 +556,7 @@ this page's navigate function may return an empty branch.
 
 
 <p class="func-header">
-    <i></i> <b>is_valid</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L605">[source]</a>
+    <i></i> <b>is_valid</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L623">[source]</a>
 </p>
 
 
@@ -545,7 +580,7 @@ this page's navigate function may return an empty branch.
 
 
 <p class="func-header">
-    <i></i> <b>preview</b>(<i>self, driver=None, dir='tmp', filename='preview', suffix= '.html', overwrite=False</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L616">[source]</a>
+    <i></i> <b>preview</b>(<i>self, driver=None, dir='tmp', filename='preview', suffix= '.html', overwrite=False</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L634">[source]</a>
 </p>
 
 Preview the page in a browser window.
@@ -594,7 +629,7 @@ This method does not run the compile functions.
 
 
 <p class="func-header">
-    <i></i> <b>view_nav</b>(<i>self, indent=0</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L699">[source]</a>
+    <i></i> <b>view_nav</b>(<i>self, indent=0</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/page.py#L717">[source]</a>
 </p>
 
 Print the navigation starting at this page for debugging purposes.

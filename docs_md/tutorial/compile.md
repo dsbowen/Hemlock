@@ -59,16 +59,14 @@ Run this a few times and notice how the order of the choices changes. This behav
 
 ## An aside on tools
 
-To make our confirmation page, we're going to need two tools.
-
-The first is `join`. This tool joins a list of items using a 'joiner' like 'and' or 'or'. We'll use this display the participant's race.
+To make our confirmation page, we're going to need a tool called `join`. This tool joins a list of items using a 'joiner' like 'and' or 'or'. We'll use this display the participant's race.
 
 ```python
 from hemlock.tools import join
 
-print(join('and', 'White'))
-print(join('and', 'White', 'Black'))
-print(join('and', 'White', 'Black', 'South Asian'))
+print(join('and', ['White']))
+print(join('and', ['White', 'Black']))
+print(join('and', ['White', 'Black', 'South Asian']))
 ```
 
 Out:
@@ -79,26 +77,8 @@ White and Black
 White, Black, and South Asian
 ```
 
-The second tool is `html_list`. This tool joins a list of items in a bullet point (unordered) or enumerated (ordered) list.
-
-```python
-from hemlock import Page, Label
-from hemlock.tools import html_list
-
-Page(
-    Label(
-        html_list(
-            'Item 1',
-            'Item 2',
-            'Item 3',
-            ordered=False
-        )
-    )
-).preview()
-```
-
 !!! tip "More tools"
-    `join` and `html_list` are just two of many native hemlock tools. Check out the 'Tools' heading in the navigation bar for more.
+    `join` is just one of many native hemlock tools. Check out the 'Tools' heading in the navigation bar for more.
 
 ## Custom compilation
 
@@ -118,14 +98,15 @@ demographics_page = basic_demographics(page=True)
 Out:
 
 ```
-<p>What is your gender?</p>
-<p>Please specify your gender.</p>
-<p>How old are you?</p>
+What is your gender?
+Please specify your gender.
+How old are you?
 
-        <p>Which race or ethnicity do you belong to?</p>
-        <p>Check as many as apply.</p>
+        Which race or ethnicity do you belong to?
+
+        Check as many as apply.
         
-<p>Please specify your race or ethnicity.</p>
+Please specify your race or ethnicity.
 ```
 
 The 0th question asks for gender, the 2nd for age, and the 3rd for race. (The 1st and 4th questions ask participants to specify gender and race if they choose 'Other').
@@ -152,30 +133,23 @@ from hemlock import Compile as C
 def confirm_demographics(confirm_label, demographics_page):
     gender = demographics_page.questions[0].response
     age = demographics_page.questions[2].response
-    race = join('and', *demographics_page.questions[3].response)
-    demographics_list = html_list(
-        'Gender: {}'.format(gender),
-        'Age: {}'.format(age),
-        'Race: {}'.format(race),
-        ordered=False
-    )
+    race = join('and', demographics_page.questions[3].response)
     confirm_label.label = '''
-        <p>Confirm the following information:</p>
-        {}
-        To correct this information, click '&lt;&lt;'.
-    '''.format(demographics_list)
+        Confirm the following information:
+        
+        - Gender: {}
+        - Age: {}
+        - Race: {}
+        
+        To correct this information, click '<<'.
+    '''.format(gender, age, race)
 ```
 
 First, we register a new compile function with the `@C.register` decorator. The compile function takes the confirmation label as its first argument. In general, compile functions take their parent as their first argument. We also pass in the demographics page as the compile function's second argument.
 
 `confirm_demographics` begins by gathering the demographics data (gender, date of birth, and race) from the demographics page. We use the `join` tool to join the participant's races.
 
-Finally, we create a list of the participant's demographic information using `html_list`, and add this to the confirmation label.
-
-??? note "What's `'&lt;'`?"
-    The `label` attribute contains an HTML string. In HTML, `'<'` has a specific meaning, so we can't say `'click <<'`. The HTML encoding of `'<'` is `'&lt;'`, so we use that instead.
-
-    Tl;dr Use a Word to HTML converter.
+Finally, we add the demographics information to the confirmation label.
 
 ??? warning "`Label` object vs. `label` attribute"
     Note that we set the confirmation label with `confirm_label.label='my awesome label'`. `confirm_label` is a `Label` object. `confirm_label.label` is the attribute which contains the HTML. Don't confuse the `Label` object with the `label` attribute!
@@ -185,6 +159,8 @@ Finally, we create a list of the participant's demographic information using `ht
 Finally, let's see our compile function at work.
 
 ```python
+from hemlock import Page, Label
+
 confirm_page = Page(
     Label(
         compile=C.confirm_demographics(demographics_page)
@@ -205,7 +181,7 @@ In `survey.py`:
 
 ```python
 from hemlock import Branch, Compile as C, Label, Page, route
-from hemlock.tools import join, html_list
+from hemlock.tools import join
 from hemlock_demographics import basic_demographics
 
 @route('/survey')

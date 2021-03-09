@@ -87,13 +87,24 @@ def get_data(dataframe='data'):
     from ..models.private import DataStore
     return dict(getattr(DataStore.query.first(), dataframe))
 
-def html_list(*items, ordered=True):
-    template = '<ol>\n{}\n</ol>' if ordered else '<ul>\n{}\n</ul>'
-    return template.format(
-        '\n'.join(['<li>{}</li>'.format(item) for item in items])
+def make_list(items, ordered=False):
+    """
+    Parameters
+    ----------
+    items : list
+
+    Returns
+    -------
+    markdown : str
+        Markdown-formatted list.
+    """
+    if not ordered:
+        return '\n'.join(['-'+item for item in items])
+    return '\n'.join(
+        ['{}. {}'.format(i+1, item) for i, item in enumerate(items)]
     )
 
-def html_table(table, extra_classes=[]):
+def make_table(table, extra_classes=[]):
     """
     Parameters
     ----------

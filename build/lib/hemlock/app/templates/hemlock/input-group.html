@@ -5,7 +5,7 @@
     {% if q.prepend is not none %}
     <div class="input-group-prepend">
         <span class="input-group-text">
-            {{ q.prepend | safe }}
+            {{ q.convert_markdown(q.prepend, strip_last_paragraph=True) | safe }}
         </span>
     </div>
     {% endif %}
@@ -13,7 +13,7 @@
     {% if q.append is not none %}
     <div class="input-group-append">
         <span class="input-group-text">
-            {{ q.append | safe }}
+            {{ q.convert_markdown(q.append, strip_last_paragraph=True) | safe }}
         </span>
     </div>
     {% endif %}

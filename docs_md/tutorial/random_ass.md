@@ -52,31 +52,29 @@ In `survey.py`:
 
 ```python
 ...
-from hemlock.tools import Assigner, comprehension_check, html_list, join
+from hemlock.tools import Assigner, comprehension_check, join
 ...
 
-# the number of rounds participants play
-N_ROUNDS = 5
-# the amount of money split
-POT = 20
+N_ROUNDS = 5 # the number of rounds participants play
+POT = 20 # the amount of money split
 
 assigner = Assigner({'Proposer': (0, 1)})
 
 ...
 
 def ultimatum_game(start_branch):
+    ...
+    
     proposer = assigner.next()['Proposer']
     return Branch(
-        *comprehension_check(
-            # COMPREHENSION CHECK ARGUMENTS HERE
-        ),
+        ...
         Page(
             Label('You passed the comprehension check!')
         ),
         Page(
             Label(
                 '''
-                You are about to play an ultimatum game as a <b>{}</b>.
+                You are about to play an ultimatum game as a **{}**.
                 '''.format('proposer' if proposer else 'responder')
             )
         ),

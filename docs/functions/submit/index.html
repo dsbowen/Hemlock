@@ -149,6 +149,36 @@
     </li>
         </ul>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#hemlockfunctionssubmiteq">hemlock.functions.submit.eq</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#examples_3">Examples</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#hemlockfunctionssubmitneq">hemlock.functions.submit.neq</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#examples_4">Examples</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#hemlockfunctionssubmitmax">hemlock.functions.submit.max</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#examples_5">Examples</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#hemlockfunctionssubmitmin">hemlock.functions.submit.min</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#examples_6">Examples</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#hemlockfunctionssubmitrange">hemlock.functions.submit.range</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#examples_7">Examples</a>
+    </li>
+        </ul>
+    </li>
     </ul>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../validate/">Validate</a>
@@ -304,7 +334,7 @@
 
 <h2 id="hemlockfunctionssubmitcorrect_choices">hemlock.functions.submit.<strong>correct_choices</strong></h2>
 <p class="func-header">
-    <i>def</i> hemlock.functions.submit.<b>correct_choices</b>(<i>question, *values</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/submit.py#L9">[source]</a>
+    <i>def</i> hemlock.functions.submit.<b>correct_choices</b>(<i>question, *values</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/submit.py#L10">[source]</a>
 </p>
 
 <p>Convert the question's data to a 0-1 indicator that the participant
@@ -348,7 +378,7 @@ participant selected one of the correct choices.</p>
 </code></pre></div>
 <h2 id="hemlockfunctionssubmitdata_type">hemlock.functions.submit.<strong>data_type</strong></h2>
 <p class="func-header">
-    <i>def</i> hemlock.functions.submit.<b>data_type</b>(<i>question, new_type, *args, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/submit.py#L51">[source]</a>
+    <i>def</i> hemlock.functions.submit.<b>data_type</b>(<i>question, new_type, *args, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/submit.py#L52">[source]</a>
 </p>
 
 <p>Convert the quesiton's data to a new type. If the question's data cannot
@@ -389,7 +419,7 @@ be converted, it is changed to <code>None</code>.</p>
 </code></pre></div>
 <h2 id="hemlockfunctionssubmitmatch">hemlock.functions.submit.<strong>match</strong></h2>
 <p class="func-header">
-    <i>def</i> hemlock.functions.submit.<b>match</b>(<i>question, pattern</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/submit.py#L88">[source]</a>
+    <i>def</i> hemlock.functions.submit.<b>match</b>(<i>question, pattern</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/submit.py#L89">[source]</a>
 </p>
 
 <p>Convert the question's data to a 0-1 indicator that the data matches the
@@ -419,6 +449,215 @@ pattern.</p>
 
 <span class="n">inpt</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s1">&#39;hello world&#39;</span><span class="p">,</span> <span class="n">submit</span><span class="o">=</span><span class="n">S</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;hello *&#39;</span><span class="p">))</span>
 <span class="n">inpt</span><span class="o">.</span><span class="n">_submit</span><span class="p">()</span><span class="o">.</span><span class="n">data</span>
+</code></pre></div>
+<p>Out:</p>
+<div class="highlight"><pre><span></span><code>1
+</code></pre></div>
+<h2 id="hemlockfunctionssubmiteq">hemlock.functions.submit.<strong>eq</strong></h2>
+<p class="func-header">
+    <i>def</i> hemlock.functions.submit.<b>eq</b>(<i>question, value, data_type=None</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/submit.py#L124">[source]</a>
+</p>
+
+<p>Convert the question's data to a 0-1 indicator that the question's data
+equals the given value.</p>
+<table class="docutils field-list field-table" frame="void" rules="none">
+    <col class="field-name" />
+    <col class="field-body" />
+    <tbody valign="top">
+        <tr class="field">
+    <th class="field-name"><b>Parameters:</b></td>
+    <td class="field-body" width="100%"><b>question : <i>hemlock.Question</i></b>
+<p class="attr">
+
+</p>
+<b>value : <i></i></b>
+<p class="attr">
+    Value that the data should equal. If a <code>Question</code>, then <code>value.data</code> is used.
+</p>
+<b>data_type : <i>class or None, default=None</i></b>
+<p class="attr">
+    Expected type of data. If <code>None</code>, the type of <code>value</code> will be used.
+</p></td>
+</tr>
+    </tbody>
+</table>
+
+<h4 id="examples_3">Examples</h4>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Submit</span> <span class="k">as</span> <span class="n">S</span><span class="p">,</span> <span class="n">push_app_context</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">push_app_context</span><span class="p">()</span>
+
+<span class="n">inpt</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">submit</span><span class="o">=</span><span class="n">S</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="mi">50</span><span class="p">))</span>
+<span class="n">inpt</span><span class="o">.</span><span class="n">_submit</span><span class="p">()</span>
+<span class="n">inpt</span><span class="o">.</span><span class="n">data</span>
+</code></pre></div>
+<p>Out:</p>
+<div class="highlight"><pre><span></span><code>1
+</code></pre></div>
+<h2 id="hemlockfunctionssubmitneq">hemlock.functions.submit.<strong>neq</strong></h2>
+<p class="func-header">
+    <i>def</i> hemlock.functions.submit.<b>neq</b>(<i>question, value, data_type=None</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/submit.py#L162">[source]</a>
+</p>
+
+<p>Convert the question's data to a 0-1 indicator that the question's data
+does not equal the given value.</p>
+<table class="docutils field-list field-table" frame="void" rules="none">
+    <col class="field-name" />
+    <col class="field-body" />
+    <tbody valign="top">
+        <tr class="field">
+    <th class="field-name"><b>Parameters:</b></td>
+    <td class="field-body" width="100%"><b>question : <i>hemlock.Question</i></b>
+<p class="attr">
+
+</p>
+<b>value : <i></i></b>
+<p class="attr">
+    Value that the data should not equal. If a <code>Question</code>, then <code>value.data</code> is used.
+</p>
+<b>data_type : <i>class or None, default=None</i></b>
+<p class="attr">
+    Expected type of data. If <code>None</code>, the type of <code>value</code> will be used.
+</p></td>
+</tr>
+    </tbody>
+</table>
+
+<h4 id="examples_4">Examples</h4>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Submit</span> <span class="k">as</span> <span class="n">S</span><span class="p">,</span> <span class="n">push_app_context</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">push_app_context</span><span class="p">()</span>
+
+<span class="n">inpt</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">submit</span><span class="o">=</span><span class="n">S</span><span class="o">.</span><span class="n">neq</span><span class="p">(</span><span class="mi">50</span><span class="p">))</span>
+<span class="n">inpt</span><span class="o">.</span><span class="n">_submit</span><span class="p">()</span>
+<span class="n">inpt</span><span class="o">.</span><span class="n">data</span>
+</code></pre></div>
+<p>Out:</p>
+<div class="highlight"><pre><span></span><code>0
+</code></pre></div>
+<h2 id="hemlockfunctionssubmitmax">hemlock.functions.submit.<strong>max</strong></h2>
+<p class="func-header">
+    <i>def</i> hemlock.functions.submit.<b>max</b>(<i>question, max, data_type=None</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/submit.py#L200">[source]</a>
+</p>
+
+<p>Convert the question's data to a 0-1 indicator that the question's data
+is less than the maximum value.</p>
+<table class="docutils field-list field-table" frame="void" rules="none">
+    <col class="field-name" />
+    <col class="field-body" />
+    <tbody valign="top">
+        <tr class="field">
+    <th class="field-name"><b>Parameters:</b></td>
+    <td class="field-body" width="100%"><b>question : <i>hemlock.Question</i></b>
+<p class="attr">
+
+</p>
+<b>max : <i></i></b>
+<p class="attr">
+    Maximum value. If a <code>Question</code>, then <code>max.data</code> is used.
+</p>
+<b>data_type : <i>class or None, default=None</i></b>
+<p class="attr">
+    Expected type of data. If <code>None</code>, the type of <code>max</code> will be used.
+</p></td>
+</tr>
+    </tbody>
+</table>
+
+<h4 id="examples_5">Examples</h4>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Submit</span> <span class="k">as</span> <span class="n">S</span><span class="p">,</span> <span class="n">push_app_context</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">push_app_context</span><span class="p">()</span>
+
+<span class="n">inpt</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="mi">101</span><span class="p">,</span> <span class="n">submit</span><span class="o">=</span><span class="n">S</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span>
+<span class="n">inpt</span><span class="o">.</span><span class="n">_submit</span><span class="p">()</span>
+<span class="n">inpt</span><span class="o">.</span><span class="n">data</span>
+</code></pre></div>
+<p>Out:</p>
+<div class="highlight"><pre><span></span><code>0
+</code></pre></div>
+<h2 id="hemlockfunctionssubmitmin">hemlock.functions.submit.<strong>min</strong></h2>
+<p class="func-header">
+    <i>def</i> hemlock.functions.submit.<b>min</b>(<i>question, min, data_type=None</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/submit.py#L237">[source]</a>
+</p>
+
+<p>Convert the question's data to a 0-1 indicator that the question's data
+is greater than the minimum value.</p>
+<table class="docutils field-list field-table" frame="void" rules="none">
+    <col class="field-name" />
+    <col class="field-body" />
+    <tbody valign="top">
+        <tr class="field">
+    <th class="field-name"><b>Parameters:</b></td>
+    <td class="field-body" width="100%"><b>question : <i>hemlock.Question</i></b>
+<p class="attr">
+
+</p>
+<b>min : <i></i></b>
+<p class="attr">
+    Minimum value. If a <code>Question</code>, then <code>min.data</code> is used.
+</p>
+<b>data_type : <i>class or None, default=None</i></b>
+<p class="attr">
+    Expected type of data. If <code>None</code>, the type of <code>min</code> will be used.
+</p></td>
+</tr>
+    </tbody>
+</table>
+
+<h4 id="examples_6">Examples</h4>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Submit</span> <span class="k">as</span> <span class="n">S</span><span class="p">,</span> <span class="n">push_app_context</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">push_app_context</span><span class="p">()</span>
+
+<span class="n">inpt</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">data</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">submit</span><span class="o">=</span><span class="n">S</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="n">inpt</span><span class="o">.</span><span class="n">_submit</span><span class="p">()</span>
+<span class="n">inpt</span><span class="o">.</span><span class="n">data</span>
+</code></pre></div>
+<p>Out:</p>
+<div class="highlight"><pre><span></span><code>0
+</code></pre></div>
+<h2 id="hemlockfunctionssubmitrange">hemlock.functions.submit.<strong>range</strong></h2>
+<p class="func-header">
+    <i>def</i> hemlock.functions.submit.<b>range</b>(<i>question, min, max, data_type=None</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/functions/submit.py#L274">[source]</a>
+</p>
+
+<p>Convert the question's data to a 0-1 indicator that the question's data
+is within the range of <code>[min, max]</code>.</p>
+<table class="docutils field-list field-table" frame="void" rules="none">
+    <col class="field-name" />
+    <col class="field-body" />
+    <tbody valign="top">
+        <tr class="field">
+    <th class="field-name"><b>Parameters:</b></td>
+    <td class="field-body" width="100%"><b>question : <i>hemlock.Question</i></b>
+<p class="attr">
+
+</p>
+<b>min : <i></i></b>
+<p class="attr">
+    Minimum value. If a <code>Question</code>, then <code>min.data</code> is used.
+</p>
+<b>max : <i></i></b>
+<p class="attr">
+    Maximum value. If a <code>Question</code>, then <code>max.data</code> is used.
+</p>
+<b>data_type : <i>class or None, default=None</i></b>
+<p class="attr">
+    Expected type of data. If <code>None</code>, the type of <code>min</code> and <code>max</code> will be used.
+</p></td>
+</tr>
+    </tbody>
+</table>
+
+<h4 id="examples_7">Examples</h4>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Submit</span> <span class="k">as</span> <span class="n">S</span><span class="p">,</span> <span class="n">push_app_context</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">push_app_context</span><span class="p">()</span>
+
+<span class="n">inpt</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">submit</span><span class="o">=</span><span class="n">S</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+<span class="n">inpt</span><span class="o">.</span><span class="n">_submit</span><span class="p">()</span>
+<span class="n">inpt</span><span class="o">.</span><span class="n">data</span>
 </code></pre></div>
 <p>Out:</p>
 <div class="highlight"><pre><span></span><code>1

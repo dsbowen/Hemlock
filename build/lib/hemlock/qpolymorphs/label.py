@@ -2,6 +2,9 @@
 
 from ..app import db, settings
 from ..models import Question
+from ..tools import markdown
+
+from flask import render_template
 
 settings['Label'] = {'data': 1}
 
@@ -33,6 +36,14 @@ class Label(Question):
 
     def __init__(self, label=None, template='hemlock/label.html', **kwargs):
         super().__init__(label=label, template=template, **kwargs)
+
+    def _render(self):
+        return render_template(
+            self.template, 
+            q=self, 
+            error=markdown(self.error, strip_last_paragraph=True), 
+            label=markdown(self.label, strip_last_paragraph=True)
+        )
 
     def _record_data(self):
         return self

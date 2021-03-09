@@ -79,7 +79,7 @@ def record_female(gender):
 
 page = Page(
     Select(
-        '<p>What is your gender?</p>',
+        'What is your gender?',
         ['', 'Male', 'Female', 'Other'],
         submit=record_female
     )
@@ -187,8 +187,8 @@ In `survey.py`:
 
 ```python
 from hemlock import (
-    Binary, Branch, Check, Embedded, Input, Page, Label, RangeInput, Select, 
-    Submit as S, Validate as V, route
+    Branch, Check, Embedded, Input, Page, Label, RangeInput, Select, 
+    Submit as S, Validate as V, binary, route
 )
 
 @route('/survey')
@@ -196,7 +196,7 @@ def start():
     return Branch(
         Page(
             Select(
-                '<p>What is your gender?</p>',
+                'What is your gender?',
                 ['', 'Male', 'Female', 'Other'],
                 var='Gender', data_rows=-1,
                 validate=V.require(),

@@ -1,18 +1,10 @@
-from hemlock import Branch, Page, Label, Input, Slider, binary, route
-
-# update selenium-tools
+from hemlock import Branch, Page, Label, route, Input
 
 @route('/survey')
 def start():
     return Branch(
         Page(
-            Slider(min=0, max=100, reversed=True)
-        ),
-        Page(
-            Label('hello, world'),
-            terminal=True, back=True
+            Input(prepend='**$**', append='**.00**'),
+            terminal=True
         )
     )
-
-def print_value(q):
-    print(q.response, q.data)

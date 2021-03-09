@@ -133,7 +133,8 @@ def _gen_500_page():
     return Page(
         Label(
             """
-            <p>The application encountered an error. <b>Try refreshing the page</b> (this usually solves the problem).</p> 
+            The application encountered an error. **Try refreshing the page** (this usually solves the problem).
+
             If you keep getting an error, contact the survey administrator. We apologize for the inconvenience and thank your for your patience while we resolve the issue.
             """
         ),
@@ -146,9 +147,9 @@ def _gen_loading_page():
 
     return Page(
         Label(
-            '''
+            """
             The next page should load automatically in a few seconds.
-            '''
+            """
         ),
         forward=False,
         extra_js=render_template('hemlock/loading.js')
@@ -161,10 +162,9 @@ def _gen_restart_page():
     return Page(
         Label(
             """
-            <p>Click << to resume the survey. Click >> to restart 
-            the survey.</p>
-            If you restart the survey, your responses will not be 
-            saved.
+            Click << to resume the survey. Click >> to restart the survey.
+
+            If you restart the survey, your responses will not be saved.
             """
         ),
         back=True
@@ -177,8 +177,7 @@ def _gen_screenout_page():
     return Page(
         Label(
             """
-            <p>Our records indicate that you have already participated in this
-            or similar surveys.</p>
+            Our records indicate that you have already participated in this or similar surveys.
             
             Thank you for your continuing interest in our research.
             """

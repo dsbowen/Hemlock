@@ -172,12 +172,12 @@ def start():
     return Branch(
         Page(
             Select(
-                '<p>What is your gender?</p>',
+                'What is your gender?',
                 ['', 'Male', 'Female', 'Other'],
                 var='Gender', data_rows=-1
             ),
             Input(
-                '<p>How old are you?</p>',
+                'How old are you?',
                 type='number', min=0, var='Age', data_rows=-1
             ),
             # SET THE `var` AND `data_rows` ATTRIBUTES FOR THE REST OF THE QUESTIONS

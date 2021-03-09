@@ -118,17 +118,11 @@ In the previous part of the tutorial, we designed a page in jupyter notebook. In
 As the name `blackboard.ipynb` suggests, I treat jupyter like a blackboard. Once I'm happy with a design and it's running in my app, I like to start the next design on a fresh blackboard:
 
 1. Delete every cell in the notebook (except the first, where we push the application context, and the last, where we remove temporary files).
-2. Restart the kernel (Kernel >> Restart).
+2. Restart the kernel (`Kernel >> Restart`).
 3. Run the first cell to re-push the application context.
 
 !!! tip "Troubleshooting"
-    During development, you may encounter a database error from which your app can't recover. Even after you've fixed your code, your database will still be broken. If this happens in your jupyter notebook, simply restart your kernel (Kernel >> Restart) and run your code cells again. If this happens while running your app locally:
-
-    1. Exit with Ctrl + C.
-    2. Remove the database with `rm data.db`.
-    3. Run your app again with `hlk serve`.
-
-    When you run into an error and you're not sure what's going on, this is the first thing to try.
+    The classic advice, "try restarting it", applies here. You can fix about 20% of your errors simply by closing the app (Ctrl+C) and restarting it (`hlk serve`).
 
 ## Summary
 

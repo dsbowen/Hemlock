@@ -28,7 +28,7 @@ originating from this page.
 """
 
 from ..app import db, settings
-from ..tools import img
+from ..tools import img, markdown
 from .bases import BranchingBase
 from .embedded import Timer
 from .functions import Compile, Validate, Submit, Debug
@@ -148,8 +148,7 @@ settings['Page'] = dict(
     js=open(os.path.join(DIR_PATH, 'page-js.html'), 'r').read() \
         .splitlines(),
     error_attrs={
-        'class': ['alert', 'alert-danger', 'w-100', 'error'],
-        'style': {'text-align': 'center'}
+        'class': ['alert', 'alert-danger', 'w-100']
     },
     back=False,
     back_btn_attrs={
@@ -553,6 +552,25 @@ class Page(BranchingBase, db.Model):
         """
         [q.clear_response() for q in self.questions]
         return self
+
+    def convert_markdown(self, string, strip_last_paragraph=False):
+        """
+        Convert markdown-formatted string to HMTL.
+
+        Parameters
+        ----------
+        string : str
+            Markdown-formatted string.
+
+        strip_last_paragraph : bool, default=False
+            Strips the `<p>` tag from the last paragraph. This often prettifies
+            the display.
+
+        Returns
+        -------
+        HTML : str
+            HTML-formatted string.
+        """
     
     def first_page(self):
         """
@@ -743,7 +761,10 @@ class Page(BranchingBase, db.Model):
         return self
     
     def _render(self):
-        return render_template(self.template, page=self)
+        return render_template(
+            self.template, page=self, 
+            error=markdown(self.error, strip_last_paragraph=True)
+        )
 
     def _record_response(self):
         """Record participant response

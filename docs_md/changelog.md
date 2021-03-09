@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.50
+
+- Markdown syntax for page text
+- Added and updated value comparisons for validate function bank
+- Added value comparisons to submit function bank
+
 ## 0.0.49
 
 Lots of updates since 0.0.22. Here are just the few I remember.

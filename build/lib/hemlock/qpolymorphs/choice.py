@@ -9,7 +9,7 @@ difference between them, but reflects the underlying html.
 
 from ..app import db, settings
 from ..models import Base
-from ..tools import format_attrs, key
+from ..tools import format_attrs, key, markdown
 from .bases import InputBase
 
 from convert_list import ConvertList
@@ -237,6 +237,7 @@ class Choice(ChoiceBase):
     def _render(self, question, idx):
         return render_template(
             self.template, c=self, q=question, idx=idx,
+            label=markdown(self.label, strip_last_paragraph=True),
             div_attrs=format_attrs(**self.div_attrs),
             input_attrs=format_attrs(**self.input_attrs),
             label_attrs=format_attrs(**self.label_attrs) 
@@ -323,6 +324,7 @@ class Option(ChoiceBase):
     def _render(self, question, idx):
         return render_template(
             self.template, opt=self, q=question, idx=idx, 
+            label=markdown(self.label, strip_last_paragraph=True),
             option_attrs=format_attrs(**self.input_attrs)
         )
 

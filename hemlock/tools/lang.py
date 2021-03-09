@@ -1,5 +1,9 @@
 """# Language tools"""
 
+from markdown import markdown as convert_markdown
+
+import re
+
 def indef_article(word):
     """
     Parameters
@@ -29,14 +33,14 @@ def indef_article(word):
     """
     return 'an '+word if word[0] in 'aeiou' else 'a '+word
 
-def join(joiner, *items):
+def join(joiner, items):
     """
     Parameters
     ----------
     joiner : str
         Joins the first n-1 items with the last item, e.g. `'and'`.
 
-    \*items : str
+    items : iterable
         Items to join.
 
     Returns
@@ -49,8 +53,8 @@ def join(joiner, *items):
     ```python
     from hemlock.tools import join
 
-    print(join('and', 'world', 'sun'))
-    print(join('or', 'world', 'sun', 'moon'))
+    print(join('and', ('world', 'sun')))
+    print(join('or', ('world', 'sun', 'moon')))
     ```
 
     Out:
@@ -69,6 +73,43 @@ def join(joiner, *items):
     string = ', '.join([str(i) for i in items[:-1]])
     string += ', {} {}'.format(joiner, str(items[-1]))
     return string
+
+def markdown(string, strip_last_paragraph=False):
+    """
+    Convert markdown-formatted string to HMTL.
+
+    Parameters
+    ----------
+    string : str
+        Markdown-formatted string.
+
+    strip_last_paragraph : bool, default=False
+        Strips the `<p>` tag from the last paragraph. This often prettifies
+        the display.
+
+    Returns
+    -------
+    HTML : str
+        HTML-formatted string.
+    """
+    def strip_leading_whitespace(line):
+        if not line.startswith(leading_whitespace):
+            return line
+        return line[len(leading_whitespace):]
+
+    def _strip_last_paragraph(html):
+        lines = html.splitlines()
+        if lines[-1].startswith('<p>'):
+            lines[-1] = lines[-1][len('<p>'):-len('</p>')]
+        return '\n'.join(lines)
+
+    if not string:
+        return ''
+    lines = string.strip('\n').splitlines()
+    leading_whitespace = re.match(r'\s*', lines[0]).group()
+    lines = [strip_leading_whitespace(line) for line in lines]
+    html = convert_markdown('\n'.join(lines))
+    return _strip_last_paragraph(html) if strip_last_paragraph else html
 
 def plural(n, singular, plural=None):
     """

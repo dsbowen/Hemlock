@@ -73,9 +73,9 @@ Open the file named `blackboard.ipynb`.
 
 You may be propted to choose a 'kernel' when you open `blackboard.ipynb`. If so, choose 'my-first-project' (in general, your project name).
 
-If you aren't prompted to choose a kernel, manually change the kernel to 'my-first-project'. At the top of the notebook click Kernel >> Change kernel >> my-first-project.
+If you aren't prompted to choose a kernel, manually change the kernel to 'my-first-project'. At the top of the notebook click `Kernel >> Change kernel >> my-first-project`.
 
-Run the first cell (Shift + Enter) to set up the environment and application context. It's not important right now to understand exactly what it does.
+Run the first cell (Shift + Enter) to set up the environment and application context. It's not important to what it does right now.
 
 Now, create your first hemlock page. In a new code cell below the first one, enter the following:
 
@@ -92,12 +92,6 @@ This should automatically open a preview of your page in your browser.
 
 ??? tip "Troubleshooting if the page didn't open"
     Underneath the cell you just ran is a file path ending in `preview.html`. This is the location of your preview file. Copy and paste this into your browser.
-
-Previewing works by creating preview files. By default, the preview files are stored in a `tmp` folder in the root directory of your project. You should delete this folder periodically to avoid memory issues:
-
-```bash
-$ rm -r tmp
-```
 
 ## Code explanation
 
@@ -120,10 +114,10 @@ p.questions = [
 ]
 ```
 
-The page's question is a `Label`, although this is in some sense a misnomer because label objects only contains text. The first argument to `Label` is a string, written in HTML, which the label object displays on its page.
+The page's question is a `Label`, although this is in some sense a misnomer because label objects only contains text. The first argument to `Label` is a string, written in markdown, which the label object displays on its page.
 
-!!! note "Word to HTML"
-    If you don't like writing HTML, you can easily find Word to HTML converters online.
+!!! tip "Markdown"
+    Hemlock expects text which appears on the page, such as labels and error messages, to be markdown formatted. Markdown is exceptionally easy to use. Check out this <a href="https://www.markdownguide.org/basic-syntax/" target="_blank">basic syntax guide</a> for more details.
 
 ## Summary
 

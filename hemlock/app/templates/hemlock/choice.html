@@ -17,6 +17,6 @@
 <div class="{{ c.div_class | join(' ')}} {{ div_class }}" {{ div_attrs | safe }}>
     <input id="{{ c.key }}" name="{{ q.key }}" type="{{ type }}" value="{{ idx }}" {{ checked }} {{ input_attrs | safe }}>
     <label for="{{ c.key }}" {{ label_attrs | safe }}>
-        {{ c.label | safe }}
+        {{ label | safe }}
     </label>
 </div>

@@ -20,7 +20,7 @@ def login():
             error = 'Login required to access this page.'
         return Page(
             Input(
-                '<p>Please enter your password</p>', 
+                'Please enter your password', 
                 type='password', key='password'
             ),
             error=error, forward='Login'

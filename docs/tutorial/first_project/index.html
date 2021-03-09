@@ -311,8 +311,8 @@ $ hlk setup-venv &lt;my-operating-system&gt; <span class="c1"># replace &lt;my-o
 <p>Jupyter will attempt to open the dashboard automatically in your browser. If this fails, the terminal window will show you links to the dashboard that you can manually copy and paste into your browser.</p>
 <p>Open the file named <code>blackboard.ipynb</code>.</p>
 <p>You may be propted to choose a 'kernel' when you open <code>blackboard.ipynb</code>. If so, choose 'my-first-project' (in general, your project name).</p>
-<p>If you aren't prompted to choose a kernel, manually change the kernel to 'my-first-project'. At the top of the notebook click Kernel &gt;&gt; Change kernel &gt;&gt; my-first-project.</p>
-<p>Run the first cell (Shift + Enter) to set up the environment and application context. It's not important right now to understand exactly what it does.</p>
+<p>If you aren't prompted to choose a kernel, manually change the kernel to 'my-first-project'. At the top of the notebook click <code>Kernel &gt;&gt; Change kernel &gt;&gt; my-first-project</code>.</p>
+<p>Run the first cell (Shift + Enter) to set up the environment and application context. It's not important to what it does right now.</p>
 <p>Now, create your first hemlock page. In a new code cell below the first one, enter the following:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Label</span>
 
@@ -324,9 +324,6 @@ $ hlk setup-venv &lt;my-operating-system&gt; <span class="c1"># replace &lt;my-o
 <p>This should automatically open a preview of your page in your browser.</p>
 <details class="tip"><summary>Troubleshooting if the page didn't open</summary><p>Underneath the cell you just ran is a file path ending in <code>preview.html</code>. This is the location of your preview file. Copy and paste this into your browser.</p>
 </details>
-<p>Previewing works by creating preview files. By default, the preview files are stored in a <code>tmp</code> folder in the root directory of your project. You should delete this folder periodically to avoid memory issues:</p>
-<div class="highlight"><pre><span></span><code>$ rm -r tmp
-</code></pre></div>
 <h2 id="code-explanation">Code explanation</h2>
 <p>The first line simply imports <code>Page</code> and <code>Label</code> objects.</p>
 <p>The next line, <code>p = Page(Label('Hello, World!'))</code>, creates a <code>Page</code> instance. A <code>Page</code> contains a list of 'questions' which it displays to participants. We can set a page's questions by passing them as arguments to the <code>Page</code> constructor. Alternatively, we can set a page's questions by setting the page's <code>questions</code> attribute, meaning that the following are equivalent:</p>
@@ -341,10 +338,10 @@ $ hlk setup-venv &lt;my-operating-system&gt; <span class="c1"># replace &lt;my-o
     <span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Label 1&#39;</span><span class="p">)</span>
 <span class="p">]</span>
 </code></pre></div>
-<p>The page's question is a <code>Label</code>, although this is in some sense a misnomer because label objects only contains text. The first argument to <code>Label</code> is a string, written in HTML, which the label object displays on its page.</p>
-<div class="admonition note">
-<p class="admonition-title">Word to HTML</p>
-<p>If you don't like writing HTML, you can easily find Word to HTML converters online.</p>
+<p>The page's question is a <code>Label</code>, although this is in some sense a misnomer because label objects only contains text. The first argument to <code>Label</code> is a string, written in markdown, which the label object displays on its page.</p>
+<div class="admonition tip">
+<p class="admonition-title">Markdown</p>
+<p>Hemlock expects text which appears on the page, such as labels and error messages, to be markdown formatted. Markdown is exceptionally easy to use. Check out this <a href="https://www.markdownguide.org/basic-syntax/" target="_blank">basic syntax guide</a> for more details.</p>
 </div>
 <h2 id="summary">Summary</h2>
 <p>In this part of the tutorial, you learned how to initialize a new hemlock project and create and preview a page.</p>

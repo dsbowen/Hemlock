@@ -10,21 +10,8 @@ body {
     padding-top: 40px;
 }
 
-/* Form margins */
-form.form-margins {
-    margin: 20px 0px;
-}
-
 div.question {
     border-radius: 7px;
-}
-
-/* Question div formatting */
-div.error {
-    border-style: solid;
-    border-width: thin;
-    background-color: #f2dede;
-    border-color: #ebcccc;
 }
 
 /* Choice formatting */

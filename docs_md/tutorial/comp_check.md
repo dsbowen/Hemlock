@@ -41,7 +41,7 @@ def start():
             ),
             checks=Page(
                 Check(
-                    '<p>Select the correct choice.</p>',
+                    'Select the correct choice.',
                     ['Correct', 'Incorrect', 'Also incorrect'],
                     compile=[C.clear_response(), C.shuffle()],
                     validate=V.require(),
@@ -84,37 +84,37 @@ We're going to use a comprehension check to explain the ultimatum game to our pa
 
 ### Instructions
 
+We're going to write several paragraphs of instructions for our participants. Rather than put this directly in `survey.py`, we'll store it in a file `ug_instructions.md`, also in the root directory.
+
+??? tip "Why store instructions in a separate file?:
+    It's good practice to store large blocks of text in separate markdown files for two reasons:
+
+    1. It avoids cluttering your python file
+    2. It allows you to iterate on the phrasing of important survey pages with your less tech-savvy collaborators, sparing them the enormous burden of having to parse a few lines of code
+
+Create a file named `ug_instructions.md` and paste the following:
+
+```markdown
+You are about to play an ultimatum game. The game involves two players: a **proposer** and a **responder**. The proposer has ${} to split between him/herself and the responder. The responder names an amount of money such that he/she accepts any proposed split which gives him/her at least this amount, and rejects any proposed split which gives him/her less than this amount.
+
+**If the split is accepted, the proposer and responder split the money according to the proposal. If the split is rejected, both players receive $0.**
+
+You will play {} rounds of this game. Each round, you will be paired with another randomly selected participant. **You will rarely, if ever, play two rounds with the same player.**
+
+We will test your understanding of these instructions on the next page.
+```
+
 Open your notebook and let's preview the instructions page:
 
 ```python
 from hemlock import Page, Label
 
-# the number of rounds participants play
-N_ROUNDS = 5
-# the amount of money split
-POT = 20
+N_ROUNDS = 5 # the number of rounds participants play
+POT = 20 # the amount of money split
 
 Page(
     Label(
-        '''
-        <p>You are about to play an ultimatum game. The game involves two
-        players: a <b>proposer</b> and a <b>responder</b>. The proposer has 
-        ${} to split between him/herself and the responder. The responder 
-        names an amount of money such that he/she accepts any proposed 
-        split which gives him/her at least this amount, and rejects any 
-        proposed split which gives him/her less than this amount.</p>
-
-        <p><b>If the split is accepted, the proposer and responder split the 
-        money according to the proposal. If the split is rejected, both 
-        players receive $0.</b></p>
-
-        <p>You will play {} rounds of this game. Each round, you will be 
-        paired with another randomly selected participant. <b>You will rarely, 
-        if ever, play two rounds with the same player.</b>
-
-        We will test your understanding of these instructions on the 
-        next page.
-        '''.format(POT, N_ROUNDS)
+        open('ug_instructions.md', 'r').read().format(POT, N_ROUNDS)
     )
 ).preview()
 ```
@@ -134,11 +134,11 @@ def gen_check_page(accept):
     return Page(
         Label(),
         Input(
-            '<p>How much money does the proposer receive?</p>',
+            'How much money does the proposer receive?',
             prepend='$', append='.00', type='number', required=True
         ),
         Input(
-            '<p>How much money does the responder receive?</p>',
+            'How much money does the responder receive?',
             prepend='$', append='.00', type='number', required=True
         ),
         compile=[C.clear_response(), C.random_proposal(accept)]
@@ -158,7 +158,6 @@ Now, fill in the `random_proposal` function in the next cell:
 
 ```python
 from hemlock import Compile as C, Input, Submit as S
-from hemlock.tools import html_list
 
 from random import randint
 
@@ -171,19 +170,17 @@ def random_proposal(check_page, accept):
     # compute the payoff
     payoff = proposal if response<=proposal[1] else (0, 0)
     # describe the proposal and response in the label
-    proposal_html = html_list(
-        'Proposer: ${}'.format(proposal[0]),
-        'Responder: ${}'.format(proposal[1]),
-        ordered=False
-    )
     check_page.questions[0].label = '''
-    <p>Imagine the proposer proposes the following split:</p>
-    {}
+    Imagine the proposer proposes the following split:
+    
+    - Proposer: ${}
+    - Responder: ${}
+    
     The responder says, "I will accept any proposal which gives me at least ${}."
-    '''.format(proposal_html, response)
+    '''.format(proposal[0], proposal[1], response)
     # add submit functions to verify that the response was correct
-    check_page.questions[1].submit = S.match(payoff[0])
-    check_page.questions[2].submit = S.match(payoff[1])
+    check_page.questions[1].submit = S.eq(payoff[0])
+    check_page.questions[2].submit = S.eq(payoff[1])
 ```
 
 `random_proposal` begins by generating a random proposal. We then generate a random response which will accept the proposal if `accept` is `True` and reject the proposal if `accept` is `False`.
@@ -192,7 +189,7 @@ The `payoff` is the proposal if the proposal is accepted and `(0,0)` if the prop
 
 We then fill in the check page's label with the proposal and response.
 
-Finally, we add submit functions to the check page's input questions to verify that the participant's responses match the payoffs.
+Finally, we add submit functions to the check page's input questions to verify that the participant's responses equal (`eq`) the true payoffs.
 
 Let's preview our comprehension check page when the responder accepts the proposal:
 
@@ -219,24 +216,25 @@ from hemlock import (
     Branch, Compile as C, Input, Label, Page, Validate as V, Submit as S, 
     route
 )
-from hemlock.tools import comprehension_check, html_list, join
+from hemlock.tools import comprehension_check, join
 from hemlock_demographics import basic_demographics
 
 from random import randint
 
-# the number of rounds participants play
-N_ROUNDS = 5
-# the amount of money split
-POT = 20
+N_ROUNDS = 5 # the number of rounds participants play
+POT = 20 # the amount of money split
 
 ...
 
 def ultimatum_game(start_branch):
+    def gen_check_page(accept):
+        # PASTE YOUR GEN_CHECK_PAGE FUNCTION HERE
+
     return Branch(
         *comprehension_check(
             instructions=Page(
                 Label(
-                    # ULTIMATUM GAME INSTRUCTIONS HERE
+                    open('ug_instructions.md', 'r').read().format(POT, N_ROUNDS)
                 )
             ),
             checks=[
@@ -257,12 +255,9 @@ def ultimatum_game(start_branch):
         )
     )
 
-def gen_check_page(accept):
-    # COPY AND PASTE YOUR FUNCTION HERE
-
 @C.register
 def random_proposal(check_page, accept):
-    # COPY AND PASTE YOUR FUNCTION HERE
+    # PASTE YOUR RANDOM_PROPOSAL FUNCTION HERE
 ```
 
 Run your app and see your comprehension check at work!

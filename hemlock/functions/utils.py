@@ -69,6 +69,35 @@ def correct_choices(q, *values):
     )
     return set(data) == set(values) if q.multiple else data in values
 
+def get_benchmark(benchmark, value_type=None):
+    """
+    Reconciles `benchmark` with its expected `value_type`.
+
+    Parameters
+    ----------
+    benchmark : 
+        Benchmark value for making comparisons. If a `Question`, the 
+        benchmark is understood to be the question's `data`.
+
+    value_type : callable or None, default=None
+        Expected value type of the benchmark. If `None`, this is the type 
+        of `benchmark`.
+
+    Returns
+    -------
+    benchmark, value_type : tuple
+        Reconciled such that `type(benchmark)==value_type`.
+    """
+    from ..models import Question
+
+    if isinstance(benchmark, Question):
+        benchmark = benchmark.data
+    if value_type is None:
+        value_type = type(benchmark)
+    else:
+        benchmark = value_type(benchmark)
+    return benchmark, value_type
+
 def match(question, pattern):
     """
     Check for a full regular expression match of the question response against 

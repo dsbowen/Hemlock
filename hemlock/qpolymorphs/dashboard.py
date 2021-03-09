@@ -3,7 +3,7 @@
 from .. import tools
 from ..app import db
 from ..models import Question
-from ..tools import iframe, key
+from ..tools import iframe, key, markdown
 
 from flask import render_template
 from sqlalchemy_mutable import MutableDictType, MutableDictJSONType
@@ -241,7 +241,11 @@ class Dashboard(Question):
             if key not in ('src', 'query_string')
         }
         return render_template(
-            self.template, q=self, embed=iframe(src, **kwargs)
+            self.template, 
+            q=self, 
+            error=markdown(self.error, strip_last_paragraph=True),
+            label=markdown(self.label),
+            embed=iframe(src, **kwargs)
         )
 
     def _record_response(self):

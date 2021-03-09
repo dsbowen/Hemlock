@@ -27,56 +27,34 @@ def ultimatum_game(start_branch):
 ...
 
 def responder_branch(ug_branch):
-    branch = Branch()
-    for round_ in range(N_ROUNDS):
-        response_input = gen_response_input(round_+1)
-        branch.pages.append(
-            Page(
-                response_input
-            )
+    branch = Branch(navigate=end)
+    for i in range(N_ROUNDS):
+        response_input = Blank(
+            ('''
+            The proposer has ${} to split between him/herself and you. Fill in the blank:
+            
+            I will accept any proposal which gives me at least **$'''.format(POT), '.00**.'),
+            prepend='$', append='.00',
+            var='Response', blank_empty='__',
+            type='number', min=0, max=POT, required=True
         )
-        branch.pages.append(
+        branch.pages += [
+            Page(
+                Label(progress(
+                    i/N_ROUNDS, 'Round {} of {}'.format(i+1, N_ROUNDS)
+                )),
+                response_input
+            ),
             Page(
                 Label(
-                    compile=C.responder_outcome(response_input)
+                    compile=C.display_responder_outcome(response_input)
                 )
             )
-        )
-    branch.pages.append(
-        Page(
-            Label('Thank you for completing the survey!'),
-            terminal=True      
-        )
-    )
+        ]
     return branch
 ```
 
 Like in the proposer branch, we add two pages to the responder branch for each of `N_ROUNDS`. Just as the first of these two pages asked the proposer for the proposal in the proposer branch, the first of these two pages asks the responder for their response in the responder branch. Like in the proposer branch, the second of these pages displays the outcome of the round.
-
-## The responder input
-
-Just as the proposer's input was created with `gen_proposal_input`, the responder's input is created with `gen_response_input`:
-
-```python
-...
-
-def gen_response_input(round_):
-    return Blank(
-        ('''
-        <p><b>Round {} of {}</b></p>
-        
-        <p>The proposer has ${} to split between him/herself and you. Fill in 
-        the blank:</p>
-        
-        <p>I will accept any proposal which gives me at least
-        <b>$'''.format(round_, N_ROUNDS, POT), '.00</b>.</p>'),
-        prepend='$', append='.00', 
-        var='Response', blank_empty='__', 
-        type='number', min=0, max=POT, required=True
-    )
-```
-
-As before, we add valiation so that the input must be between 0 and the size of the pot, and a submit function which converts the data to an integer.
 
 ## Displaying the responder outcome
 
@@ -86,7 +64,7 @@ We register a compile function to display the responder outcome.
 ...
 
 @C.register
-def responder_outcome(outcome_label, response_input):
+def display_responder_outcome(outcome_label, response_input):
     # get the response
     response = response_input.data
     #randomly select a proposal
@@ -112,30 +90,24 @@ def responder_outcome(outcome_label, response_input):
         Embedded('ResponderPayoff', payoff[1])
     ]
     # describe the outcome of the round
-    proposal_list = html_list(
-        'Proposer: ${}'.format(proposal[0]),
-        'You: ${}'.format(proposal[1]),
-        ordered=False
-    )
     outcome_label.label = '''
-        <p>The proposer proposed the following split:</p>
+        The proposer proposed the following split:
+
+        - Proposer: ${}
+        - You: ${}
+
+        You said you will accept any proposal that gives you at least ${}.
         
-        {proposal_list}
-        
-        <p>You said you will accept any proposal which gives you at least 
-        ${response}.</p>
-        
-        <p><b>You {accept_reject} the proposal, giving you a payoff of 
-        ${payoff}.</b></p>
+        **You {} the proposal, giving you a payoff of ${}.**
     '''.format(
-        proposal_list=proposal_list,
-        response=response,
-        accept_reject='accepted' if accept else 'rejected',
-        payoff=payoff[1]
+        proposal[0], proposal[1],
+        response,
+        'accepted' if accept else 'rejected', 
+        payoff[1]
     )
 ```
 
-This is similar to the `proposer_outcome` compile function. First, it gets the responder's response. Second, it matches the responder with a random proposer. If no proposer is avaiable (e.g. if the responder is the first participant in the survey), it generates a random proposal. Third, we compute the payoff for the round and record it using embedded data. Finally, we update the label to display the outcome of the round to the proposer.
+This is similar to the `display_proposer_outcome` compile function. First, it gets the responder's response. Second, it matches the responder with a random proposer. If no proposer is avaiable (e.g. if the responder is the first participant in the survey), it generates a random proposal. Third, we compute the payoff for the round and record it using embedded data. Finally, we update the label to display the outcome of the round to the responder.
 
 Run the app to see what the survey looks like in the responder condition.
 

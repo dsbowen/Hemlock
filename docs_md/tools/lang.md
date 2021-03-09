@@ -34,7 +34,7 @@
 ##hemlock.tools.**indef_article**
 
 <p class="func-header">
-    <i>def</i> hemlock.tools.<b>indef_article</b>(<i>word</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/lang.py#L3">[source]</a>
+    <i>def</i> hemlock.tools.<b>indef_article</b>(<i>word</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/lang.py#L7">[source]</a>
 </p>
 
 
@@ -77,7 +77,7 @@ Out:
 ##hemlock.tools.**join**
 
 <p class="func-header">
-    <i>def</i> hemlock.tools.<b>join</b>(<i>joiner, *items</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/lang.py#L32">[source]</a>
+    <i>def</i> hemlock.tools.<b>join</b>(<i>joiner, items</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/lang.py#L36">[source]</a>
 </p>
 
 
@@ -92,7 +92,7 @@ Out:
 <p class="attr">
     Joins the first n-1 items with the last item, e.g. <code>'and'</code>.
 </p>
-<b>*items : <i>str</i></b>
+<b>items : <i>iterable</i></b>
 <p class="attr">
     Items to join.
 </p></td>
@@ -112,8 +112,8 @@ Out:
 ```python
 from hemlock.tools import join
 
-print(join('and', 'world', 'sun'))
-print(join('or', 'world', 'sun', 'moon'))
+print(join('and', ('world', 'sun')))
+print(join('or', ('world', 'sun', 'moon')))
 ```
 
 Out:
@@ -123,10 +123,45 @@ world and sun
 world, sun, or moon
 ```
 
+##hemlock.tools.**markdown**
+
+<p class="func-header">
+    <i>def</i> hemlock.tools.<b>markdown</b>(<i>string, strip_last_paragraph=False</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/lang.py#L77">[source]</a>
+</p>
+
+Convert markdown-formatted string to HMTL.
+
+<table class="docutils field-list field-table" frame="void" rules="none">
+    <col class="field-name" />
+    <col class="field-body" />
+    <tbody valign="top">
+        <tr class="field">
+    <th class="field-name"><b>Parameters:</b></td>
+    <td class="field-body" width="100%"><b>string : <i>str</i></b>
+<p class="attr">
+    Markdown-formatted string.
+</p>
+<b>strip_last_paragraph : <i>bool, default=False</i></b>
+<p class="attr">
+    Strips the <code>&lt;p&gt;</code> tag from the last paragraph. This often prettifies the display.
+</p></td>
+</tr>
+<tr class="field">
+    <th class="field-name"><b>Returns:</b></td>
+    <td class="field-body" width="100%"><b>HTML : <i>str</i></b>
+<p class="attr">
+    HTML-formatted string.
+</p></td>
+</tr>
+    </tbody>
+</table>
+
+
+
 ##hemlock.tools.**plural**
 
 <p class="func-header">
-    <i>def</i> hemlock.tools.<b>plural</b>(<i>n, singular, plural=None</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/lang.py#L73">[source]</a>
+    <i>def</i> hemlock.tools.<b>plural</b>(<i>n, singular, plural=None</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/lang.py#L114">[source]</a>
 </p>
 
 
@@ -177,7 +212,7 @@ Out:
 ##hemlock.tools.**pronouns**
 
 <p class="func-header">
-    <i>def</i> hemlock.tools.<b>pronouns</b>(<i>person, singular, gender=None, pfx=''</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/lang.py#L108">[source]</a>
+    <i>def</i> hemlock.tools.<b>pronouns</b>(<i>person, singular, gender=None, pfx=''</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/lang.py#L149">[source]</a>
 </p>
 
 

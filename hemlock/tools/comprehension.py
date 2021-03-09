@@ -1,8 +1,7 @@
 """# Comprehension check"""
 
 ERROR_MSG = """
-Your response was incorrect.<br/>
-Please reread the instructions before continuing.
+Your response was incorrect. Please reread the instructions before continuing.
 """
 
 def comprehension_check(instructions, checks, attempts=None):

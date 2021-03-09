@@ -96,7 +96,9 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#aside-on-fill-in-the-blank-inputs">Aside on fill-in-the-blank inputs</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#the-proposal-input">The proposal input</a>
+    <li class="toctree-l2"><a class="reference internal" href="#aside-on-progress-bars">Aside on progress bars</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#the-proposal-page">The proposal page</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#finding-a-responder">Finding a responder</a>
     </li>
@@ -110,7 +112,9 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#the-proposer-branch-navigate-function">The proposer branch navigate function</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#generating-the-proposal-input-and-outcome-label">Generating the proposal input and outcome label</a>
+    <li class="toctree-l3"><a class="reference internal" href="#displaying-the-proposer-outcome_1">Displaying the proposer outcome</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#ending-the-survey">Ending the survey</a>
     </li>
         </ul>
     </li>
@@ -297,31 +301,41 @@
 </code></pre></div>
 <p>Note that the blank's first argument isn't a string like we're used to seeing. Instead, it's a tuple. Whatever the participant enters in the input field gets inserted in between the tuple entries.</p>
 <p>A key attribute of blanks is <code>blank_empty</code>. This is what fills in the blank when the participant's response is empty.</p>
-<h2 id="the-proposal-input">The proposal input</h2>
-<p>First, we'll write a function to generate an input question where the proposer will input the proposed split. Enter the following in your jupyter notebook:</p>
+<h2 id="aside-on-progress-bars">Aside on progress bars</h2>
+<p>Each participant plays several rounds of the ultimatum game. It's common courtesy to inform participants of how far along they are in your survey. We can use a progress bar for this:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Label</span>
+<span class="kn">from</span> <span class="nn">hemlock.tools</span> <span class="kn">import</span> <span class="n">progress</span>
+
+<span class="n">Page</span><span class="p">(</span>
+    <span class="n">Label</span><span class="p">(</span><span class="n">progress</span><span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="mi">5</span><span class="p">))</span>
+<span class="p">)</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
+</code></pre></div>
+<p>The first argument to <code>progress</code> is how far along the participant is. The (optional) second argument to <code>progress</code> customizes the text:</p>
+<div class="highlight"><pre><span></span><code><span class="n">Page</span><span class="p">(</span>
+    <span class="n">Label</span><span class="p">(</span><span class="n">progress</span><span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;Round 3 of 5&#39;</span><span class="p">))</span>
+<span class="p">)</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="the-proposal-page">The proposal page</h2>
+<p>We're ready to create a page where the proposer will input the proposed split. Enter the following in your jupyter notebook:</p>
 <div class="highlight"><pre><span></span><code><span class="n">N_ROUNDS</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="n">POT</span> <span class="o">=</span> <span class="mi">20</span>
 
-<span class="k">def</span> <span class="nf">gen_proposal_input</span><span class="p">(</span><span class="n">round_</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">Blank</span><span class="p">(</span>
+<span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">Page</span><span class="p">(</span>
+    <span class="n">Label</span><span class="p">(</span>
+        <span class="n">progress</span><span class="p">(</span><span class="n">i</span><span class="o">/</span><span class="n">N_ROUNDS</span><span class="p">,</span> <span class="s1">&#39;Round </span><span class="si">{}</span><span class="s1"> of </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_ROUNDS</span><span class="p">))</span>
+    <span class="p">),</span>
+    <span class="n">Blank</span><span class="p">(</span>
         <span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
-<span class="s1">        &lt;p&gt;&lt;b&gt;Round </span><span class="si">{}</span><span class="s1"> of </span><span class="si">{}</span><span class="s1">&lt;/b&gt;&lt;/p&gt;</span>
+<span class="s1">        You have $</span><span class="si">{}</span><span class="s1"> to split between you and the responder. Fill in the blank:</span>
 
-<span class="s1">        &lt;p&gt;You have $</span><span class="si">{}</span><span class="s1"> to split between you and the responder. Fill in the </span>
-<span class="s1">        blank:&lt;/p&gt;</span>
-
-<span class="s1">        &lt;p&gt;I would like to offer the responder </span>
-<span class="s1">        &lt;b&gt;$&#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">round_</span><span class="p">,</span> <span class="n">N_ROUNDS</span><span class="p">,</span> <span class="n">POT</span><span class="p">),</span> <span class="s1">&#39;.00&lt;/b&gt;.&lt;/p&gt;&#39;</span><span class="p">),</span>
-        <span class="n">prepend</span><span class="o">=</span><span class="s1">&#39;$&#39;</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="s1">&#39;.00&#39;</span><span class="p">,</span> 
-        <span class="n">var</span><span class="o">=</span><span class="s1">&#39;Proposal&#39;</span><span class="p">,</span> <span class="n">blank_empty</span><span class="o">=</span><span class="s1">&#39;__&#39;</span><span class="p">,</span> 
+<span class="s1">        I would like to offer the responder **$&#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">POT</span><span class="p">),</span> <span class="s1">&#39;.00**.&#39;</span><span class="p">),</span>
+        <span class="n">prepend</span><span class="o">=</span><span class="s1">&#39;$&#39;</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="s1">&#39;.00&#39;</span><span class="p">,</span>
+        <span class="n">var</span><span class="o">=</span><span class="s1">&#39;Proposal&#39;</span><span class="p">,</span> <span class="n">blank_empty</span><span class="o">=</span><span class="s1">&#39;__&#39;</span><span class="p">,</span>
         <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;number&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="n">POT</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">)</span>
-
-<span class="n">Page</span><span class="p">(</span>
-    <span class="n">gen_proposal_input</span><span class="p">(</span><span class="n">round_</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="p">)</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
 </code></pre></div>
-<p>This function generates an fill-in-the-blank input which asks the proposer how much money they would like to offer to the responder. We record the data in a variable named <code>'Proposal'</code>.</p>
 <h2 id="finding-a-responder">Finding a responder</h2>
 <p>We can use the <a href="https://docs.sqlalchemy.org/en/13/orm/query.html" target="_blank">SQLAlchemy Query API</a> to pair the proposer with a random responder this round. </p>
 <p>First, we create an input with variable name <code>'Response'</code> and data <code>5</code>:</p>
@@ -355,12 +369,11 @@
 <h2 id="displaying-the-proposer-outcome">Displaying the proposer outcome</h2>
 <p>Now we want to display the outcome of the round to the proposer. This calls for a compile function:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Compile</span> <span class="k">as</span> <span class="n">C</span><span class="p">,</span> <span class="n">Embedded</span>
-<span class="kn">from</span> <span class="nn">hemlock.tools</span> <span class="kn">import</span> <span class="n">html_list</span>
 
 <span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
 
 <span class="nd">@C</span><span class="o">.</span><span class="n">register</span>
-<span class="k">def</span> <span class="nf">proposer_outcome</span><span class="p">(</span><span class="n">outcome_label</span><span class="p">,</span> <span class="n">proposal_input</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">display_proposer_outcome</span><span class="p">(</span><span class="n">outcome_label</span><span class="p">,</span> <span class="n">proposal_input</span><span class="p">):</span>
     <span class="c1"># get the proposal</span>
     <span class="n">proposal</span> <span class="o">=</span> <span class="n">POT</span><span class="o">-</span><span class="n">proposal_input</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">proposal_input</span><span class="o">.</span><span class="n">data</span>
     <span class="c1"># get all responses</span>
@@ -385,26 +398,20 @@
         <span class="n">Embedded</span><span class="p">(</span><span class="s1">&#39;ResponderPayoff&#39;</span><span class="p">,</span> <span class="n">payoff</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
     <span class="p">]</span>
     <span class="c1"># describe the outcome of the round</span>
-    <span class="n">proposal_list</span> <span class="o">=</span> <span class="n">html_list</span><span class="p">(</span>
-        <span class="s1">&#39;You: $</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">proposal</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
-        <span class="s1">&#39;Responder: $</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">proposal</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
-        <span class="n">ordered</span><span class="o">=</span><span class="kc">False</span>
-    <span class="p">)</span>
     <span class="n">outcome_label</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
-<span class="s1">        &lt;p&gt;You proposed the following split:&lt;/p&gt;</span>
+<span class="s1">        You proposed the following split:</span>
 
-<span class="s1">        </span><span class="si">{proposal_list}</span><span class="s1"></span>
+<span class="s1">        - You: $</span><span class="si">{}</span><span class="s1"></span>
+<span class="s1">        - Responder: $</span><span class="si">{}</span><span class="s1"></span>
 
-<span class="s1">        &lt;p&gt;The responder said they will accept any proposal which gives</span>
-<span class="s1">        them at least $</span><span class="si">{response}</span><span class="s1">.&lt;/p&gt;</span>
+<span class="s1">        The responder said they will accept any proposal which gives them at least $</span><span class="si">{}</span><span class="s1">.</span>
 
-<span class="s1">        &lt;p&gt;&lt;b&gt;Your proposal was </span><span class="si">{accept_reject}</span><span class="s1">, giving you a payoff of </span>
-<span class="s1">        $</span><span class="si">{payoff}</span><span class="s1">.&lt;/b&gt;&lt;/p&gt;</span>
+<span class="s1">        **Your proposal was </span><span class="si">{}</span><span class="s1">, giving you a payoff of $</span><span class="si">{}</span><span class="s1">.**</span>
 <span class="s1">    &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-        <span class="n">proposal_list</span><span class="o">=</span><span class="n">proposal_list</span><span class="p">,</span> 
-        <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">,</span> 
-        <span class="n">accept_reject</span><span class="o">=</span><span class="s1">&#39;accepted&#39;</span> <span class="k">if</span> <span class="n">accept</span> <span class="k">else</span> <span class="s1">&#39;rejected&#39;</span><span class="p">,</span> 
-        <span class="n">payoff</span><span class="o">=</span><span class="n">payoff</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">proposal</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">proposal</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">response</span><span class="p">,</span>
+        <span class="s1">&#39;accepted&#39;</span> <span class="k">if</span> <span class="n">accept</span> <span class="k">else</span> <span class="s1">&#39;rejected&#39;</span><span class="p">,</span> 
+        <span class="n">payoff</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="p">)</span>
 </code></pre></div>
 <p>Let's go through this step by step.</p>
@@ -413,18 +420,16 @@
 <p>Third, we compute the payoff and record the results of the round using embedded data.</p>
 <p>Finally, we set the outcome label's <code>label</code> attribute to display the outcome of the round.</p>
 <p>Let's see what the proposer outcome would have been if they had offered $10 to the responder:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Label</span>
-
-<span class="n">page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="n">page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span>
     <span class="n">Label</span><span class="p">(</span>
-        <span class="nb">compile</span><span class="o">=</span><span class="n">C</span><span class="o">.</span><span class="n">proposer_outcome</span><span class="p">(</span><span class="n">Blank</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>
+        <span class="nb">compile</span><span class="o">=</span><span class="n">C</span><span class="o">.</span><span class="n">display_proposer_outcome</span><span class="p">(</span><span class="n">Blank</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>
     <span class="p">)</span>
 <span class="p">)</span>
 <span class="n">page</span><span class="o">.</span><span class="n">_compile</span><span class="p">()</span>
 <span class="n">page</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
 </code></pre></div>
 <p>Notice that the outcome of the round is recorded in the proposer's outcome page's embedded data:</p>
-<div class="highlight"><pre><span></span><code><span class="p">[(</span><span class="n">e</span><span class="o">.</span><span class="n">var</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">proposal_outcome_page</span><span class="o">.</span><span class="n">embedded</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><code><span class="p">[(</span><span class="n">e</span><span class="o">.</span><span class="n">var</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">page</span><span class="o">.</span><span class="n">embedded</span><span class="p">]</span>
 </code></pre></div>
 <p>Out:</p>
 <div class="highlight"><pre><span></span><code>[(&#39;Response&#39;, 5),
@@ -435,7 +440,7 @@
 <p>What would the proposer outcome have been if they had offered $4 to the responder?</p>
 <div class="highlight"><pre><span></span><code><span class="n">page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span>
     <span class="n">Label</span><span class="p">(</span>
-        <span class="nb">compile</span><span class="o">=</span><span class="n">C</span><span class="o">.</span><span class="n">proposer_outcome</span><span class="p">(</span><span class="n">Blank</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+        <span class="nb">compile</span><span class="o">=</span><span class="n">C</span><span class="o">.</span><span class="n">display_proposer_outcome</span><span class="p">(</span><span class="n">Blank</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
     <span class="p">)</span>
 <span class="p">)</span>
 <span class="n">page</span><span class="o">.</span><span class="n">_compile</span><span class="p">()</span>
@@ -454,10 +459,10 @@
 <h3 id="imports">Imports</h3>
 <p>We'll begin by updating our imports:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">Blank</span><span class="p">,</span> <span class="n">Branch</span><span class="p">,</span> <span class="n">Compile</span> <span class="k">as</span> <span class="n">C</span><span class="p">,</span> <span class="n">Embedded</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Validate</span> <span class="k">as</span> <span class="n">V</span><span class="p">,</span> 
-    <span class="n">Submit</span> <span class="k">as</span> <span class="n">S</span><span class="p">,</span> <span class="n">route</span>
+    <span class="n">Blank</span><span class="p">,</span> <span class="n">Branch</span><span class="p">,</span> <span class="n">Compile</span> <span class="k">as</span> <span class="n">C</span><span class="p">,</span> <span class="n">Embedded</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> 
+    <span class="n">Validate</span> <span class="k">as</span> <span class="n">V</span><span class="p">,</span> <span class="n">Submit</span> <span class="k">as</span> <span class="n">S</span><span class="p">,</span> <span class="n">route</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">hemlock.tools</span> <span class="kn">import</span> <span class="n">Assigner</span><span class="p">,</span> <span class="n">comprehension_check</span><span class="p">,</span> <span class="n">html_list</span><span class="p">,</span> <span class="n">join</span>
+<span class="kn">from</span> <span class="nn">hemlock.tools</span> <span class="kn">import</span> <span class="n">Assigner</span><span class="p">,</span> <span class="n">comprehension_check</span><span class="p">,</span> <span class="n">join</span><span class="p">,</span> <span class="n">progress</span>
 <span class="kn">from</span> <span class="nn">hemlock_demographics</span> <span class="kn">import</span> <span class="n">basic_demographics</span>
 
 <span class="kn">import</span> <span class="nn">random</span>
@@ -490,40 +495,50 @@
 <div class="highlight"><pre><span></span><code><span class="o">...</span>
 
 <span class="k">def</span> <span class="nf">proposer_branch</span><span class="p">(</span><span class="n">ug_branch</span><span class="p">):</span>
-    <span class="n">branch</span> <span class="o">=</span> <span class="n">Branch</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">round_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_ROUNDS</span><span class="p">):</span>
-        <span class="n">proposal_input</span> <span class="o">=</span> <span class="n">gen_proposal_input</span><span class="p">(</span><span class="n">round_</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">branch</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="n">Page</span><span class="p">(</span>
-                <span class="n">proposal_input</span>
-            <span class="p">)</span>
+    <span class="n">branch</span> <span class="o">=</span> <span class="n">Branch</span><span class="p">(</span><span class="n">navigate</span><span class="o">=</span><span class="n">end</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_ROUNDS</span><span class="p">):</span>
+        <span class="n">proposal_input</span> <span class="o">=</span> <span class="n">Blank</span><span class="p">(</span>
+            <span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">            You have $</span><span class="si">{}</span><span class="s1"> to split between you and the responder. Fill in the blank:</span>
+
+<span class="s1">            I would like to offer the responder **$&#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">POT</span><span class="p">),</span> <span class="s1">&#39;.00**.&#39;</span><span class="p">),</span>
+            <span class="n">prepend</span><span class="o">=</span><span class="s1">&#39;$&#39;</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="s1">&#39;.00&#39;</span><span class="p">,</span>
+            <span class="n">var</span><span class="o">=</span><span class="s1">&#39;Proposal&#39;</span><span class="p">,</span> <span class="n">blank_empty</span><span class="o">=</span><span class="s1">&#39;__&#39;</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;number&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="n">POT</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
-        <span class="n">branch</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+        <span class="n">branch</span><span class="o">.</span><span class="n">pages</span> <span class="o">+=</span> <span class="p">[</span>
+            <span class="n">Page</span><span class="p">(</span>
+                <span class="n">Label</span><span class="p">(</span><span class="n">progress</span><span class="p">(</span>
+                    <span class="n">i</span><span class="o">/</span><span class="n">N_ROUNDS</span><span class="p">,</span> <span class="s1">&#39;Round </span><span class="si">{}</span><span class="s1"> of </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_ROUNDS</span><span class="p">)</span>
+                <span class="p">)),</span>
+                <span class="n">proposal_input</span>
+            <span class="p">),</span>
             <span class="n">Page</span><span class="p">(</span>
                 <span class="n">Label</span><span class="p">(</span>
-                    <span class="nb">compile</span><span class="o">=</span><span class="n">C</span><span class="o">.</span><span class="n">proposer_outcome</span><span class="p">(</span><span class="n">proposal_input</span><span class="p">)</span>
+                    <span class="nb">compile</span><span class="o">=</span><span class="n">C</span><span class="o">.</span><span class="n">display_proposer_outcome</span><span class="p">(</span><span class="n">proposal_input</span><span class="p">)</span>
                 <span class="p">)</span>
             <span class="p">)</span>
-        <span class="p">)</span>
-    <span class="n">branch</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-        <span class="n">Page</span><span class="p">(</span>
-            <span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Thank you for completing the survey!&#39;</span><span class="p">),</span>
-            <span class="n">terminal</span><span class="o">=</span><span class="kc">True</span>      
-        <span class="p">)</span>
-    <span class="p">)</span>
+        <span class="p">]</span>
     <span class="k">return</span> <span class="n">branch</span>
 </code></pre></div>
 <p>This navigate function simply adds two pages to the proposer branch for each of <code>N_ROUNDS</code>. The first page asks the proposer to propose a split. The second page displays the outcome of the round.</p>
-<h3 id="generating-the-proposal-input-and-outcome-label">Generating the proposal input and outcome label</h3>
-<p>Finally, we'll add the <code>gen_proposal_input</code> and <code>proposer_outcome</code> functions we wrote in our notebook:</p>
+<h3 id="displaying-the-proposer-outcome_1">Displaying the proposer outcome</h3>
+<p>Next, we'll add the <code>display_proposer_outcome</code> function we wrote in our notebook:</p>
 <div class="highlight"><pre><span></span><code><span class="o">...</span>
 
-<span class="k">def</span> <span class="nf">gen_proposal_input</span><span class="p">(</span><span class="n">round_</span><span class="p">):</span>
-    <span class="c1"># AS IN THE NOTEBOOK</span>
-
 <span class="nd">@C</span><span class="o">.</span><span class="n">register</span>
-<span class="k">def</span> <span class="nf">proposer_outcome</span><span class="p">(</span><span class="n">outcome_label</span><span class="p">,</span> <span class="n">proposal_input</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">display_proposer_outcome</span><span class="p">(</span><span class="n">outcome_label</span><span class="p">,</span> <span class="n">proposal_input</span><span class="p">):</span>
     <span class="c1"># AS IN THE NOTEBOOK</span>
+</code></pre></div>
+<h3 id="ending-the-survey">Ending the survey</h3>
+<p>Finally, we'll add a function to take the participant to the completion page:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="n">rounds_branch</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span>
+        <span class="n">Page</span><span class="p">(</span>
+            <span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Thank you for completing the survey!&#39;</span><span class="p">),</span>
+            <span class="n">terminal</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
 </code></pre></div>
 <p>Run the app and see what the survey looks like in the proposer condition.</p>
 <h2 id="summary">Summary</h2>

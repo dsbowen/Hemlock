@@ -28,6 +28,8 @@ Deploying your application is as easy as:
 $ hlk deploy
 ```
 
+(You may have to give heroku access to your github account the first time you do this.)
+
 This opens a web page with the deployment information. Give your application an awesome name and click 'Deploy app' at the bottom of the page.
 
 Heroku needs about 2-4 minutes to set up your cloud computing environment. Use this time to reflect on the meaning of life. When it's done, head to https://my-awesome-app-name.herokuapp.com/ (replace 'my-awesome-app-name' with the name you gave to your application) to see your study online.

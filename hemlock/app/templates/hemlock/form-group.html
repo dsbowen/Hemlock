@@ -2,14 +2,17 @@
 <div id="{{ q.key }}-fg" class="{{ fg_class }}" {{ q.form_group_attrs.to_html() | safe }}>
     <div class="card-body">
         {% if q.error is not none %}
+        {% block error %}
         <div {{ q.error_attrs.to_html() | safe }}>
-            {{ q.error | safe}}
+            {{ error | safe}}
         </div>
+        {% endblock %}
         {% endif %}
+
         {% if q.label is not none %}
         {% block label %}
         <label class="w-100" for="{{ q.model_id }}">
-            {{ q.label | safe }}
+            {{ label | safe }}
         </label>
         {% endblock %}
         {% endif %}

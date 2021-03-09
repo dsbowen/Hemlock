@@ -2,13 +2,8 @@
 
 {% block label %}
 <div class="w-100">
-    {% if q.error is not none %}
-    <span {{ q.error_attrs.to_html() | safe }}>
-        {{ q.error | safe}}
-    </span>
-    {% endif %}
-    {% if q.label is not none %}
-    {{ q.label | safe }}
+    {% if label != '' %}
+    {{ label | safe }}
     {% endif %}
 </div>
 {% endblock %}

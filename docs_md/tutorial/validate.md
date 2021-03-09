@@ -226,8 +226,8 @@ In `survey.py`:
 
 ```python
 from hemlock import (
-    Binary, Branch, Check, Input, Page, Label, RangeInput, Select, 
-    Validate as V, route
+    Branch, Check, Input, Page, Label, RangeInput, Select, Validate as V, 
+    binary, route
 )
 
 @route('/survey')
@@ -235,20 +235,20 @@ def start():
     return Branch(
         Page(
             Select(
-                '<p>What is your gender?</p>',
+                'What is your gender?',
                 ['', 'Male', 'Female', 'Other'],
                 var='Gender', data_rows=-1,
                 validate=V.require()
             ),
             Input(
-                '<p>How old are you?</p>',
+                'How old are you?',
                 type='number', min=0, var='Age', data_rows=-1,
                 required=True
             ),
             # REST OF THE DEMOGRAPHICS PAGE HERE
         ),
         Page(
-            Label('<p>Thank you for completing the survey!</p>'), 
+            Label('Thank you for completing the survey!'), 
             terminal=True
         )
     )

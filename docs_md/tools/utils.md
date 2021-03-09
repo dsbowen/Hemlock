@@ -127,10 +127,10 @@ Out:
 'Status': ['Completed']}
 ```
 
-##hemlock.tools.**html_list**
+##hemlock.tools.**make_list**
 
 <p class="func-header">
-    <i>def</i> hemlock.tools.<b>html_list</b>(<i>*items, ordered=True</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/utils.py#L90">[source]</a>
+    <i>def</i> hemlock.tools.<b>make_list</b>(<i>items, ordered=False</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/utils.py#L90">[source]</a>
 </p>
 
 
@@ -139,16 +139,29 @@ Out:
     <col class="field-name" />
     <col class="field-body" />
     <tbody valign="top">
-        
+        <tr class="field">
+    <th class="field-name"><b>Parameters:</b></td>
+    <td class="field-body" width="100%"><b>items : <i>list</i></b>
+<p class="attr">
+    
+</p></td>
+</tr>
+<tr class="field">
+    <th class="field-name"><b>Returns:</b></td>
+    <td class="field-body" width="100%"><b>markdown : <i>str</i></b>
+<p class="attr">
+    Markdown-formatted list.
+</p></td>
+</tr>
     </tbody>
 </table>
 
 
 
-##hemlock.tools.**html_table**
+##hemlock.tools.**make_table**
 
 <p class="func-header">
-    <i>def</i> hemlock.tools.<b>html_table</b>(<i>table, extra_classes=[]</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/utils.py#L96">[source]</a>
+    <i>def</i> hemlock.tools.<b>make_table</b>(<i>table, extra_classes=[]</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/utils.py#L107">[source]</a>
 </p>
 
 
@@ -209,7 +222,7 @@ Out:
 ##hemlock.tools.**show_on_event**
 
 <p class="func-header">
-    <i>def</i> hemlock.tools.<b>show_on_event</b>(<i>target, condition, value, init_hidden=True, *args, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/utils.py#L158">[source]</a>
+    <i>def</i> hemlock.tools.<b>show_on_event</b>(<i>target, condition, value, init_hidden=True, *args, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/utils.py#L169">[source]</a>
 </p>
 
 Show the target question when a condition is met.
@@ -282,7 +295,7 @@ Page(name, greet).preview()
 ##hemlock.tools.**url_for**
 
 <p class="func-header">
-    <i>def</i> hemlock.tools.<b>url_for</b>(<i>*args, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/utils.py#L283">[source]</a>
+    <i>def</i> hemlock.tools.<b>url_for</b>(<i>*args, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/utils.py#L294">[source]</a>
 </p>
 
 Attempt to return `flask.url_for(*args, **kwargs)`. However, this method

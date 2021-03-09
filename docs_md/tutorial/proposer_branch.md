@@ -32,35 +32,51 @@ Note that the blank's first argument isn't a string like we're used to seeing. I
 
 A key attribute of blanks is `blank_empty`. This is what fills in the blank when the participant's response is empty.
 
-## The proposal input
+## Aside on progress bars
 
-First, we'll write a function to generate an input question where the proposer will input the proposed split. Enter the following in your jupyter notebook:
+Each participant plays several rounds of the ultimatum game. It's common courtesy to inform participants of how far along they are in your survey. We can use a progress bar for this:
+
+```python
+from hemlock import Label
+from hemlock.tools import progress
+
+Page(
+    Label(progress(2/5))
+).preview()
+```
+
+The first argument to `progress` is how far along the participant is. The (optional) second argument to `progress` customizes the text:
+
+```python
+Page(
+    Label(progress(2/5, 'Round 3 of 5'))
+).preview()
+```
+
+## The proposal page
+
+We're ready to create a page where the proposer will input the proposed split. Enter the following in your jupyter notebook:
 
 ```python
 N_ROUNDS = 5
 POT = 20
 
-def gen_proposal_input(round_):
-    return Blank(
+i = 1
+Page(
+    Label(
+        progress(i/N_ROUNDS, 'Round {} of {}'.format(i+1, N_ROUNDS))
+    ),
+    Blank(
         ('''
-        <p><b>Round {} of {}</b></p>
-
-        <p>You have ${} to split between you and the responder. Fill in the 
-        blank:</p>
-
-        <p>I would like to offer the responder 
-        <b>$'''.format(round_, N_ROUNDS, POT), '.00</b>.</p>'),
-        prepend='$', append='.00', 
-        var='Proposal', blank_empty='__', 
+        You have ${} to split between you and the responder. Fill in the blank:
+        
+        I would like to offer the responder **$'''.format(POT), '.00**.'),
+        prepend='$', append='.00',
+        var='Proposal', blank_empty='__',
         type='number', min=0, max=POT, required=True
     )
-
-Page(
-    gen_proposal_input(round_=1)
 ).preview()
 ```
-
-This function generates an fill-in-the-blank input which asks the proposer how much money they would like to offer to the responder. We record the data in a variable named `'Proposal'`.
 
 ## Finding a responder
 
@@ -118,12 +134,11 @@ Now we want to display the outcome of the round to the proposer. This calls for 
 
 ```python
 from hemlock import Compile as C, Embedded
-from hemlock.tools import html_list
 
 from random import randint
 
 @C.register
-def proposer_outcome(outcome_label, proposal_input):
+def display_proposer_outcome(outcome_label, proposal_input):
     # get the proposal
     proposal = POT-proposal_input.data, proposal_input.data
     # get all responses
@@ -148,26 +163,20 @@ def proposer_outcome(outcome_label, proposal_input):
         Embedded('ResponderPayoff', payoff[1])
     ]
     # describe the outcome of the round
-    proposal_list = html_list(
-        'You: ${}'.format(proposal[0]),
-        'Responder: ${}'.format(proposal[1]),
-        ordered=False
-    )
     outcome_label.label = '''
-        <p>You proposed the following split:</p>
+        You proposed the following split:
 
-        {proposal_list}
+        - You: ${}
+        - Responder: ${}
 
-        <p>The responder said they will accept any proposal which gives
-        them at least ${response}.</p>
+        The responder said they will accept any proposal which gives them at least ${}.
         
-        <p><b>Your proposal was {accept_reject}, giving you a payoff of 
-        ${payoff}.</b></p>
+        **Your proposal was {}, giving you a payoff of ${}.**
     '''.format(
-        proposal_list=proposal_list, 
-        response=response, 
-        accept_reject='accepted' if accept else 'rejected', 
-        payoff=payoff[0]
+        proposal[0], proposal[1],
+        response,
+        'accepted' if accept else 'rejected', 
+        payoff[0]
     )
 ```
 
@@ -184,11 +193,9 @@ Finally, we set the outcome label's `label` attribute to display the outcome of 
 Let's see what the proposer outcome would have been if they had offered $10 to the responder:
 
 ```python
-from hemlock import Label
-
 page = Page(
     Label(
-        compile=C.proposer_outcome(Blank(data=10))
+        compile=C.display_proposer_outcome(Blank(data=10))
     )
 )
 page._compile()
@@ -198,7 +205,7 @@ page.preview()
 Notice that the outcome of the round is recorded in the proposer's outcome page's embedded data:
 
 ```python
-[(e.var, e.data) for e in proposal_outcome_page.embedded]
+[(e.var, e.data) for e in page.embedded]
 ```
 
 Out:
@@ -215,7 +222,7 @@ What would the proposer outcome have been if they had offered $4 to the responde
 ```python
 page = Page(
     Label(
-        compile=C.proposer_outcome(Blank(data=4))
+        compile=C.display_proposer_outcome(Blank(data=4))
     )
 )
 page._compile()
@@ -245,10 +252,10 @@ We'll begin by updating our imports:
 
 ```python
 from hemlock import (
-    Blank, Branch, Compile as C, Embedded, Input, Label, Page, Validate as V, 
-    Submit as S, route
+    Blank, Branch, Compile as C, Embedded, Input, Label, Page, 
+    Validate as V, Submit as S, route
 )
-from hemlock.tools import Assigner, comprehension_check, html_list, join
+from hemlock.tools import Assigner, comprehension_check, join, progress
 from hemlock_demographics import basic_demographics
 
 import random
@@ -289,45 +296,59 @@ Next we'll add our proposer navigate function to the bottom of `survey.py`:
 ...
 
 def proposer_branch(ug_branch):
-    branch = Branch()
-    for round_ in range(N_ROUNDS):
-        proposal_input = gen_proposal_input(round_+1)
-        branch.pages.append(
-            Page(
-                proposal_input
-            )
+    branch = Branch(navigate=end)
+    for i in range(N_ROUNDS):
+        proposal_input = Blank(
+            ('''
+            You have ${} to split between you and the responder. Fill in the blank:
+            
+            I would like to offer the responder **$'''.format(POT), '.00**.'),
+            prepend='$', append='.00',
+            var='Proposal', blank_empty='__',
+            type='number', min=0, max=POT, required=True
         )
-        branch.pages.append(
+        branch.pages += [
+            Page(
+                Label(progress(
+                    i/N_ROUNDS, 'Round {} of {}'.format(i+1, N_ROUNDS)
+                )),
+                proposal_input
+            ),
             Page(
                 Label(
-                    compile=C.proposer_outcome(proposal_input)
+                    compile=C.display_proposer_outcome(proposal_input)
                 )
             )
-        )
-    branch.pages.append(
-        Page(
-            Label('Thank you for completing the survey!'),
-            terminal=True      
-        )
-    )
+        ]
     return branch
 ```
 
 This navigate function simply adds two pages to the proposer branch for each of `N_ROUNDS`. The first page asks the proposer to propose a split. The second page displays the outcome of the round.
 
-### Generating the proposal input and outcome label
+### Displaying the proposer outcome
 
-Finally, we'll add the `gen_proposal_input` and `proposer_outcome` functions we wrote in our notebook:
+Next, we'll add the `display_proposer_outcome` function we wrote in our notebook:
 
 ```python
 ...
 
-def gen_proposal_input(round_):
-    # AS IN THE NOTEBOOK
-
 @C.register
-def proposer_outcome(outcome_label, proposal_input):
+def display_proposer_outcome(outcome_label, proposal_input):
     # AS IN THE NOTEBOOK
+```
+
+### Ending the survey
+
+Finally, we'll add a function to take the participant to the completion page:
+
+```python
+def end(rounds_branch):
+    return Branch(
+        Page(
+            Label('Thank you for completing the survey!'),
+            terminal=True
+        )
+    )
 ```
 
 Run the app and see what the survey looks like in the proposer condition.

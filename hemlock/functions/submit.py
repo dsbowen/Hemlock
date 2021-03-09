@@ -2,7 +2,8 @@
 
 from ..models import Submit
 from .utils import (
-    convert, correct_choices as correct_choices_, match as match_
+    convert, correct_choices as correct_choices_, get_benchmark, 
+    match as match_
 )
 
 @Submit.register
@@ -116,3 +117,199 @@ def match(question, pattern):
     ```
     """
     question.data = int(match_(question, pattern) is not None)
+
+# Value comparisons
+
+@Submit.register
+def eq(question, value, data_type=None):
+    """
+    Convert the question's data to a 0-1 indicator that the question's data 
+    equals the given value.
+
+    Parameters
+    ----------
+    question : hemlock.Question
+
+    value :
+        Value that the data should equal. If a `Question`, then `value.data` 
+        is used.
+
+    data_type : class or None, default=None
+        Expected type of data. If `None`, the type of `value` will be used.
+
+    Examples
+    --------
+    ```python
+    from hemlock import Input, Submit as S, push_app_context
+
+    app = push_app_context()
+
+    inpt = Input(data=50, submit=S.eq(50))
+    inpt._submit()
+    inpt.data
+    ```
+
+    Out:
+
+    ```
+    1
+    ```
+    """
+    value, data_type = get_benchmark(value, data_type)
+    question.data = int(data_type(question.data) == value)
+
+@Submit.register
+def neq(question, value, data_type=None):
+    """
+    Convert the question's data to a 0-1 indicator that the question's data 
+    does not equal the given value.
+
+    Parameters
+    ----------
+    question : hemlock.Question
+
+    value :
+        Value that the data should not equal. If a `Question`, then 
+        `value.data` is used.
+
+    data_type : class or None, default=None
+        Expected type of data. If `None`, the type of `value` will be used.
+
+    Examples
+    --------
+    ```python
+    from hemlock import Input, Submit as S, push_app_context
+
+    app = push_app_context()
+
+    inpt = Input(data=50, submit=S.neq(50))
+    inpt._submit()
+    inpt.data
+    ```
+
+    Out:
+
+    ```
+    0
+    ```
+    """
+    value, data_type = get_benchmark(value, data_type)
+    question.data = int(data_type(question.data) != value)
+
+@Submit.register
+def max(question, max, data_type=None):
+    """
+    Convert the question's data to a 0-1 indicator that the question's data 
+    is less than the maximum value.
+
+    Parameters
+    ----------
+    question : hemlock.Question
+
+    max :
+        Maximum value. If a `Question`, then `max.data` is used.
+
+    data_type : class or None, default=None
+        Expected type of data. If `None`, the type of `max` will be used.
+
+    Examples
+    --------
+    ```python
+    from hemlock import Input, Submit as S, push_app_context
+
+    app = push_app_context()
+
+    inpt = Input(data=101, submit=S.max(100))
+    inpt._submit()
+    inpt.data
+    ```
+
+    Out:
+
+    ```
+    0
+    ```
+    """
+    max, data_type = get_benchmark(max, data_type)
+    question.data = int(data_type(question.data) <= max)
+
+@Submit.register
+def min(question, min, data_type=None):
+    """
+    Convert the question's data to a 0-1 indicator that the question's data 
+    is greater than the minimum value.
+
+    Parameters
+    ----------
+    question : hemlock.Question
+
+    min :
+        Minimum value. If a `Question`, then `min.data` is used.
+
+    data_type : class or None, default=None
+        Expected type of data. If `None`, the type of `min` will be used.
+
+    Examples
+    --------
+    ```python
+    from hemlock import Input, Submit as S, push_app_context
+
+    app = push_app_context()
+
+    inpt = Input(data=-1, submit=S.min(0))
+    inpt._submit()
+    inpt.data
+    ```
+
+    Out:
+
+    ```
+    0
+    ```
+    """
+    min, data_type = get_benchmark(min, data_type)
+    question.data = int(data_type(question.data) >= min)
+
+@Submit.register
+def range(question, min, max, data_type=None):
+    """
+    Convert the question's data to a 0-1 indicator that the question's data 
+    is within the range of `[min, max]`.
+
+    Parameters
+    ----------
+    question : hemlock.Question
+
+    min :
+        Minimum value. If a `Question`, then `min.data` is used.
+
+    max :
+        Maximum value. If a `Question`, then `max.data` is used.
+
+    data_type : class or None, default=None
+        Expected type of data. If `None`, the type of `min` and `max` will be 
+        used.
+
+    Examples
+    --------
+    ```python
+    from hemlock import Input, Submit as S, push_app_context
+
+    app = push_app_context()
+
+    inpt = Input(data=50, submit=S.range(0, 100))
+    inpt._submit()
+    inpt.data
+    ```
+
+    Out:
+
+    ```
+    1
+    ```
+    """
+    min, min_type = get_benchmark(min, data_type)
+    max, max_type = get_benchmark(max, data_type)
+
+    assert min_type == max_type, '`min` and `max` must be the same type'
+    question.data = int(min <= min_type(question.data) <= max)

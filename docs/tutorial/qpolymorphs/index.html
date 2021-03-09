@@ -268,21 +268,22 @@
 </details>
 <h2 id="creating-a-demographics-page">Creating a demographics page</h2>
 <p>We'll use jupyter notebook as a blackboard to iterate on our demographics page design. After pushing the application context, we'll create a demographics page based on the World Values Survey:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Binary</span><span class="p">,</span> <span class="n">Check</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">RangeInput</span><span class="p">,</span> <span class="n">Select</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Check</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">RangeInput</span><span class="p">,</span> <span class="n">Select</span><span class="p">,</span> <span class="n">binary</span>
 
 <span class="n">p</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span>
     <span class="n">Select</span><span class="p">(</span>
-        <span class="s1">&#39;&lt;p&gt;What is your gender?&lt;/p&gt;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;What is your gender?&#39;</span><span class="p">,</span>
         <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="s1">&#39;Other&#39;</span><span class="p">]</span>
     <span class="p">),</span>
     <span class="n">Input</span><span class="p">(</span>
-        <span class="s1">&#39;&lt;p&gt;How old are you?&lt;/p&gt;&#39;</span><span class="p">,</span>
-        <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;number&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span>
+        <span class="s1">&#39;How old are you?&#39;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;number&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="n">Check</span><span class="p">(</span>
         <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        &lt;p&gt;Which race or ethnicity do you belong to?&lt;/p&gt; </span>
-<span class="sd">        &lt;p&gt;Check as many as apply.&lt;/p&gt;</span>
+<span class="sd">        Which race or ethnicity do you belong to?</span>
+
+<span class="sd">        Check as many as apply.</span>
 <span class="sd">        &#39;&#39;&#39;</span><span class="p">,</span>
         <span class="p">[</span>
             <span class="s1">&#39;White&#39;</span><span class="p">,</span>
@@ -294,13 +295,12 @@
         <span class="p">],</span>
         <span class="n">multiple</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">),</span>
-    <span class="n">Binary</span><span class="p">(</span>
-        <span class="s1">&#39;&lt;p&gt;Are you the primary wage earner in your household?&lt;/p&gt;&#39;</span>
+    <span class="n">binary</span><span class="p">(</span>
+        <span class="s1">&#39;Are you the primary wage earner in your household?&#39;</span>
     <span class="p">),</span>
     <span class="n">RangeInput</span><span class="p">(</span>
         <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        &lt;p&gt;On a scale from 0 (lowest) to 10 (highest), which income group does </span>
-<span class="sd">        your household belong to?&lt;/p&gt;</span>
+<span class="sd">        On a scale from 0 (lowest) to 10 (highest), which income group does your household belong to?</span>
 <span class="sd">        &#39;&#39;&#39;</span><span class="p">,</span>
         <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">10</span>
     <span class="p">)</span>
@@ -314,7 +314,7 @@
 <p>The next question is an input. The first argument is the question label (<code>'How old are you?'</code>). We specify the type of input by passing <code>type='number'</code> to the <code>Input</code> constructor. Without the <code>type</code> argument, participants can enter any text they want into the input. You can check out other HTML input types <a href="https://www.w3schools.com/html/html_form_input_types.asp" target="_blank">here</a>. We also specify the minimum value participants can enter, <code>min=0</code>.</p>
 <p>The third question is a check question. Like a select question, this allows participants to select from a list of choices. The first argument is the question label, and the second argument is a list of choices. Notice that some of the choices are strings (<code>'White'</code>, <code>'Black'</code>) while some are tuples (<code>('South Asian (Indian, Pakistani, etc.)', 'South Asian')</code>). Passing the choice as a tuple tells hemlock to 'recode' the value when you download the data. Participants taking the survey see 'South Asian (Indian, Pakistani, etc.)' as one of the choices, but when you download the data, the corresponding column is named <code>South Asian</code>.</p>
 <p>Also notice that we pass <code>multiple=True</code> to the <code>Check</code> constructor. This allows participants to select multiple choices. By default, <code>multiple</code> is <code>False</code>, meaning participants can only select one choice. We can also pass <code>multiple=True</code> to <code>Select</code> questions to allow participants to select multiple choices from a dropdown menu.</p>
-<p>The fourth question is a binary, which is like a check but for exactly two choices. By default, the choices are <code>'Yes'</code> and <code>'No'</code>, and their values are recoded as <code>1</code> and <code>0</code> when you download the data.</p>
+<p>We create the fourth question using the <code>binary</code> function. <code>binary</code> creates a check question with two choices. By default, the choices are <code>'Yes'</code> and <code>'No'</code>, and their values are recoded as <code>1</code> and <code>0</code> when you download the data.</p>
 <p>The last question is a <code>RangeInput</code>, which is what you get when a range slider and an input give each other a special hug. By default, range inputs go from 0 to 100, but we change it from 0 to 10 by specifying the <code>min</code> and <code>max</code> values.</p>
 <details class="tip"><summary>More question polymorphs</summary><p>These are just some of the many question types hemlock offers. Check out the 'Question Polymorphs' header in the navigation bar for more.</p>
 </details>
@@ -327,7 +327,7 @@
     <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span>
         <span class="n">Page</span><span class="p">(</span>
             <span class="n">Select</span><span class="p">(</span>
-                <span class="s1">&#39;&lt;p&gt;What is your gender?&lt;/p&gt;&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;What is your gender?&#39;</span><span class="p">,</span>
                 <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="s1">&#39;Other&#39;</span><span class="p">]</span>
             <span class="p">),</span>
             <span class="c1"># INSERT THE REST OF THE DEMOGRAPHICS PAGE HERE</span>

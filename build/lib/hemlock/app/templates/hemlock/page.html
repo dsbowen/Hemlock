@@ -30,7 +30,7 @@
 
                     {% if page.error not in [false, none] %}
                     <div {{ page.error_attrs.to_html() | safe }}>
-                        {{ page.error | safe }}
+                        {{ error | safe }}
                     </div>
                     {% endif %}
                     

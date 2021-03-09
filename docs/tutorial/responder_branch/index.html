@@ -98,8 +98,6 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#adding-the-responder-branch-to-our-survey">Adding the responder branch to our survey</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#the-responder-input">The responder input</a>
-    </li>
     <li class="toctree-l2"><a class="reference internal" href="#displaying-the-responder-outcome">Displaying the responder outcome</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a>
@@ -280,56 +278,39 @@
 <span class="o">...</span>
 
 <span class="k">def</span> <span class="nf">responder_branch</span><span class="p">(</span><span class="n">ug_branch</span><span class="p">):</span>
-    <span class="n">branch</span> <span class="o">=</span> <span class="n">Branch</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">round_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_ROUNDS</span><span class="p">):</span>
-        <span class="n">response_input</span> <span class="o">=</span> <span class="n">gen_response_input</span><span class="p">(</span><span class="n">round_</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">branch</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="n">Page</span><span class="p">(</span>
-                <span class="n">response_input</span>
-            <span class="p">)</span>
+    <span class="n">branch</span> <span class="o">=</span> <span class="n">Branch</span><span class="p">(</span><span class="n">navigate</span><span class="o">=</span><span class="n">end</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_ROUNDS</span><span class="p">):</span>
+        <span class="n">response_input</span> <span class="o">=</span> <span class="n">Blank</span><span class="p">(</span>
+            <span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">            The proposer has $</span><span class="si">{}</span><span class="s1"> to split between him/herself and you. Fill in the blank:</span>
+
+<span class="s1">            I will accept any proposal which gives me at least **$&#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">POT</span><span class="p">),</span> <span class="s1">&#39;.00**.&#39;</span><span class="p">),</span>
+            <span class="n">prepend</span><span class="o">=</span><span class="s1">&#39;$&#39;</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="s1">&#39;.00&#39;</span><span class="p">,</span>
+            <span class="n">var</span><span class="o">=</span><span class="s1">&#39;Response&#39;</span><span class="p">,</span> <span class="n">blank_empty</span><span class="o">=</span><span class="s1">&#39;__&#39;</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;number&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="n">POT</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
-        <span class="n">branch</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+        <span class="n">branch</span><span class="o">.</span><span class="n">pages</span> <span class="o">+=</span> <span class="p">[</span>
+            <span class="n">Page</span><span class="p">(</span>
+                <span class="n">Label</span><span class="p">(</span><span class="n">progress</span><span class="p">(</span>
+                    <span class="n">i</span><span class="o">/</span><span class="n">N_ROUNDS</span><span class="p">,</span> <span class="s1">&#39;Round </span><span class="si">{}</span><span class="s1"> of </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_ROUNDS</span><span class="p">)</span>
+                <span class="p">)),</span>
+                <span class="n">response_input</span>
+            <span class="p">),</span>
             <span class="n">Page</span><span class="p">(</span>
                 <span class="n">Label</span><span class="p">(</span>
-                    <span class="nb">compile</span><span class="o">=</span><span class="n">C</span><span class="o">.</span><span class="n">responder_outcome</span><span class="p">(</span><span class="n">response_input</span><span class="p">)</span>
+                    <span class="nb">compile</span><span class="o">=</span><span class="n">C</span><span class="o">.</span><span class="n">display_responder_outcome</span><span class="p">(</span><span class="n">response_input</span><span class="p">)</span>
                 <span class="p">)</span>
             <span class="p">)</span>
-        <span class="p">)</span>
-    <span class="n">branch</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-        <span class="n">Page</span><span class="p">(</span>
-            <span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Thank you for completing the survey!&#39;</span><span class="p">),</span>
-            <span class="n">terminal</span><span class="o">=</span><span class="kc">True</span>      
-        <span class="p">)</span>
-    <span class="p">)</span>
+        <span class="p">]</span>
     <span class="k">return</span> <span class="n">branch</span>
 </code></pre></div>
 <p>Like in the proposer branch, we add two pages to the responder branch for each of <code>N_ROUNDS</code>. Just as the first of these two pages asked the proposer for the proposal in the proposer branch, the first of these two pages asks the responder for their response in the responder branch. Like in the proposer branch, the second of these pages displays the outcome of the round.</p>
-<h2 id="the-responder-input">The responder input</h2>
-<p>Just as the proposer's input was created with <code>gen_proposal_input</code>, the responder's input is created with <code>gen_response_input</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="o">...</span>
-
-<span class="k">def</span> <span class="nf">gen_response_input</span><span class="p">(</span><span class="n">round_</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">Blank</span><span class="p">(</span>
-        <span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
-<span class="s1">        &lt;p&gt;&lt;b&gt;Round </span><span class="si">{}</span><span class="s1"> of </span><span class="si">{}</span><span class="s1">&lt;/b&gt;&lt;/p&gt;</span>
-
-<span class="s1">        &lt;p&gt;The proposer has $</span><span class="si">{}</span><span class="s1"> to split between him/herself and you. Fill in </span>
-<span class="s1">        the blank:&lt;/p&gt;</span>
-
-<span class="s1">        &lt;p&gt;I will accept any proposal which gives me at least</span>
-<span class="s1">        &lt;b&gt;$&#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">round_</span><span class="p">,</span> <span class="n">N_ROUNDS</span><span class="p">,</span> <span class="n">POT</span><span class="p">),</span> <span class="s1">&#39;.00&lt;/b&gt;.&lt;/p&gt;&#39;</span><span class="p">),</span>
-        <span class="n">prepend</span><span class="o">=</span><span class="s1">&#39;$&#39;</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="s1">&#39;.00&#39;</span><span class="p">,</span> 
-        <span class="n">var</span><span class="o">=</span><span class="s1">&#39;Response&#39;</span><span class="p">,</span> <span class="n">blank_empty</span><span class="o">=</span><span class="s1">&#39;__&#39;</span><span class="p">,</span> 
-        <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;number&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="n">POT</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span>
-    <span class="p">)</span>
-</code></pre></div>
-<p>As before, we add valiation so that the input must be between 0 and the size of the pot, and a submit function which converts the data to an integer.</p>
 <h2 id="displaying-the-responder-outcome">Displaying the responder outcome</h2>
 <p>We register a compile function to display the responder outcome.</p>
 <div class="highlight"><pre><span></span><code><span class="o">...</span>
 
 <span class="nd">@C</span><span class="o">.</span><span class="n">register</span>
-<span class="k">def</span> <span class="nf">responder_outcome</span><span class="p">(</span><span class="n">outcome_label</span><span class="p">,</span> <span class="n">response_input</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">display_responder_outcome</span><span class="p">(</span><span class="n">outcome_label</span><span class="p">,</span> <span class="n">response_input</span><span class="p">):</span>
     <span class="c1"># get the response</span>
     <span class="n">response</span> <span class="o">=</span> <span class="n">response_input</span><span class="o">.</span><span class="n">data</span>
     <span class="c1">#randomly select a proposal</span>
@@ -355,29 +336,23 @@
         <span class="n">Embedded</span><span class="p">(</span><span class="s1">&#39;ResponderPayoff&#39;</span><span class="p">,</span> <span class="n">payoff</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
     <span class="p">]</span>
     <span class="c1"># describe the outcome of the round</span>
-    <span class="n">proposal_list</span> <span class="o">=</span> <span class="n">html_list</span><span class="p">(</span>
-        <span class="s1">&#39;Proposer: $</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">proposal</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
-        <span class="s1">&#39;You: $</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">proposal</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
-        <span class="n">ordered</span><span class="o">=</span><span class="kc">False</span>
-    <span class="p">)</span>
     <span class="n">outcome_label</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
-<span class="s1">        &lt;p&gt;The proposer proposed the following split:&lt;/p&gt;</span>
+<span class="s1">        The proposer proposed the following split:</span>
 
-<span class="s1">        </span><span class="si">{proposal_list}</span><span class="s1"></span>
+<span class="s1">        - Proposer: $</span><span class="si">{}</span><span class="s1"></span>
+<span class="s1">        - You: $</span><span class="si">{}</span><span class="s1"></span>
 
-<span class="s1">        &lt;p&gt;You said you will accept any proposal which gives you at least </span>
-<span class="s1">        $</span><span class="si">{response}</span><span class="s1">.&lt;/p&gt;</span>
+<span class="s1">        You said you will accept any proposal that gives you at least $</span><span class="si">{}</span><span class="s1">.</span>
 
-<span class="s1">        &lt;p&gt;&lt;b&gt;You </span><span class="si">{accept_reject}</span><span class="s1"> the proposal, giving you a payoff of </span>
-<span class="s1">        $</span><span class="si">{payoff}</span><span class="s1">.&lt;/b&gt;&lt;/p&gt;</span>
+<span class="s1">        **You </span><span class="si">{}</span><span class="s1"> the proposal, giving you a payoff of $</span><span class="si">{}</span><span class="s1">.**</span>
 <span class="s1">    &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-        <span class="n">proposal_list</span><span class="o">=</span><span class="n">proposal_list</span><span class="p">,</span>
-        <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">,</span>
-        <span class="n">accept_reject</span><span class="o">=</span><span class="s1">&#39;accepted&#39;</span> <span class="k">if</span> <span class="n">accept</span> <span class="k">else</span> <span class="s1">&#39;rejected&#39;</span><span class="p">,</span>
-        <span class="n">payoff</span><span class="o">=</span><span class="n">payoff</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">proposal</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">proposal</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">response</span><span class="p">,</span>
+        <span class="s1">&#39;accepted&#39;</span> <span class="k">if</span> <span class="n">accept</span> <span class="k">else</span> <span class="s1">&#39;rejected&#39;</span><span class="p">,</span> 
+        <span class="n">payoff</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="p">)</span>
 </code></pre></div>
-<p>This is similar to the <code>proposer_outcome</code> compile function. First, it gets the responder's response. Second, it matches the responder with a random proposer. If no proposer is avaiable (e.g. if the responder is the first participant in the survey), it generates a random proposal. Third, we compute the payoff for the round and record it using embedded data. Finally, we update the label to display the outcome of the round to the proposer.</p>
+<p>This is similar to the <code>display_proposer_outcome</code> compile function. First, it gets the responder's response. Second, it matches the responder with a random proposer. If no proposer is avaiable (e.g. if the responder is the first participant in the survey), it generates a random proposal. Third, we compute the payoff for the round and record it using embedded data. Finally, we update the label to display the outcome of the round to the responder.</p>
 <p>Run the app to see what the survey looks like in the responder condition.</p>
 <h2 id="summary">Summary</h2>
 <p>In this part of the tutorial, you implemented the responder branch.</p>
