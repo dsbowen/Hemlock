@@ -411,7 +411,7 @@ from hemlock import Page, push_app_context
 app = push_app_context()
 
 Page(
-Label('Hello World')
+    Label('Hello World')
 ).preview()
 ```
 

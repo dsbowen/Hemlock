@@ -16,7 +16,7 @@ $ python3 --version
 Python 3.x.x
 ```
 
-If you don't have python3, <a href="https://www.python.org/downloads/" target="_blank">download it here</a>. I recommend python3.6. Why? Because heroku, my recommended method of app deployment, uses python3.6, meaning that if you develop in python3.7+ and deploy in python3.6, you may encounter compatibility issues. Make sure python3 is in your path.
+If you don't have python3, <a href="https://www.python.org/downloads/" target="_blank">download the latest version here</a>.
 
 Upgrade pip:
 

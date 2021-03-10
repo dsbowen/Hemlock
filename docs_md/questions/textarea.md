@@ -73,6 +73,6 @@ from hemlock import Page, Textarea, push_app_context
 
 app = push_app_context()
 
-Page(Textarea('<p>This is a textarea.</p>')).preview()
+Page(Textarea('This is a textarea.')).preview()
 ```
 

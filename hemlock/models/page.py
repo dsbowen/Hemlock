@@ -353,7 +353,7 @@ class Page(BranchingBase, db.Model):
     app = push_app_context()
 
     Page(
-        Label('Hello World')
+    \    Label('Hello World')
     ).preview()
     ```
 

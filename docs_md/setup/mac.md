@@ -33,13 +33,9 @@ Or from the <a href="https://apps.apple.com/us/app/xcode/id497799835" target="_b
 
 ## Python3 and pip3
 
-Python is hemlock's primary language. Pip allows you to install python packages, including hemlock and its command line interface, hemlock-CLI.
+**Read everything before STOP before downloading python.**
 
-**Read everything until STOP before downloading or installing anything.**
-
-You can <a href="https://www.python.org/downloads/" target="_blank">download python here</a>. If possible, download python3.6.
-
-Why do I recommend 3.6 instead of the latest version of python? Because heroku, my recommended method of app deployment, uses python3.6, meaning that if you develop in python3.7+ and deploy in python3.6, you may encounter compatibility issues. Anecdotally, I've found downloading legacy version of python is a pain, so if you're having trouble, just download the latest python and make a mental note to double check that your survey works when you deploy it.
+Python is hemlock's primary language. Pip allows you to install python packages, including hemlock and its command line interface, hemlock-CLI. Download the latest version of python <a href="https://www.python.org/downloads/" target="_blank">here</a>.
 
 **When you start the python installer, you may see an *Add Python to PATH* option on the first page. Make sure to select this option.**
 

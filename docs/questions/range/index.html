@@ -15,7 +15,8 @@
   <link rel="stylesheet" href="../../css/theme.css" />
   <link rel="stylesheet" href="../../css/theme_extra.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
-  <link href="../../css/extra.css" rel="stylesheet" />
+  <link href="https://dsbowen.github.io/assets/css/code-highlighting.css" rel="stylesheet" />
+  <link href="https://dsbowen.github.io/assets/css//tabs.css" rel="stylesheet" />
   
   <script>
     // Current page data
@@ -194,6 +195,8 @@
     <li class="toctree-l2"><a class="reference internal" href="#hemlockslider">hemlock.Slider</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#notes_2">Notes</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#examples_2">Examples</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#methods">Methods</a>
     </li>
@@ -383,7 +386,7 @@ arguments passed to the constructor.</p>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">push_app_context</span><span class="p">()</span>
 
-<span class="n">Page</span><span class="p">(</span><span class="n">Range</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;This is a range slider.&lt;/p&gt;&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
+<span class="n">Page</span><span class="p">(</span><span class="n">Range</span><span class="p">(</span><span class="s1">&#39;This is a range slider.&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
 </code></pre></div>
 <h2 id="hemlockrangeinput">hemlock.<strong>RangeInput</strong></h2>
 <p class="func-header">
@@ -424,7 +427,7 @@ arguments passed to the constructor.</p>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">push_app_context</span><span class="p">()</span>
 
-<span class="n">Page</span><span class="p">(</span><span class="n">RangeInput</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;This is a range slider.&lt;/p&gt;&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
+<span class="n">Page</span><span class="p">(</span><span class="n">RangeInput</span><span class="p">(</span><span class="s1">&#39;This is a range slider.&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
 </code></pre></div>
 <h2 id="hemlockslider">hemlock.<strong>Slider</strong></h2>
 <p class="func-header">
@@ -460,9 +463,30 @@ arguments passed to the constructor.</p>
 <li>List of formatted values, one for each tick.</li>
 <li>Dictionary mapping tick values to formatted values. Any ticks not mapped to a formatted value are displayed as the tick value.</li>
 </ol>
+<h4 id="examples_2">Examples</h4>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Slider</span><span class="p">,</span> <span class="n">push_app_context</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">push_app_context</span><span class="p">()</span>
+
+<span class="n">Page</span><span class="p">(</span>
+    <span class="n">Slider</span><span class="p">(</span>
+        <span class="s1">&#39;This is a fancy Bootstrap slider&#39;</span><span class="p">,</span>
+        <span class="n">ticks</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+        <span class="n">ticks_labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;very low&#39;</span><span class="p">,</span> <span class="s1">&#39;medium&#39;</span><span class="p">,</span> <span class="s1">&#39;high&#39;</span><span class="p">],</span>
+        <span class="n">ticks_positions</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span>
+        <span class="n">formatter</span><span class="o">=</span><span class="p">[</span>
+            <span class="s1">&#39;very low&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;low&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;medium&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;high&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;very high&#39;</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
+</code></pre></div>
 <h4 id="methods">Methods</h4>
 <p class="func-header">
-    <i></i> <b>get_max</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/range.py#L252">[source]</a>
+    <i></i> <b>get_max</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/range.py#L276">[source]</a>
 </p>
 
 <table class="docutils field-list field-table" frame="void" rules="none">
@@ -480,7 +504,7 @@ arguments passed to the constructor.</p>
 </table>
 
 <p class="func-header">
-    <i></i> <b>get_min</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/range.py#L263">[source]</a>
+    <i></i> <b>get_min</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/range.py#L287">[source]</a>
 </p>
 
 <table class="docutils field-list field-table" frame="void" rules="none">
@@ -498,7 +522,7 @@ arguments passed to the constructor.</p>
 </table>
 
 <p class="func-header">
-    <i></i> <b>get_values</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/range.py#L274">[source]</a>
+    <i></i> <b>get_values</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/range.py#L298">[source]</a>
 </p>
 
 <table class="docutils field-list field-table" frame="void" rules="none">
@@ -516,7 +540,7 @@ arguments passed to the constructor.</p>
 </table>
 
 <p class="func-header">
-    <i></i> <b>get_midpoint</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/range.py#L284">[source]</a>
+    <i></i> <b>get_midpoint</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/range.py#L308">[source]</a>
 </p>
 
 <table class="docutils field-list field-table" frame="void" rules="none">

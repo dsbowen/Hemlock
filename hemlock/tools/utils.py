@@ -95,13 +95,12 @@ def make_list(items, ordered=False):
 
     Returns
     -------
-    markdown : str
-        Markdown-formatted list.
+    HTML list : str
+        HTML-formatted list.
     """
-    if not ordered:
-        return '\n'.join(['-'+item for item in items])
-    return '\n'.join(
-        ['{}. {}'.format(i+1, item) for i, item in enumerate(items)]
+    template = '<ol>{}</ol>' if ordered else '<ul>{}</ul>'
+    return template.format(
+        ''.join(['<li>{}</li>'.format(str(item)) for item in items])
     )
 
 def make_table(table, extra_classes=[]):

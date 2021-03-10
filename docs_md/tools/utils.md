@@ -148,9 +148,9 @@ Out:
 </tr>
 <tr class="field">
     <th class="field-name"><b>Returns:</b></td>
-    <td class="field-body" width="100%"><b>markdown : <i>str</i></b>
+    <td class="field-body" width="100%"><b>HTML list : <i>str</i></b>
 <p class="attr">
-    Markdown-formatted list.
+    HTML-formatted list.
 </p></td>
 </tr>
     </tbody>
@@ -161,7 +161,7 @@ Out:
 ##hemlock.tools.**make_table**
 
 <p class="func-header">
-    <i>def</i> hemlock.tools.<b>make_table</b>(<i>table, extra_classes=[]</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/utils.py#L107">[source]</a>
+    <i>def</i> hemlock.tools.<b>make_table</b>(<i>table, extra_classes=[]</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/utils.py#L106">[source]</a>
 </p>
 
 
@@ -222,7 +222,7 @@ Out:
 ##hemlock.tools.**show_on_event**
 
 <p class="func-header">
-    <i>def</i> hemlock.tools.<b>show_on_event</b>(<i>target, condition, value, init_hidden=True, *args, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/utils.py#L169">[source]</a>
+    <i>def</i> hemlock.tools.<b>show_on_event</b>(<i>target, condition, value, init_hidden=True, *args, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/utils.py#L168">[source]</a>
 </p>
 
 Show the target question when a condition is met.
@@ -295,7 +295,7 @@ Page(name, greet).preview()
 ##hemlock.tools.**url_for**
 
 <p class="func-header">
-    <i>def</i> hemlock.tools.<b>url_for</b>(<i>*args, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/utils.py#L294">[source]</a>
+    <i>def</i> hemlock.tools.<b>url_for</b>(<i>*args, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/tools/utils.py#L293">[source]</a>
 </p>
 
 Attempt to return `flask.url_for(*args, **kwargs)`. However, this method

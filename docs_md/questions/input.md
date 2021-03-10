@@ -67,6 +67,6 @@ from hemlock import Input, Page, push_app_context
 
 app = push_app_context()
 
-Page(Input('<p>Input text here.</p>')).preview()
+Page(Input('Input text here.')).preview()
 ```
 

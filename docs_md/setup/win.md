@@ -63,15 +63,11 @@ Finally, you will need a personal access token to initialize hemlock application
 
 ## Python3 and pip3
 
-Python is hemlock's primary language. Pip allows you to install python packages, including hemlock itself. In this section, we're going to download and install python3 and pip3.
+**Read everything before STOP before downloading python.**
 
-**Read everything until STOP before downloading or installing anything.**
+Python is hemlock's primary language. Pip allows you to install python packages, including hemlock and its command line interface, hemlock-CLI. Download the latest version of python <a href="https://www.python.org/downloads/" target="_blank">here</a>.
 
-You can <a href="https://www.python.org/downloads/" target="_blank">download python here</a>. If possible, download python3.6.
-
-Why do I recommend 3.6 instead of the latest version of python? Because heroku, my recommended method of app deployment, uses python3.6, meaning that if you develop in python3.7+ and deploy in python3.6, you may encounter compatibility issues. Anecdotally, I've found downloading legacy version of python is a pain, so if you're having trouble, just download the latest python and make a mental note to double check that your survey works when you deploy it.
-
-**When you start the python installer, you'll see an *Add Python to PATH* option on the first page. Make sure to select this option.**
+**When you start the python installer, you may see an *Add Python to PATH* option on the first page. Make sure to select this option.**
 
 **STOP.**
 

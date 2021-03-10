@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.51
+
+- Fixed bug in `make_list` tool
+- Added break in `Slider` template to leave space for tooltip by default
+
 ## 0.0.50
 
 - Markdown syntax for page text

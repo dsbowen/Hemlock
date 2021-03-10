@@ -118,7 +118,7 @@ def create_app(settings=settings):
     _set_bucket(app)
     _set_redis(app)
     _init_extensions(app, settings)
-    app.tmpfiles = []   
+    app.tmpfiles = []
     return app
 
 def _create_app(settings):

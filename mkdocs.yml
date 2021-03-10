@@ -77,7 +77,8 @@ nav:
   - Acknowledgements: acknowledgements.md
 theme: readthedocs
 extra_css:
-  - css/extra.css
+  - https://dsbowen.github.io/assets/css/code-highlighting.css
+  - https://dsbowen.github.io/assets/css//tabs.css
 extra_javascript:
   - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML
 markdown_extensions:

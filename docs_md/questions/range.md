@@ -117,7 +117,7 @@ from hemlock import Range, Page, push_app_context
 
 app = push_app_context()
 
-Page(Range('<p>This is a range slider.</p>')).preview()
+Page(Range('This is a range slider.')).preview()
 ```
 
 
@@ -168,7 +168,7 @@ from hemlock import RangeInput, Page, push_app_context
 
 app = push_app_context()
 
-Page(RangeInput('<p>This is a range slider.</p>')).preview()
+Page(RangeInput('This is a range slider.')).preview()
 ```
 
 
@@ -211,12 +211,36 @@ You can input the `formatter` parameter in one of three ways:
 2. List of formatted values, one for each tick.
 3. Dictionary mapping tick values to formatted values. Any ticks not mapped to a formatted value are displayed as the tick value.
 
+####Examples
+
+```python
+from hemlock import Page, Slider, push_app_context
+
+app = push_app_context()
+
+Page(
+    Slider(
+        'This is a fancy Bootstrap slider',
+        ticks=[0, 2, 4],
+        ticks_labels=['very low', 'medium', 'high'],
+        ticks_positions=[0, 50, 100],
+        formatter=[
+            'very low',
+            'low',
+            'medium',
+            'high',
+            'very high'
+        ]
+    )
+).preview()
+```
+
 ####Methods
 
 
 
 <p class="func-header">
-    <i></i> <b>get_max</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/range.py#L252">[source]</a>
+    <i></i> <b>get_max</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/range.py#L276">[source]</a>
 </p>
 
 
@@ -240,7 +264,7 @@ You can input the `formatter` parameter in one of three ways:
 
 
 <p class="func-header">
-    <i></i> <b>get_min</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/range.py#L263">[source]</a>
+    <i></i> <b>get_min</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/range.py#L287">[source]</a>
 </p>
 
 
@@ -264,7 +288,7 @@ You can input the `formatter` parameter in one of three ways:
 
 
 <p class="func-header">
-    <i></i> <b>get_values</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/range.py#L274">[source]</a>
+    <i></i> <b>get_values</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/range.py#L298">[source]</a>
 </p>
 
 
@@ -288,7 +312,7 @@ You can input the `formatter` parameter in one of three ways:
 
 
 <p class="func-header">
-    <i></i> <b>get_midpoint</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/range.py#L284">[source]</a>
+    <i></i> <b>get_midpoint</b>(<i>self</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/qpolymorphs/range.py#L308">[source]</a>
 </p>
 
 
