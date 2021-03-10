@@ -58,12 +58,13 @@ app = push_app_context()
 
 @C.register
 def greet(greet_q, name_q):
-    greet_q.label = '<p>Hello {}!</p>'.format(name_q.response)
+    greet_q.label = 'Hello {}!'.format(name_q.response)
 
-name_q = Input("<p>What's your name?</p>")
+name_q = Input("What's your name?")
 p = Page(Label(compile=C.greet(name_q)))
 name_q.response = 'World'
-p._compile().preview()
+p._compile()
+p.preview()
 ```
 
 
@@ -71,7 +72,7 @@ p._compile().preview()
 ##hemlock.**Debug**
 
 <p class="func-header">
-    <i>class</i> hemlock.<b>Debug</b>(<i>func, *args, p_exec=1.0, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/functions.py#L36">[source]</a>
+    <i>class</i> hemlock.<b>Debug</b>(<i>func, *args, p_exec=1.0, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/functions.py#L37">[source]</a>
 </p>
 
 Run to help debug the survey.
@@ -100,9 +101,10 @@ def greet(driver, greet_q):
     inpt.clear()
     inpt.send_keys('Hello World!')
 
-p = Page(Input('<p>Enter a greeting.</p>', debug=D.greet()))
+p = Page(Input('Enter a greeting.', debug=D.greet()))
 p.debug.pop(-1) # so the page won't navigate
-p.preview(driver)._debug(driver)
+p.preview(driver)
+p._debug(driver)
 ```
 
 ####Methods
@@ -110,7 +112,7 @@ p.preview(driver)._debug(driver)
 
 
 <p class="func-header">
-    <i></i> <b>__call__</b>(<i>self, *args, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/functions.py#L65">[source]</a>
+    <i></i> <b>__call__</b>(<i>self, *args, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/functions.py#L67">[source]</a>
 </p>
 
 
@@ -128,7 +130,7 @@ p.preview(driver)._debug(driver)
 ##hemlock.**Validate**
 
 <p class="func-header">
-    <i>class</i> hemlock.<b>Validate</b>(<i>func, *args, error_msg=None, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/functions.py#L70">[source]</a>
+    <i>class</i> hemlock.<b>Validate</b>(<i>func, *args, error_msg=None, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/functions.py#L72">[source]</a>
 </p>
 
 Validates a participant's response.
@@ -157,7 +159,7 @@ app = push_app_context()
 @V.register
 def match(inpt, pattern):
     if inpt.response != pattern:
-        return '<p>You entered "{}", not "{}"</p>'.format(inpt.response, pattern)
+        return 'You entered "{}", not "{}"'.format(inpt.response, pattern)
 
 pattern = 'hello world'
 inpt = Input(validate=V.match(pattern))
@@ -177,7 +179,7 @@ You entered "goodbye moon", not "hello world"
 
 
 <p class="func-header">
-    <i></i> <b>__call__</b>(<i>self, *args, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/functions.py#L111">[source]</a>
+    <i></i> <b>__call__</b>(<i>self, *args, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/functions.py#L113">[source]</a>
 </p>
 
 
@@ -218,7 +220,7 @@ def get_initials(name_q):
     names = name_q.response.split()
     name_q.data = '.'.join([name[0] for name in names]) + '.'
 
-inpt = Input("<p>What's your name?</p>", submit=S.get_initials())
+inpt = Input("What's your name?", submit=S.get_initials())
 inpt.response = 'Andrew Yang'
 inpt._submit().data
 ```

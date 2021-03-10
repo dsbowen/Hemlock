@@ -44,7 +44,7 @@ nav:
     - Bases: models/bases.md
     - Branch: models/branch.md
     - Embedded data and timers: models/embedded.md
-    - Function models: models/functions.md
+    - Function column types: models/functions.md
     - Page: models/page.md
     - Participant: models/participant.md
     - Question: models/question.md

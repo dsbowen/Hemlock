@@ -9,7 +9,7 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Function models - Hemlock</title>
+  <title>Function column types - Hemlock</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../../css/theme.css" />
@@ -20,7 +20,7 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Function models";
+    var mkdocs_page_name = "Function column types";
     var mkdocs_page_input_path = "models/functions.md";
     var mkdocs_page_url = null;
   </script>
@@ -141,7 +141,7 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../embedded/">Embedded data and timers</a>
                     </li>
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Function models</a>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Function column types</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#hemlockcompile">hemlock.Compile</a>
         <ul>
@@ -273,7 +273,7 @@
         
       
     
-    <li>Function models</li>
+    <li>Function column types</li>
     <li class="wy-breadcrumbs-aside">
       
         <a href="https://github.com/dsbowen/hemlock/edit/master/docs_md/models/functions.md"
@@ -337,16 +337,17 @@ to a participant.</p>
 
 <span class="nd">@C</span><span class="o">.</span><span class="n">register</span>
 <span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="n">greet_q</span><span class="p">,</span> <span class="n">name_q</span><span class="p">):</span>
-    <span class="n">greet_q</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;&lt;p&gt;Hello </span><span class="si">{}</span><span class="s1">!&lt;/p&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name_q</span><span class="o">.</span><span class="n">response</span><span class="p">)</span>
+    <span class="n">greet_q</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Hello </span><span class="si">{}</span><span class="s1">!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name_q</span><span class="o">.</span><span class="n">response</span><span class="p">)</span>
 
-<span class="n">name_q</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="s2">&quot;&lt;p&gt;What&#39;s your name?&lt;/p&gt;&quot;</span><span class="p">)</span>
+<span class="n">name_q</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="s2">&quot;What&#39;s your name?&quot;</span><span class="p">)</span>
 <span class="n">p</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="n">Label</span><span class="p">(</span><span class="nb">compile</span><span class="o">=</span><span class="n">C</span><span class="o">.</span><span class="n">greet</span><span class="p">(</span><span class="n">name_q</span><span class="p">)))</span>
 <span class="n">name_q</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="s1">&#39;World&#39;</span>
-<span class="n">p</span><span class="o">.</span><span class="n">_compile</span><span class="p">()</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
+<span class="n">p</span><span class="o">.</span><span class="n">_compile</span><span class="p">()</span>
+<span class="n">p</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
 </code></pre></div>
 <h2 id="hemlockdebug">hemlock.<strong>Debug</strong></h2>
 <p class="func-header">
-    <i>class</i> hemlock.<b>Debug</b>(<i>func, *args, p_exec=1.0, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/functions.py#L36">[source]</a>
+    <i>class</i> hemlock.<b>Debug</b>(<i>func, *args, p_exec=1.0, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/functions.py#L37">[source]</a>
 </p>
 
 <p>Run to help debug the survey.</p>
@@ -372,13 +373,14 @@ to a participant.</p>
     <span class="n">inpt</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
     <span class="n">inpt</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="s1">&#39;Hello World!&#39;</span><span class="p">)</span>
 
-<span class="n">p</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="n">Input</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;Enter a greeting.&lt;/p&gt;&#39;</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="n">D</span><span class="o">.</span><span class="n">greet</span><span class="p">()))</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="n">Input</span><span class="p">(</span><span class="s1">&#39;Enter a greeting.&#39;</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="n">D</span><span class="o">.</span><span class="n">greet</span><span class="p">()))</span>
 <span class="n">p</span><span class="o">.</span><span class="n">debug</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># so the page won&#39;t navigate</span>
-<span class="n">p</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span><span class="o">.</span><span class="n">_debug</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">_debug</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
 </code></pre></div>
 <h4 id="methods">Methods</h4>
 <p class="func-header">
-    <i></i> <b>__call__</b>(<i>self, *args, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/functions.py#L65">[source]</a>
+    <i></i> <b>__call__</b>(<i>self, *args, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/functions.py#L67">[source]</a>
 </p>
 
 <table class="docutils field-list field-table" frame="void" rules="none">
@@ -391,7 +393,7 @@ to a participant.</p>
 
 <h2 id="hemlockvalidate">hemlock.<strong>Validate</strong></h2>
 <p class="func-header">
-    <i>class</i> hemlock.<b>Validate</b>(<i>func, *args, error_msg=None, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/functions.py#L70">[source]</a>
+    <i>class</i> hemlock.<b>Validate</b>(<i>func, *args, error_msg=None, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/functions.py#L72">[source]</a>
 </p>
 
 <p>Validates a participant's response.</p>
@@ -417,7 +419,7 @@ to a participant.</p>
 <span class="nd">@V</span><span class="o">.</span><span class="n">register</span>
 <span class="k">def</span> <span class="nf">match</span><span class="p">(</span><span class="n">inpt</span><span class="p">,</span> <span class="n">pattern</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">inpt</span><span class="o">.</span><span class="n">response</span> <span class="o">!=</span> <span class="n">pattern</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;&lt;p&gt;You entered &quot;</span><span class="si">{}</span><span class="s1">&quot;, not &quot;</span><span class="si">{}</span><span class="s1">&quot;&lt;/p&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">inpt</span><span class="o">.</span><span class="n">response</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;You entered &quot;</span><span class="si">{}</span><span class="s1">&quot;, not &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">inpt</span><span class="o">.</span><span class="n">response</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span>
 
 <span class="n">pattern</span> <span class="o">=</span> <span class="s1">&#39;hello world&#39;</span>
 <span class="n">inpt</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">validate</span><span class="o">=</span><span class="n">V</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">pattern</span><span class="p">))</span>
@@ -430,7 +432,7 @@ to a participant.</p>
 </code></pre></div>
 <h4 id="methods_1">Methods</h4>
 <p class="func-header">
-    <i></i> <b>__call__</b>(<i>self, *args, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/functions.py#L111">[source]</a>
+    <i></i> <b>__call__</b>(<i>self, *args, **kwargs</i>) <a class="src-href" target="_blank" href="https://github.com/dsbowen/hemlock/blob/master/hemlock/models/functions.py#L113">[source]</a>
 </p>
 
 <table class="docutils field-list field-table" frame="void" rules="none">
@@ -461,7 +463,7 @@ to a participant.</p>
     <span class="n">names</span> <span class="o">=</span> <span class="n">name_q</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
     <span class="n">name_q</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span>
 
-<span class="n">inpt</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="s2">&quot;&lt;p&gt;What&#39;s your name?&lt;/p&gt;&quot;</span><span class="p">,</span> <span class="n">submit</span><span class="o">=</span><span class="n">S</span><span class="o">.</span><span class="n">get_initials</span><span class="p">())</span>
+<span class="n">inpt</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="s2">&quot;What&#39;s your name?&quot;</span><span class="p">,</span> <span class="n">submit</span><span class="o">=</span><span class="n">S</span><span class="o">.</span><span class="n">get_initials</span><span class="p">())</span>
 <span class="n">inpt</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="s1">&#39;Andrew Yang&#39;</span>
 <span class="n">inpt</span><span class="o">.</span><span class="n">_submit</span><span class="p">()</span><span class="o">.</span><span class="n">data</span>
 </code></pre></div>
